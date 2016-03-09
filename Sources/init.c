@@ -17,7 +17,8 @@ void initALL(void)
 	initLINFlex_0_UART();
 
 //	initKeys_Switchs_Infrared();
-	initTestIO();
+	
+	//initTestIO();
 	OLED_Init();
 	OLED_Test();
 //	init_DSPI_1(); //初始化SPI总线 
