@@ -17,11 +17,11 @@
 //	SIU.PCR[42].R = 0x0200;//OLED     C10
 //	SIU.PCR[17].R = 0x0200;//OLED     B1
 
-#define OLED_CS_PIN   17	///< Ƭѡ (Chip Select)
-#define OLED_DC_PIN   42	///< Data/Command Control
+#define OLED_CS_PIN   72	///< Ƭѡ (Chip Select)
+#define OLED_DC_PIN   74	///< Data/Command Control
 #define OLED_RST_PIN  75	///< Reset
-#define OLED_SDA_PIN  74	///< SPI Data MISO
-#define OLED_SCL_PIN  72	///< SPI Clock
+#define OLED_SDA_PIN  42	///< SPI Data MISO
+#define OLED_SCL_PIN  17	///< SPI Clock
 
 #define OLED_CS   SIU.GPDO[OLED_CS_PIN].R ///< Ƭѡ (Chip Select)
 #define OLED_DC   SIU.GPDO[OLED_DC_PIN].R ///< Data/Command Control

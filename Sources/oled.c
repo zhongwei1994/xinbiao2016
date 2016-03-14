@@ -114,19 +114,14 @@ const unsigned char F6x8[][6] =
  */
 void OLED_Test(void)
 {
-//	int page;
-//	for(page=0;page<8;page++){
-//		OLED_SetPointer(page,0);
-//		OLED_Str("    Hello!");
-//		OLED_Num(70-page);
-//		OLED_Char('A');
-//		OLED_Num(88);
-//	}
-	OLED_SetPointer(2,20);
-	OLED_Num(88);
-	
-	
-	
+	int page;
+	for(page=0;page<8;page++){
+		OLED_SetPointer(page,0);
+		OLED_Str("    Hello!");
+		OLED_Num(70-page);
+		OLED_Char('A');
+		OLED_Num(88);
+	}
 }
 
 /**
