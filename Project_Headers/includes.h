@@ -39,9 +39,14 @@ typedef unsigned long int DWORD;
 #include "delay.h"
 #include "IntcInterrupts.h"
 #include "string.h"
-#include "delay.h"
-#include "Bluetooth.h"
 #include "oled.h"
+#include "video.h"
+#include "debug.h"
+#include "sci.h"
+#include "speed.h"
+#include "steer.h"
+
+#define ABS(x)              ((x) > 0 ? (x) : 0-(x))
 
 extern int PixelLeft[128];
 extern int PixelRight[128];
@@ -55,10 +60,23 @@ extern int pwm_num;
 #define Bee  SIU.GPDO[0].R
 
 /***************led*****************/
-#define D0  SIU.GPDO[12].R
-#define D1  SIU.GPDO[13].R
-#define D2  SIU.GPDO[14].R
-#define D3  SIU.GPDO[15].R
+#define LED0 SIU.GPDO[12].R
+#define LED1 SIU.GPDO[13].R
+#define LED2 SIU.GPDO[14].R
+#define LED3 SIU.GPDO[15].R
+
+#define Y0 SIU.GPDI[56].R
+#define Y1 SIU.GPDI[55].R
+#define Y2 SIU.GPDI[50].R
+#define Y3 SIU.GPDI[49].R
+#define Y4 SIU.GPDI[52].R
+#define Y5 SIU.GPDI[51].R
+#define Y6 SIU.GPDI[54].R
+#define Y7 SIU.GPDI[53].R
+
+/***************steer*****************/
+#define TargetSteer EMIOS_0.CH[11].CBDR.R // ¶æ»úÖµ
+#define CENTER 3692//3720
 
 ///***************supersonic*****************/
 //#define supersonic_0_trigger SIU.GPDO[31].R //³¬Éù0
