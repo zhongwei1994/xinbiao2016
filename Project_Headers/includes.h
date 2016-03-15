@@ -59,6 +59,12 @@ extern int pwm_num;
 /***************bee*****************/
 #define Bee  SIU.GPDO[0].R
 
+/***************keys*****************/
+#define S6 SIU.GPDI[15].R
+#define S5 SIU.GPDI[39].R
+#define S4 SIU.GPDI[14].R	
+#define S3 SIU.GPDI[13].R
+
 /***************led*****************/
 #define LED0 SIU.GPDO[12].R
 #define LED1 SIU.GPDO[13].R
@@ -75,8 +81,8 @@ extern int pwm_num;
 #define Y7 SIU.GPDI[53].R
 
 /***************steer*****************/
-#define TargetSteer EMIOS_0.CH[11].CBDR.R // 舵机值
-#define CENTER 3692//3720
+#define TargetSteer EMIOS_0.CH[4].CBDR.R // 舵机值
+#define CENTER 3900//3720
 
 ///***************supersonic*****************/
 //#define supersonic_0_trigger SIU.GPDO[31].R //超声0

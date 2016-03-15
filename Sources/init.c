@@ -18,9 +18,9 @@ void initALL(void)
 
 //	initKeys_Switchs_Infrared();
 	
-	//initTestIO();
+	initTestIO();
 	OLED_Init();
-	OLED_Test();
+	//OLED_Test();
 //	init_DSPI_1(); //初始化SPI总线 
 //	init_TFcard();
 }
@@ -116,20 +116,20 @@ void initEMIOS_0MotorAndSteer(void)
 	
 	/**********舵机PWM 50HZ A11口输出50000*7.5%=3750中位**********/
 	//eMIOS0 A通道23设置/* EMIOS 0 CH 0: Modulus Counter */
-	EMIOS_0.CH[23].CCR.B.UCPRE=0;	    /* Set channel prescaler to divide by 1 */
-	EMIOS_0.CH[23].CCR.B.UCPEN = 1;   /* Enable prescaler; uses default divide by 1 */
-	EMIOS_0.CH[23].CCR.B.FREN = 1; 	/* Freeze channel counting when in debug mode */
-	EMIOS_0.CH[23].CADR.R = 50000;/********设置周期20ms  50HZ*******/
-	EMIOS_0.CH[23].CCR.B.MODE = 0x50; /* Modulus Counter Buffered (MCB) */
-	EMIOS_0.CH[23].CCR.B.BSL = 0x3;	/* Use internal counter */
+	EMIOS_0.CH[0].CCR.B.UCPRE=0;	    /* Set channel prescaler to divide by 1 */
+	EMIOS_0.CH[0].CCR.B.UCPEN = 1;   /* Enable prescaler; uses default divide by 1 */
+	EMIOS_0.CH[0].CCR.B.FREN = 1; 	/* Freeze channel counting when in debug mode */
+	EMIOS_0.CH[0].CADR.R = 50000;/********设置周期20ms  50HZ*******/
+	EMIOS_0.CH[0].CCR.B.MODE = 0x50; /* Modulus Counter Buffered (MCB) */
+	EMIOS_0.CH[0].CCR.B.BSL = 0x3;	/* Use internal counter */
 		
 	/* EMIOS 0 CH 11: Output Pulse Width Modulation */
-	EMIOS_0.CH[11].CCR.B.BSL = 0;	/* Use counter bus A (default) */
-	EMIOS_0.CH[11].CCR.B.MODE = 0x60; /* Mode is OPWM Buffered */  
-	EMIOS_0.CH[11].CCR.B.EDPOL = 1;	/* Polarity-leading edge sets output/trailing clears*/
-	EMIOS_0.CH[11].CADR.R = 0;//半占空比/* Leading edge when channel counter bus=250*/
-	EMIOS_0.CH[11].CBDR.R = CENTER;            /* Trailing edge when channel counter bus=500*/
-	SIU.PCR[11].R = 0x0600;    //[11:10]选择AFx 此处AF1   A4口舵机输出
+	EMIOS_0.CH[4].CCR.B.BSL = 1;	/* Use counter bus A (default) */
+	EMIOS_0.CH[4].CCR.B.MODE = 0x60; /* Mode is OPWM Buffered */  
+	EMIOS_0.CH[4].CCR.B.EDPOL = 1;	/* Polarity-leading edge sets output/trailing clears*/
+	EMIOS_0.CH[4].CADR.R = 0;//半占空比/* Leading edge when channel counter bus=250*/
+	EMIOS_0.CH[4].CBDR.R = CENTER;            /* Trailing edge when channel counter bus=500*/
+	SIU.PCR[4].R = 0x0600;    //[11:10]选择AFx 此处AF1   A4口舵机输出
 }
 /*************************光编初始化***********************/
 void initEMIOS_0ModulusCounter(void) //D12,A8模数计数器入口，上升沿，D11,A6光编正反转
@@ -238,14 +238,14 @@ void initTestIO(void)
 	SIU.PCR[17].R = 0x0200;//OLED     B1
 	
 	//LED
-	SIU.PCR[12].R = 0x0200;//A12 LED0
-	SIU.PCR[13].R = 0x0200;//A13 LED1
-	SIU.PCR[14].R = 0x0200;//A14 LED2
-	SIU.PCR[15].R = 0x0200;//A15 LED3
-	LED0=1;
-	LED1=1;
-	LED2=1;
-	LED3=1;
+//	SIU.PCR[12].R = 0x0200;//A12 LED0
+//	SIU.PCR[13].R = 0x0200;//A13 LED1
+//	SIU.PCR[14].R = 0x0200;//A14 LED2
+//	SIU.PCR[15].R = 0x0200;//A15 LED3
+//	LED0=1;
+//	LED1=1;
+//	LED2=1;
+//	LED3=1;
 
 		
 	//蜂鸣器
@@ -261,10 +261,10 @@ void initTestIO(void)
 	//	SIU.PCR[16].R = 0x0100;//SWITCH   B0
 	//	SIU.PCR[38].R = 0x0100;//SWITCH   C6
 		
-	//	SIU.PCR[15].R = 0x0103;//KEY S6   A15
-	//	SIU.PCR[39].R = 0x0103;//KEY S5   C7
-	//	SIU.PCR[14].R = 0x0103;//KEY S4   A14
-	//	SIU.PCR[13].R = 0x0103;//KEY S3   A13
+	SIU.PCR[15].R = 0x0103;//KEY S6   A15
+	SIU.PCR[39].R = 0x0103;//KEY S5   C7
+	SIU.PCR[14].R = 0x0103;//KEY S4   A14
+	SIU.PCR[13].R = 0x0103;//KEY S3   A13
 		
 	//输入模块（摄像头、光编）
 		
