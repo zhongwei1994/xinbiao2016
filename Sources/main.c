@@ -1,15 +1,15 @@
 #include "MPC5604B.h"
 
-//3-14合作
 //315
-//mmmmm
-//315531
 //
 #include "includes.h"
 
 int main(void) {
 	int x_duoji = 0;
 	initALL();
+	
+	SET_motor(50,50);
+	
 	//EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
 	for(;;) 
 	{		
