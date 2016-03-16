@@ -1,12 +1,13 @@
 /*
  * analyse.c
 
+
  *
  *  Created on: Mar 14, 2016
  *      Author: WUSHUN
  */
 #include "includes.h"
-int central_point(void)
+void central_point(int * pointx,int * pointy)
 {
 	int up=80,down,left=100,right=0,downflag=0;
 	int i = 0,j = 0,n = 0;
@@ -41,23 +42,11 @@ int central_point(void)
 									{
 									if(up>i)
 										up=i;
-									}//wushun
-			
-				else if(a_pix[i][j+4] - a_pix[i][j] < -80)
-						if(a_pix[i][j+5] - a_pix[i][j+1] < -80)
-							if(a_pix[i][j+6] - a_pix[i][j+2] < -80)
-								if(a_pix[i][j+7] - a_pix[i][j+3] < -80)
-									pix_right = j+3;	
-			pix_delta[n] = pix_right - pix_left;
+									}
 		}
-		n++;
-	}	
-	pix_delta_max = pix_delta[0];
-	for(i = 0;i < 80;i++)
-	{
-		if(pix_delta_max < pix_delta[i])
-			pix_delta_max = pix_delta[i];
 	}
-	return pix_delta_max/2;
-}//shangzhongwei
+	*pointx=(left+right)/2;
+	*pointy=(up+down)/2;
+}
+
 
