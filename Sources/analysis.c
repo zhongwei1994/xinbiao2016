@@ -19,15 +19,11 @@ void search_lamp(int *pix_x,int *pix_y)
 		{
 			if(a_pix[i][j+4] - a_pix[i][j] > 80)
 				if(a_pix[i][j+5] - a_pix[i][j+1] > 80)
-					if(a_pix[i][j+6] - a_pix[i][j+2] > 80)
-						if(a_pix[i][j+7] - a_pix[i][j+3] > 80)
-							left[n] = j+4;
+					left[n] = j+4;
 			
 			if(a_pix[i][j+4] - a_pix[i][j] < -80)
-						if(a_pix[i][j+5] - a_pix[i][j+1] < -80)
-							if(a_pix[i][j+6] - a_pix[i][j+2] < -80)
-								if(a_pix[i][j+7] - a_pix[i][j+3] < -80)
-									right[n] = j+3;	
+				if(a_pix[i][j+5] - a_pix[i][j+1] < -80)
+					right[n] = j;	
 			pix_delta[n] = right[n] - left[n];
 		}
 		n++;
