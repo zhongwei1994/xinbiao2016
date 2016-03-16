@@ -8,7 +8,7 @@
 #include "includes.h"
 
 //a_pix 80*100
-void search_lamp(int *pix_x,int *pix_y)
+void search_lamp_1(int *pix_x,int *pix_y)
 {
 	int pix_left,pix_right;
 	int i = 0,j = 0,n = 0;
@@ -41,3 +41,58 @@ void search_lamp(int *pix_x,int *pix_y)
 	*pix_x = (right[i_max] + left[i_max])/2;
 	*pix_y = i_max;
 }
+
+void search_lamp_2(int *pix_i,int *pix_j)
+{
+	int i = 0,j = 0,search_flag = 0;
+	for(i = 10;i < 80;i+10)
+	{
+		for(j = 10;j < 100;j+10)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				*pix_i = i;
+				*pix_j = j;
+				return;
+			}
+		}
+	}
+	for(i = 5;i < 80;i+10)
+	{
+		for(j = 5;j < 100;j+5)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				*pix_i = i;
+				*pix_j = j;
+				return;
+			}	
+		}
+	}
+	for(i = 10;i < 80;i+10)
+	{
+		for(j = 5;j < 100;j+10)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				*pix_i = i;
+				*pix_j = j;
+				return;
+			}	
+		}
+	}	
+	
+	for(i = 2;i < 80;i+2)
+	{
+		for(j = 2;j < 100;j+2)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				*pix_i = i;
+				*pix_j = j;
+				return;
+			}	
+		}
+	}
+}
+
