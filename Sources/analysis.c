@@ -7,47 +7,17 @@
 
 #include "includes.h"
 
-//a_pix 80*100
-void search_lamp_1(int *pix_x,int *pix_y)
-{
-	int pix_left,pix_right;
-	int i = 0,j = 0,n = 0;
-	int pix_delta[80] = {0},left[80] = {0},right[80] = {0},pix_delta_max = 0,i_max = 0;
-	for(i = 80;i > 0;i--)
-	{
-		for(j = 0;j < 100;j++)
-		{
-			if(a_pix[i][j+4] - a_pix[i][j] > 80)
-				if(a_pix[i][j+5] - a_pix[i][j+1] > 80)
-					left[n] = j+4;
-			
-			if(a_pix[i][j+4] - a_pix[i][j] < -80)
-				if(a_pix[i][j+5] - a_pix[i][j+1] < -80)
-					right[n] = j;	
-			pix_delta[n] = right[n] - left[n];
-		}
-		n++;
-	}	
-	pix_delta_max = pix_delta[0];
-	i_max = 0;
-	for(i = 0;i < 80;i++)
-	{
-		if(pix_delta_max < pix_delta[i])
-		{
-			pix_delta_max = pix_delta[i];
-			i_max = i;		
-		}
-	}
-	*pix_x = (right[i_max] + left[i_max])/2;
-	*pix_y = i_max;
-}
+byte pix_x=0,pix_y=0;
+byte pix_x2=0,pix_y2=0;
 
-void search_lamp_2(int *pix_i,int *pix_j)
+//a_pix 80*100
+
+void lamp_search(byte *pix_i,byte *pix_j)
 {
-	int i = 0,j = 0,search_flag = 0;
-	for(i = 10;i < 80;i+10)
+	byte i = 0,j = 0,search_flag = 0;
+	for(i = 10;i < 80;i+=10)
 	{
-		for(j = 10;j < 100;j+10)
+		for(j = 10;j < 100;j+=10)
 		{
 			if(a_pix[i][j] > video_t)
 			{
@@ -57,9 +27,9 @@ void search_lamp_2(int *pix_i,int *pix_j)
 			}
 		}
 	}
-	for(i = 5;i < 80;i+10)
+	for(i = 5;i < 80;i+=10)
 	{
-		for(j = 5;j < 100;j+5)
+		for(j = 5;j < 100;j+=5)
 		{
 			if(a_pix[i][j] > video_t)
 			{
@@ -69,9 +39,9 @@ void search_lamp_2(int *pix_i,int *pix_j)
 			}	
 		}
 	}
-	for(i = 10;i < 80;i+10)
+	for(i = 10;i < 80;i+=10)
 	{
-		for(j = 5;j < 100;j+10)
+		for(j = 5;j < 100;j+=10)
 		{
 			if(a_pix[i][j] > video_t)
 			{
@@ -82,9 +52,9 @@ void search_lamp_2(int *pix_i,int *pix_j)
 		}
 	}	
 	
-	for(i = 2;i < 80;i+2)
+	for(i = 2;i < 80;i+=2)
 	{
-		for(j = 2;j < 100;j+2)
+		for(j = 2;j < 100;j+=2)
 		{
 			if(a_pix[i][j] > video_t)
 			{
@@ -95,4 +65,32 @@ void search_lamp_2(int *pix_i,int *pix_j)
 		}
 	}
 }
+void lamp_judge(byte *pix_x,byte *pix_y)
+{
+	
+	//int m;
+
+	//if(a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240)
+	//    m=4;
+	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240))
+	//	m=3;
+	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240))
+	//	m=2;
+	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240))
+	//	m=1;
+	
+	int i,j,p=0;
+	for(i=pix_x-3;i<=pix_x+3;i++)
+	{
+		for(j=n-3;j<=n+3;j++)
+		{
+		if(a_pix[i][j]>240)
+			p++;
+		}	
+	}
+	if(p>5)
+	{
+		*pix_i=m;
+		*pix_y=n;
+	}
 

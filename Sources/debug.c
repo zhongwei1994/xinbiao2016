@@ -19,7 +19,6 @@ unsigned char S4_last=1;
 unsigned char S5_last=1;
 unsigned char S6_last=1;
 unsigned char keymode=0;
-byte A[ROWS][COLUMNS];
 
 //********************************************************************************************************
 //****************************************拨码开关函数*****************************************************
@@ -112,7 +111,7 @@ void BlueTx(void)                             //蓝牙发数据
 	Ts=0;
 	send = putstring;
 	LINFlex_TX(*send++);
-	for(Ts=0;Ts<4;)
+	for(Ts=0;Ts<5;)
 	{
 	switch(Ts){
 	case 0: if(*send!=0x00){
@@ -126,11 +125,11 @@ void BlueTx(void)                             //蓝牙发数据
 		Ts=2;
 		break;
 	case 2: 
-		LINFlex_TX(SendHexHigh(A[Ti][Tj]));        //发送左CCD图像
+		LINFlex_TX(SendHexHigh(a_pix[Ti][Tj]));        //发送左CCD图像
 		Ts=3;
 		break;
 	case 3: 
-		LINFlex_TX(SendHexLow(A[Ti][Tj]));
+		LINFlex_TX(SendHexLow(a_pix[Ti][Tj]));
 		if(Ti>0)
 		{
 			Ti--;
@@ -150,7 +149,19 @@ void BlueTx(void)                             //蓝牙发数据
 				Ts=4;
 			}
 		}
-		break;	
+		break;
+	case 4: 
+		LINFlex_TX('X'); 
+		LINFlex_TX(SendHexHigh(pix_x));        //发送白点坐标
+		LINFlex_TX(SendHexLow(pix_x));
+		LINFlex_TX(SendHexHigh(pix_y));
+		LINFlex_TX(SendHexLow(pix_y));
+		LINFlex_TX(SendHexHigh(pix_x2));        //发送白点坐标
+		LINFlex_TX(SendHexLow(pix_x2));
+		LINFlex_TX(SendHexHigh(pix_y2));
+		LINFlex_TX(SendHexLow(pix_y2));
+		Ts=5;
+		break;
 	}
 	}
 }

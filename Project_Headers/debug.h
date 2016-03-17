@@ -8,7 +8,6 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 
-extern byte A[ROWS][COLUMNS];
 extern unsigned char *send;
 extern unsigned char putstring[];
 extern unsigned int Ts;

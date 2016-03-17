@@ -103,9 +103,9 @@ void search_central(int *pix_x,int *pix_y)
 	//	m=1;
 	
 	int i,j,m,n,p=0;
-	for(i=m-3;i=m+3;i++)
+	for(i=m-3;i<=m+3;i++)
 	{
-		for(j=n-3;j=n+3;j++)
+		for(j=n-3;j<=n+3;j++)
 		{
 		if(a_pix[i][j]>240)
 			p++;
