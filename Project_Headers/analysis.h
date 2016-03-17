@@ -13,8 +13,9 @@
 extern byte pix_x,pix_y;
 extern byte pix_x2,pix_y2;
 
-extern void search_lamp_2(byte *pix_x,byte *pix_y);
-extern void search_lamp_1(byte *pix_x,byte *pix_y);
+extern void lamp_search(byte *pix_x,byte *pix_y);
+int lamp_judge(byte pix_i,byte pix_j);
+void central_search(byte *pix_i,byte *pix_j,int x,int y);
 
 
 #endif /* ANALYSIS_H_ */
