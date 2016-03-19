@@ -1,5 +1,6 @@
 /*
  * analysis.c
+
  *
  *  Created on: Mar 15, 2016
  *      Author: zhongwei
@@ -94,25 +95,25 @@ int lamp_judge(byte pix_i,byte pix_j)
 	
 	int i,j,p=0;
 	int flag=0;
-	for(i=pix_i-3;i<=pix_i+3;i++)
+	for(i=pix_i-1;i<=pix_i+1;i++)
 	{
-		for(j=pix_j-3;j<=pix_j+3;j++)
+		for(j=pix_j-2;j<=pix_j+2;j++)
 		{
 		if(a_pix[i][j]>video_t)
 			p++;
 		}	
 	}
-	if(p>5)
+	if(p>3)
 	{
 		flag=1;
 	}
 	return flag;
 }
 
-void central_search(byte *pix_i,byte *pix_j,int x,int y)
+void central_search(byte *pix_i,byte *pix_j,byte x,byte y)
 {
-	int i,j;
-	int left,right,pix_deltax,up,down,pix_deltay;
+	byte i,j;
+	byte left,right,pix_deltax,up,down,pix_deltay;
 	for(i=x;i<=100;i++)
 	{
 		if(a_pix[i+3][y] - a_pix[i][y] <- 80)
@@ -146,4 +147,76 @@ void central_search(byte *pix_i,byte *pix_j,int x,int y)
 	*pix_i=pix_deltax;
 	*pix_j=pix_deltay;
 }
-
+byte point_search(byte *pix_i,byte *pix_j,byte m,byte n)
+{
+	//byte flag=0;
+	byte i,j;
+	for(i=m;i < 80;i+=8)
+	{
+		for(j=n;j < 100;j+=8)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				if(lamp_judge(i,j))
+				{
+					*pix_i = i;
+				    *pix_j = j;
+				    return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+void lamp_search_2(byte *pix_i,byte *pix_j)
+{
+	byte i,j;
+	i=7;j=7;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=3;j=3;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=7;j=3;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=3;j=7;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=5;j=5;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=1;j=1;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=1;j=5;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=5;j=1;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=3;j=5;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=3;j=1;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=5;j=3;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=1;j=3;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=5;j=7;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=7;j=5;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=7;j=1;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+	i=1;j=7;
+	if(point_search(pix_i,pix_j,i,j))
+		return;
+}

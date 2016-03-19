@@ -19,7 +19,10 @@ unsigned char S4_last=1;
 unsigned char S5_last=1;
 unsigned char S6_last=1;
 unsigned char keymode=0;
-
+unsigned long time1=0;
+unsigned long time2=0;
+unsigned long time3=0;
+unsigned long time3_2=0;
 //********************************************************************************************************
 //****************************************拨码开关函数*****************************************************
 //********************************************************************************************************
@@ -108,6 +111,7 @@ void LINFlex_TX(unsigned char data)
 void BlueTx(void)                             //蓝牙发数据
 {
 	unsigned char video='V';
+	unsigned long temp; 
 	Ts=0;
 	send = putstring;
 	LINFlex_TX(*send++);
@@ -160,6 +164,22 @@ void BlueTx(void)                             //蓝牙发数据
 		LINFlex_TX(SendHexLow(pix_x2));
 		LINFlex_TX(SendHexHigh(pix_y2));
 		LINFlex_TX(SendHexLow(pix_y2));
+		LINFlex_TX(SendUnsignedLong1(time3));
+		LINFlex_TX(SendUnsignedLong2(time3));
+		LINFlex_TX(SendUnsignedLong3(time3));
+		LINFlex_TX(SendUnsignedLong4(time3));
+		LINFlex_TX(SendUnsignedLong5(time3));
+		LINFlex_TX(SendUnsignedLong6(time3));
+		LINFlex_TX(SendUnsignedLong7(time3));
+		LINFlex_TX(SendUnsignedLong8(time3));
+		LINFlex_TX(SendUnsignedLong1(time3_2));
+		LINFlex_TX(SendUnsignedLong2(time3_2));
+		LINFlex_TX(SendUnsignedLong3(time3_2));
+		LINFlex_TX(SendUnsignedLong4(time3_2));
+		LINFlex_TX(SendUnsignedLong5(time3_2));
+		LINFlex_TX(SendUnsignedLong6(time3_2));
+		LINFlex_TX(SendUnsignedLong7(time3_2));
+		LINFlex_TX(SendUnsignedLong8(time3_2));
 		Ts=5;
 		break;
 	}
@@ -197,4 +217,13 @@ void KeyJudge(void)
 	S5_last=S5;
 	S6_last=S6;
 }
-
+//********************************************************************************************************
+//****************************************程序计时函数*****************************************************
+//********************************************************************************************************
+unsigned long TimeMesure(void)
+{
+	if(time2<time1)
+		return 0xFFFFFFFF+time2-time1;
+	else
+		return time2-time1;
+}

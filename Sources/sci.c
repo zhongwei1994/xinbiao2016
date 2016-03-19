@@ -32,32 +32,82 @@ unsigned char SendHexLow(unsigned char hex) {
 
 unsigned char SendInt1(int currentdata)
 {
-  char temp;
+  unsigned char temp;
   temp=currentdata>>8;
   return SendHexHigh(temp);
 }
 
 unsigned char SendInt2(int currentdata)
 {
-  char temp;
+  unsigned char temp;
   temp=currentdata>>8;
   return SendHexLow(temp);
 }
 
 unsigned char SendInt3(int currentdata)
 {
-  char temp;
+  unsigned char temp;
   temp=currentdata & 0x00FF;
   return SendHexHigh(temp);
 }
 
 unsigned char SendInt4(int currentdata)
 {
-  char temp;
+  unsigned char temp;
   temp=currentdata & 0x00FF;
   return SendHexLow(temp);
 }
-
-
-
-
+unsigned char SendUnsignedLong1(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata>>24;
+  return SendHexHigh(temp);
+}
+unsigned char SendUnsignedLong2(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata>>24;
+  return SendHexLow(temp);
+}
+unsigned char SendUnsignedLong3(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata>>16;
+  temp=temp&0x00ff;
+  return SendHexHigh(temp);
+}
+unsigned char SendUnsignedLong4(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata>>16;
+  temp=temp&0x00ff;
+  return SendHexLow(temp);
+}
+unsigned char SendUnsignedLong5(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata>>8;
+  temp=temp&0x0000ff;
+  return SendHexHigh(temp);
+}
+unsigned char SendUnsignedLong6(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata>>8;
+  temp=temp&0x0000ff;
+  return SendHexLow(temp);
+}
+unsigned char SendUnsignedLong7(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata;
+  temp=temp&0x000000ff;
+  return SendHexHigh(temp);
+}
+unsigned char SendUnsignedLong8(unsigned long currentdata)
+{
+  unsigned char temp;
+  temp=currentdata;
+  temp=temp&0x000000ff;
+  return SendHexLow(temp);
+}

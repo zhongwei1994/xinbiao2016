@@ -88,6 +88,8 @@ extern int pwm_num;
 ///***************supersonic*****************/
 //#define supersonic_0_trigger SIU.GPDO[31].R //³¬Éù0
 //#define supersonic_1_trigger SIU.GPDO[28].R//³¬Éù1
+/***************stm*****************/
+#define TIME STM.CNT.R
 
 #endif /* INCLUDES_H_ */
 

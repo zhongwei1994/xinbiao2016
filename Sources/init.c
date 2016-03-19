@@ -15,7 +15,7 @@ void initALL(void)
 	initEMIOS_0MotorAndSteer();
 	initEMIOS_0Image();
 	initLINFlex_0_UART();
-
+	initSTM(); 
 //	initKeys_Switchs_Infrared();
 	
 	initTestIO();
@@ -222,7 +222,10 @@ void initLINFlex_0_UART(void)
   //	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,6); 
 }
 
-
+void initSTM(void)
+{
+	STM.CR.R=0x00005001;
+}
 
 
 /*********************≤‚ ‘IO≥ı ºªØ***********************/

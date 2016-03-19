@@ -18,6 +18,7 @@ void initLINFlex_0_UART(void);
 void initTestIO(void);
 void init_TFcard(void);
 void initEMIOS_0ModulusCounter(void);
+void initSTM(); 
 
 
 #endif /* INIT_H_ */
