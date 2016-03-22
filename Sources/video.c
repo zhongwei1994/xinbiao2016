@@ -12,9 +12,10 @@
 //*************************************************************************
 //采样图像标号
 word crow = 0;           //行计数器        
-word trow = 1;            //选择采样行
+word trow = 80;            //选择采样行
 word prow = 0;  	  	 //摄像头采样当前行
 word pcolumn = 0;        //摄像头采样当前列
+word amp_start = 40,amp_end = 0;  //放大行的开始和结束
 //采样结束标志
 byte fieldover = 0;		//一场采样结束标志符 
 //采样二维数组    
@@ -57,7 +58,7 @@ void FieldInputCapture(void)	//捕捉场中断
 {
 	EMIOS_0.CH[6].CSR.B.FLAG = 1;//清除场中断标志位
     EMIOS_0.CH[6].CCR.B.FEN=0;  //关闭场中断 
-	prow=0;pcolumn=0;crow=0;trow=1;
+	prow=0;pcolumn=0;crow=0;trow=80;
 	EMIOS_0.CH[5].CSR.B.FLAG = 1;  //清除行中断
 	EMIOS_0.CH[5].CCR.B.FEN=1;  //开行中断
 }
@@ -79,9 +80,14 @@ void RowInputCapture(void) 		//捕捉行中断
 			a_pix[prow][pcolumn]=Y0+Y1*2+Y2*4+Y3*8+Y4*16+Y5*32+Y6*64+Y7*128;
 			//a_pix[prow][pcolumn]=Y4*16+Y5*32+Y6*64+Y7*128;
 			//a_pix[prow][pcolumn]=Y5*32+Y6*64+Y7*128;
+			__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);
+			__asm(nop);__asm(nop);  
 		}
 		prow++;
-		trow+=3;
+		if(prow<amp_start)
+			trow+=1;
+		else
+			trow+=3;
 	}
 	else
 	{}
