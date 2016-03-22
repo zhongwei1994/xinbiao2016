@@ -81,29 +81,20 @@ void lamp_search(byte *pix_i,byte *pix_j)
 	wrong_flag=1;
 }
 int lamp_judge(byte pix_i,byte pix_j)
-{
-	
-	//int m;
-	//if(a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240)
-	//    m=4;
-	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240))
-	//	m=3;
-	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240))
-	//	m=2;
-	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240))
-	//	m=1;
-	
-	int i,j,p=0;
+{	
+	int i,j,p=0,p2=0;
 	int flag=0;
 	for(i=pix_i-1;i<=pix_i+1;i++)
 	{
 		for(j=pix_j-2;j<=pix_j+2;j++)
 		{
-		if(a_pix[i][j]>video_t)
-			p++;
+			if(a_pix[i][j]>video_t2)
+				p2++;
+			if(a_pix[i][j]>video_t)
+				p++;
 		}	
 	}
-	if(p>3)
+	if(p>1&p2>3)
 	{
 		flag=1;
 	}
@@ -147,11 +138,11 @@ void central_search(byte *pix_i,byte *pix_j,byte x,byte y)
 	*pix_i=pix_deltax;
 	*pix_j=pix_deltay;
 }
-byte point_search(byte *pix_i,byte *pix_j,byte m,byte n)
+byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
 {
 	//byte flag=0;
 	byte i,j;
-	for(i=m;i < 80;i+=8)
+	for(i=m;i < line;i+=8)
 	{
 		for(j=n;j < 100;j+=8)
 		{
@@ -171,52 +162,36 @@ byte point_search(byte *pix_i,byte *pix_j,byte m,byte n)
 void lamp_search_2(byte *pix_i,byte *pix_j)
 {
 	byte i,j;
-	i=7;j=7;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,7,7,80))
 		return;
-	i=3;j=3;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,3,3,80))
 		return;
-	i=7;j=3;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,7,3,80))
 		return;
-	i=3;j=7;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,3,7,80))
 		return;
-	i=5;j=5;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,5,5,70))
 		return;
-	i=1;j=1;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,1,1,70))
 		return;
-	i=1;j=5;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,1,5,70))
 		return;
-	i=5;j=1;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,5,1,70))
 		return;
-	i=3;j=5;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,3,5,70))
 		return;
-	i=3;j=1;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,3,1,70))
 		return;
-	i=5;j=3;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,5,3,70))
 		return;
-	i=1;j=3;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,1,3,70))
 		return;
-	i=5;j=7;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,5,7,70))
 		return;
-	i=7;j=5;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,7,5,70))
 		return;
-	i=7;j=1;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,7,1,60))
 		return;
-	i=1;j=7;
-	if(point_search(pix_i,pix_j,i,j))
+	if(point_search(pix_i,pix_j,1,7,60))
 		return;
 }
