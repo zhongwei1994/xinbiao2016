@@ -164,34 +164,35 @@ void lamp_search_2(byte *pix_i,byte *pix_j)
 	byte i,j;
 	if(point_search(pix_i,pix_j,7,7,80))
 		return;
-	if(point_search(pix_i,pix_j,3,3,80))
+	if(point_search(pix_i,pix_j,3,3,65))
 		return;
-	if(point_search(pix_i,pix_j,7,3,80))
+	if(point_search(pix_i,pix_j,7,3,55))
 		return;
-	if(point_search(pix_i,pix_j,3,7,80))
+	if(point_search(pix_i,pix_j,3,7,50))
 		return;
-	if(point_search(pix_i,pix_j,5,5,70))
-		return;
-	if(point_search(pix_i,pix_j,1,1,70))
-		return;
-	if(point_search(pix_i,pix_j,1,5,70))
-		return;
-	if(point_search(pix_i,pix_j,5,1,70))
-		return;
-	if(point_search(pix_i,pix_j,3,5,70))
-		return;
-	if(point_search(pix_i,pix_j,3,1,70))
-		return;
-	if(point_search(pix_i,pix_j,5,3,70))
-		return;
-	if(point_search(pix_i,pix_j,1,3,70))
-		return;
-	if(point_search(pix_i,pix_j,5,7,70))
-		return;
-	if(point_search(pix_i,pix_j,7,5,70))
-		return;
-	if(point_search(pix_i,pix_j,7,1,60))
-		return;
-	if(point_search(pix_i,pix_j,1,7,60))
-		return;
+//	if(point_search(pix_i,pix_j,5,5,70))
+//		return;
+//	if(point_search(pix_i,pix_j,1,1,70))
+//		return;
+//	if(point_search(pix_i,pix_j,1,5,70))
+//		return;
+//	if(point_search(pix_i,pix_j,5,1,70))
+//		return;
+//	if(point_search(pix_i,pix_j,3,5,70))
+//		return;
+//	if(point_search(pix_i,pix_j,3,1,70))
+//		return;
+//	if(point_search(pix_i,pix_j,5,3,70))
+//		return;
+//	if(point_search(pix_i,pix_j,1,3,70))
+//		return;
+//	if(point_search(pix_i,pix_j,5,7,70))
+//		return;
+//	if(point_search(pix_i,pix_j,7,5,70))
+//		return;
+//	if(point_search(pix_i,pix_j,7,1,60))
+//		return;
+//	if(point_search(pix_i,pix_j,1,7,60))
+//		return;
+	
 }
