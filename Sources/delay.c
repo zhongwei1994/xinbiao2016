@@ -63,4 +63,10 @@ void delay_ms(DWORD ms)
 	}
 }
 
+void delay(void)
+{
+	uint32_t j;
+	for(j=0;j<10000;j++)
+	{}
+}
 

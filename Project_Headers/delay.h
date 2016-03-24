@@ -11,6 +11,7 @@
 extern void udelay(int us);
 extern void delay_us(DWORD us);
 extern void delay_ms(DWORD ms);
+extern void delay(void);
 
 
 /* CPU delay 600ns at 80M bus clock */\

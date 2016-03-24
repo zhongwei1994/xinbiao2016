@@ -46,6 +46,7 @@ typedef unsigned long int DWORD;
 #include "speed.h"
 #include "steer.h"
 #include "analysis.h"
+#include "SD.h"
 
 #define ABS(x)              ((x) > 0 ? (x) : 0-(x))
 
