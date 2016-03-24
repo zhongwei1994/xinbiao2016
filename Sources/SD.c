@@ -317,16 +317,9 @@ void SD_Test(void)
 		clear_buffer(BUFFER_B);       //清空接收缓冲器  
 		clear_buffer(BUFFER_C);       //清空接收缓冲器  
 		
-		if((write_block(0x1FF,BUFFER_A)))   //擦除扇区，如果失败，中止，否则向下运行
-		   for(;;)
-		   {}
-		if((write_block(0x1FF+0x0200,BUFFER_A)))   //擦除扇区，如果失败，中止，否则向下运行
-		   for(;;)
-		   {}
-
-		if((write_block(0x1FF+0x0400,BUFFER_A)))   //擦除扇区，如果失败，中止，否则向下运行
-		   for(;;)
-		   {}
+		write_block(0x1FF,BUFFER_A);  //擦除扇区，如果失败，中止，否则向下运行	
+		write_block(0x1FF+0x0200,BUFFER_A);  //擦除扇区，如果失败，中止，否则向下运行
+		write_block(0x1FF+0x0400,BUFFER_A);  //擦除扇区，如果失败，中止，否则向下运行
 		
 		for(m=0;m<512;m++)
 		   BUFFER_A[m]='A';     //赋值待写入的数据
@@ -335,15 +328,9 @@ void SD_Test(void)
 		for(m=0;m<512;m++)
 		   BUFFER_C[m]='C';     //赋值待写入的数据
 		
-		if((write_block(0x1FF,BUFFER_A)))      //写入数据，如果失败，中止，否则向下运行
-		   for(;;)
-		   {}
-		if((write_block(0x1FF+0x0200,BUFFER_B)))      //写入数据，如果失败，中止，否则向下运行
-		   for(;;)
-		   {}
-		if((write_block(0x1FF+0x0400,BUFFER_C)))      //写入数据，如果失败，中止，否则向下运行
-		   for(;;)
-		   {}
+		write_block(0x1FF,BUFFER_A);     //写入数据，如果失败，中止，否则向下运行
+		write_block(0x1FF+0x0200,BUFFER_B);     //写入数据，如果失败，中止，否则向下运行
+		write_block(0x1FF+0x0400,BUFFER_C);     //写入数据，如果失败，中止，否则向下运行
 		
 		read_block(0x1FF, BUFFER_3);
 		OLED_SetPointer(2,2);
