@@ -15,7 +15,26 @@ byte wrong_flag=0;
 
 //a_pix 80*100
 
-
+int lamp_judge(byte pix_i,byte pix_j)
+{	
+	int i,j,p=0,p2=0;
+	int flag=0;
+	for(i=pix_i-1;i<=pix_i+1;i++)
+	{
+		for(j=pix_j-2;j<=pix_j+2;j++)
+		{
+			if(a_pix[i][j]>video_t2)
+				p2++;
+			if(a_pix[i][j]>video_t)
+				p++;
+		}	
+	}
+	if(p2>2)
+	{
+		flag=1;
+	}
+	return flag;
+}
 void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 {
 	byte left,right,up,down;
