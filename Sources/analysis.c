@@ -94,7 +94,7 @@ int lamp_judge(byte pix_i,byte pix_j)
 				p++;
 		}	
 	}
-	if(p>1&p2>3)
+	if(p2>2)
 	{
 		flag=1;
 	}
@@ -162,21 +162,55 @@ byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
 void lamp_search_2(byte *pix_i,byte *pix_j)
 {
 	byte i,j;
+	//line的值的调试依据：该次扫描的Line为前一次刚好能扫描到时的白色区域上限值
 	if(point_search(pix_i,pix_j,7,7,80))
 		return;
-	if(point_search(pix_i,pix_j,3,3,65))
+	if(point_search(pix_i,pix_j,3,3,60))
 		return;
 	if(point_search(pix_i,pix_j,7,3,55))
 		return;
-	if(point_search(pix_i,pix_j,3,7,50))
+	if(point_search(pix_i,pix_j,3,7,55))
 		return;
-//	if(point_search(pix_i,pix_j,5,5,70))
+	if(point_search(pix_i,pix_j,5,5,50))
+		return;
+	if(point_search(pix_i,pix_j,1,1,45))
+		return;
+	if(point_search(pix_i,pix_j,1,5,40))
+		return;
+	if(point_search(pix_i,pix_j,5,1,40))
+		return;
+	if(point_search(pix_i,pix_j,3,5,35))
+		return;
+	if(point_search(pix_i,pix_j,3,1,32))
+		return;
+	if(point_search(pix_i,pix_j,5,3,30))
+		return;
+	if(point_search(pix_i,pix_j,1,3,30))
+		return;
+	if(point_search(pix_i,pix_j,5,7,30))
+		return;
+	if(point_search(pix_i,pix_j,7,5,30))
+		return;
+	if(point_search(pix_i,pix_j,7,1,30))
+		return;
+	if(point_search(pix_i,pix_j,1,7,30))
+		return;
+	//line值的调试依据：该次刚好能扫描到时的白色区域下限值
+//	if(point_search(pix_i,pix_j,7,7,80))
 //		return;
-//	if(point_search(pix_i,pix_j,1,1,70))
+//	if(point_search(pix_i,pix_j,3,3,65))
 //		return;
-//	if(point_search(pix_i,pix_j,1,5,70))
+//	if(point_search(pix_i,pix_j,7,3,60))
 //		return;
-//	if(point_search(pix_i,pix_j,5,1,70))
+//	if(point_search(pix_i,pix_j,3,7,55))
+//		return;
+//	if(point_search(pix_i,pix_j,5,5,55))
+//		return;
+//	if(point_search(pix_i,pix_j,1,1,40))
+//		return;
+//	if(point_search(pix_i,pix_j,1,5,35))
+//		return;
+//	if(point_search(pix_i,pix_j,5,1,35))
 //		return;
 //	if(point_search(pix_i,pix_j,3,5,70))
 //		return;
@@ -194,5 +228,5 @@ void lamp_search_2(byte *pix_i,byte *pix_j)
 //		return;
 //	if(point_search(pix_i,pix_j,1,7,60))
 //		return;
-	
+//	
 }
