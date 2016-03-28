@@ -164,6 +164,15 @@ void BlueTx(void)                             //À¶ÑÀ·¢Êý¾Ý
 		LINFlex_TX(SendHexLow(pix_x2));
 		LINFlex_TX(SendHexHigh(pix_y2));
 		LINFlex_TX(SendHexLow(pix_y2));
+		LINFlex_TX(SendHexHigh(pix_i));
+		LINFlex_TX(SendHexLow(pix_i));
+		LINFlex_TX(SendHexHigh(pix_j));
+		LINFlex_TX(SendHexLow(pix_j));
+		CurrentSteer=TargetSteer;
+		LINFlex_TX(SendInt1(CurrentSteer));
+		LINFlex_TX(SendInt2(CurrentSteer));
+		LINFlex_TX(SendInt3(CurrentSteer));
+		LINFlex_TX(SendInt4(CurrentSteer));
 //		LINFlex_TX(SendUnsignedLong1(time3));
 //		LINFlex_TX(SendUnsignedLong2(time3));
 //		LINFlex_TX(SendUnsignedLong3(time3));

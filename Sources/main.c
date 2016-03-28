@@ -6,7 +6,7 @@
 
 
 int main(void) {
-	int x_duoji = 0,i=0;
+//	int x_duoji = 0,i=0;
 	initALL();	
 	SET_motor(100,100);	
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
@@ -14,15 +14,16 @@ int main(void) {
 	{		
 		if(fieldover)//本场采样结束标志
 		{
-			byte pix_i,pix_j;
 			fieldover=0;         //标志清零
+			wrong_flag=0;
 			pix_x=0;pix_y=0;
 			pix_x2=0;pix_y2=0;
 			//lamp_search(&pix_x,&pix_y);
 			lamp_search_2(&pix_x2,&pix_y2);
 			central_search_2(&pix_i,&pix_j,pix_x2,pix_y2);
-			TargetSteer=3900-24*(pix_i-50);
-			//BlueTx();
+			//TargetSteer=3900-24*(pix_j-50);
+			SteerControl();
+			BlueTx();
 			EMIOS_0.CH[6].CSR.B.FLAG = 1;//清除场中断标志位
 			EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断
 		}

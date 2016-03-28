@@ -21,8 +21,8 @@ void initALL(void)
 	initTestIO();
 	OLED_Init();
 	//OLED_Test();
-	SD_Init();
-	SD_Test();
+	//SD_Init();
+	//SD_Test();
 }
 
 /*********************************************************************************************/
