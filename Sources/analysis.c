@@ -101,42 +101,89 @@ int lamp_judge(byte pix_i,byte pix_j)
 	return flag;
 }
 
-void central_search(byte *pix_i,byte *pix_j,byte x,byte y)
+//void central_search(byte *pix_i,byte *pix_j,byte x,byte y)
+//{
+//	byte i,j;
+//	byte left,right,pix_deltax,up,down,pix_deltay;
+//	for(i=x;i<=100;i++)
+//	{
+//		if(a_pix[i+3][y] - a_pix[i][y] <- 80)
+//			if(a_pix[i+4][y] - a_pix[i+1][y] <- 80)
+//						right = i+1;
+//		break;
+//	}
+//	for(i=x;i>=0;i--)
+//	{
+//		if(a_pix[i-3][y] - a_pix[i][y] <- 80)
+//			if(a_pix[i-4][y] - a_pix[i+1][y] <- 80)
+//						left = i+1;
+//		break;
+//	}
+//	pix_deltax = (right+left)/2;
+//	for(j=y;j<=80;j++)
+//	{
+//		if(a_pix[x][j+3] - a_pix[x][j] <- 80)
+//			if(a_pix[x][j+4] - a_pix[x][j+1] <- 80)
+//					    up = j+1;
+//		break;
+//	}
+//	for(j=y;j>=0;j--)
+//	{
+//		if(a_pix[x][j-3] - a_pix[x][j] <- 80)
+//			if(a_pix[x][j-4] - a_pix[x][j+1] <- 80)
+//					    down = j+1;
+//		break;
+//	}
+//	pix_deltay=(up+down)/2;
+//	*pix_i=pix_deltax;
+//	*pix_j=pix_deltay;
+//}
+void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 {
+	byte left,right,up,down;
 	byte i,j;
-	byte left,right,pix_deltax,up,down,pix_deltay;
-	for(i=x;i<=100;i++)
+	if(x<40)
 	{
-		if(a_pix[i+3][y] - a_pix[i][y] <- 80)
-			if(a_pix[i+4][y] - a_pix[i+1][y] <- 80)
-						right = i+1;
-		break;
+		*pix_i=x;
+		*pix_j=y;
 	}
-	for(i=x;i>=0;i--)
+	else
 	{
-		if(a_pix[i-3][y] - a_pix[i][y] <- 80)
-			if(a_pix[i-4][y] - a_pix[i+1][y] <- 80)
-						left = i+1;
-		break;
+		for(j=y;j<=100;j++)
+		{
+			if(a_pix[x][j]<130)//130为判断黑白交界的阈值，可更改，下同
+			{
+				right=j-1;
+				break;
+			}
+		}
+		for(j=y;j>=0;j--)
+		{
+			if(a_pix[x][j]<130)
+			{
+				left=j+1;
+				break;
+			}
+		}
+		for(i=x;i<=80;i++)
+		{
+			if(a_pix[i][y]<130)
+			{
+				up=i-1;
+				break;
+			}
+		}
+		for(i=x;i>=0;i--)
+		{
+			if(a_pix[i][y]<130)
+			{
+				down=i+1;
+				break;
+			}
+		}
+		*pix_i=(up+down)/2;
+		*pix_j=(left+right)/2;
 	}
-	pix_deltax = (right+left)/2;
-	for(j=y;j<=80;j++)
-	{
-		if(a_pix[x][j+3] - a_pix[x][j] <- 80)
-			if(a_pix[x][j+4] - a_pix[x][j+1] <- 80)
-					    up = j+1;
-		break;
-	}
-	for(j=y;j>=0;j--)
-	{
-		if(a_pix[x][j-3] - a_pix[x][j] <- 80)
-			if(a_pix[x][j-4] - a_pix[x][j+1] <- 80)
-					    down = j+1;
-		break;
-	}
-	pix_deltay=(up+down)/2;
-	*pix_i=pix_deltax;
-	*pix_j=pix_deltay;
 }
 byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
 {
