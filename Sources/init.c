@@ -15,14 +15,14 @@ void initALL(void)
 	initEMIOS_0MotorAndSteer();
 	initEMIOS_0Image();
 	initLINFlex_0_UART();
-	initSTM(); 
+
 //	initKeys_Switchs_Infrared();
 	
 	initTestIO();
 	OLED_Init();
 	//OLED_Test();
-//	init_DSPI_1(); //初始化SPI总线 
-//	init_TFcard();
+	SD_Init();
+	SD_Test();
 }
 
 /*********************************************************************************************/
@@ -222,16 +222,19 @@ void initLINFlex_0_UART(void)
   //	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,6); 
 }
 
-void initSTM(void)
-{
-	STM.CR.R=0x00005001;
-}
+
 
 
 /*********************测试IO初始化***********************/
 void initTestIO(void)
 {
 	//调试模块（蓝牙、OLED、TF卡、蜂鸣器、超声、拨码开关、按键、LED）
+	
+	//SD卡
+	SIU.PCR[37].R = 0x0604;        //设置PC[5]为SOUT接口
+	SIU.PCR[36].R = 0x0103;        //设置PC[4]为SIN接口
+	SIU.PCR[34].R = 0x0604;        //设置PC[2]为SCK接口
+	SIU.PCR[35].R = 0x0223;        //设置PC[3]为开漏输出，作为CS，使能内部上拉电阻
 	
 	//OLED
 	SIU.PCR[72].R = 0x0200;//OLED     E8
