@@ -19,9 +19,9 @@ int lamp_judge(byte pix_i,byte pix_j)
 {	
 	int i,j,p=0,p2=0;
 	int flag=0;
-	for(i=pix_i-1;i<=pix_i+1;i++)
+	for(i=pix_i-2;i<=pix_i+2;i++)
 	{
-		for(j=pix_j-2;j<=pix_j+2;j++)
+		for(j=pix_j-1;j<=pix_j+1;j++)
 		{
 			if(a_pix[i][j]>video_t2)
 				p2++;
@@ -82,7 +82,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		*pix_j=(left+right)/2;
 	}
 }
-byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
+byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line,byte video)
 {
 	//byte flag=0;
 	byte i,j;
@@ -90,7 +90,7 @@ byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
 	{
 		for(j=n;j < 100;j+=8)
 		{
-			if(a_pix[i][j] > video_t)
+			if(a_pix[i][j] > video)
 			{
 				if(lamp_judge(i,j))
 				{
@@ -103,42 +103,52 @@ byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
 	}
 	return 0;
 }
-void lamp_search_2(byte *pix_i,byte *pix_j)
+void lamp_search_2(byte *pix_i,byte *pix_j,byte video)
 {
 	byte i,j;
 	//line的值的调试依据：该次扫描的Line为前一次刚好能扫描到时的白色区域上限值
-	if(point_search(pix_i,pix_j,7,7,80))
+	if(point_search(pix_i,pix_j,7,7,80,video))
 		return;
-	if(point_search(pix_i,pix_j,3,3,80))
+	if(point_search(pix_i,pix_j,3,3,80,video))
 		return;
-	if(point_search(pix_i,pix_j,7,3,70))
+	if(point_search(pix_i,pix_j,7,3,70,video))
 		return;
-	if(point_search(pix_i,pix_j,3,7,70))
+	if(point_search(pix_i,pix_j,3,7,70,video))
 		return;
-	if(point_search(pix_i,pix_j,5,5,60))
+	if(point_search(pix_i,pix_j,5,4,60,video))
 		return;
-	if(point_search(pix_i,pix_j,1,1,60))
+	if(point_search(pix_i,pix_j,1,0,60,video))
 		return;
-	if(point_search(pix_i,pix_j,1,5,50))
+	if(point_search(pix_i,pix_j,1,4,50,video))
 		return;
-	if(point_search(pix_i,pix_j,5,1,50))
+	if(point_search(pix_i,pix_j,5,0,50,video))
 		return;
-	if(point_search(pix_i,pix_j,3,5,50))
+	if(point_search(pix_i,pix_j,3,5,50,video))
 		return;
-	if(point_search(pix_i,pix_j,3,1,40))
+	if(point_search(pix_i,pix_j,3,1,40,video))
 		return;
-	if(point_search(pix_i,pix_j,5,3,40))
+	if(point_search(pix_i,pix_j,5,2,40,video))
 		return;
-	if(point_search(pix_i,pix_j,1,3,40))
+	if(point_search(pix_i,pix_j,1,2,40,video))
 		return;
-	if(point_search(pix_i,pix_j,5,7,40))
+	if(point_search(pix_i,pix_j,5,6,40,video))
 		return;
-	if(point_search(pix_i,pix_j,7,5,40))
+	if(point_search(pix_i,pix_j,7,5,40,video))
 		return;
-	if(point_search(pix_i,pix_j,7,1,40))
+	if(point_search(pix_i,pix_j,7,1,40,video))
 		return;
-	if(point_search(pix_i,pix_j,1,7,40))
+	if(point_search(pix_i,pix_j,1,6,40,video))
 		return;
-	wrong_flag=1;
-	return;	
+}
+void lamp_search_far_near(byte *pix_i,byte *pix_j)
+{
+	lamp_search_2(&pix_x2,&pix_y2,video_t);
+	if(pix_x2==79&&pix_y2==0)
+	{
+		lamp_search_2(&pix_x2,&pix_y2,video_t2);
+		if(pix_x2==79&&pix_y2==0)
+		{
+			wrong_flag=1;	
+		}		
+	}
 }
