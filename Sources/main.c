@@ -8,7 +8,7 @@
 int main(void) {
 //	int x_duoji = 0,i=0;
 	initALL();	
-	SET_motor(85,85);	
+	SET_motor(55,55);	
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //¿ª³¡ÖÐ¶Ï 
 	for(;;) 
 	{		
