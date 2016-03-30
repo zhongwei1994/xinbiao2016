@@ -77,7 +77,8 @@ void SteerControl(void)
 		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 		return;
 	}
-	target_offset=pix_j-50;
+	//target_offset=pix_j-50;//为了使小车不直接朝灯塔跑，现将目标值由50改为60如下
+	target_offset=pix_j-60;
 	Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 	if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
