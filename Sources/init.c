@@ -15,7 +15,7 @@ void initALL(void)
 	initEMIOS_0MotorAndSteer();
 	initEMIOS_0Image();
 	initLINFlex_0_UART();
-
+	init_supersonic();
 //	initKeys_Switchs_Infrared();
 	
 	initTestIO();
@@ -221,7 +221,21 @@ void initLINFlex_0_UART(void)
     SIU.PCR[19].R = 0x0103;    /* MPC56xxB: Configure port B3 as LIN0RX */
   //	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,6); 
 }
+/*************************³¬Éù²¨³õÊ¼»¯***********************/
+void init_supersonic(void)
+{
+	EMIOS_0.CH[7].CCR.B.MODE = 0x04; // Mode is Input Pulse Width Measurement 
+	EMIOS_0.CH[7].CCR.B.BSL = 0x3;   // Use internal counter
+	EMIOS_0.CH[7].CCR.B.UCPRE=0; //Set channel prescaler to divide by 1
+	EMIOS_0.CH[7].CCR.B.UCPEN = 1;	//Enable prescaler; uses default divide by 1
+	EMIOS_0.CH[7].CCR.B.FREN = 0;	//Freeze channel counting when in debug mode
+	EMIOS_0.CH[7].CCR.B.EDSEL=0; //Edge Select rising edge
+	EMIOS_0.CH[7].CCR.B.EDPOL=1;
+	EMIOS_0.CH[7].CCR.B.FEN=1;  //interupt enbale
 
+	SIU.PCR[7].R = 0x0500;  //E PA1
+	INTC_InstallINTCInterruptHandler(intc_get_supersonic_time_0, 144, 2);
+}
 
 
 
@@ -258,9 +272,9 @@ void initTestIO(void)
 	//	SIU.PCR[73].R = 0x0200; //BEE     E9
 	
 	//³¬Éù
-	//	SIU.PCR[28].R = 0x0200;//     B12  ³¬Éù0´¥·¢
-	//	SIU.PCR[31].R = 0x0200;//     B15  ³¬Éù1 ´¥·¢
-		
+	//	SIU.PCR[28].R = 0x0200;//     B12  ³¬Éù2´¥·¢
+		SIU.PCR[31].R = 0x0200;//     B15  ³¬Éù1 ´¥·¢
+		SIU.GPDO[31].R = 1;
 	//SWITCH + KEY
 	//	SIU.PCR[0].R = 0x0100;//SWITCH   A0
 	//	SIU.PCR[43].R = 0x0100;//SWITCH   C11

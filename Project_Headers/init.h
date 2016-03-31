@@ -15,6 +15,7 @@ void initEMIOS_0MotorAndSteer(void);    //PWM初始化:电机正反转E3、E4、E5、E6；舵
 void initEMIOS_0Image(void);
 void enableIrq(void);
 void initLINFlex_0_UART(void);
+void init_supersonic(void);
 void initTestIO(void);
 void init_TFcard(void);
 void initEMIOS_0ModulusCounter(void);
