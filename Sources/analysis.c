@@ -64,7 +64,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		}
 		for(i=x;i<=80;i++)
 		{
-			if(a_pix[i][y]<130)
+			if(a_pix[i][y]<video_t)
 			{
 				down=i-1;
 				break;
@@ -72,7 +72,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		}
 		for(i=x;i>=0;i--)
 		{
-			if(a_pix[i][y]<130)
+			if(a_pix[i][y]<video_t)
 			{
 				up=i+1;
 				break;
