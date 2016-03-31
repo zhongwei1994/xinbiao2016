@@ -177,7 +177,7 @@ void initEMIOS_0Image(void)
 //	EMIOS_0.CH[5].CCR.B.FEN=1;  //interupt enbale
 	SIU.PCR[30].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
 	SIU.PSMI[16].R=1;//E0UC[6]选择B14
-	INTC_InstallINTCInterruptHandler(FieldInputCapture,144,4);
+	INTC_InstallINTCInterruptHandler(FieldInputCapture,144,7);
 	
 	//B14行中断捕捉上升沿
 	EMIOS_0.CH[5].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
@@ -186,7 +186,7 @@ void initEMIOS_0Image(void)
 	//EMIOS_0.CH[7].CCR.B.FEN=1;  //interupt enbale
 	SIU.PCR[29].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input 
 	SIU.PSMI[15].R=1;//E0UC[5]选择B13
-	INTC_InstallINTCInterruptHandler(RowInputCapture,143,3); 
+	INTC_InstallINTCInterruptHandler(RowInputCapture,143,6); 
 }
 
 //*****************************************************************************************************************
@@ -226,7 +226,7 @@ void init_supersonic(void)
 {
 	EMIOS_0.CH[7].CCR.B.MODE = 0x04; // Mode is Input Pulse Width Measurement 
 	EMIOS_0.CH[7].CCR.B.BSL = 0x3;   // Use internal counter
-	EMIOS_0.CH[7].CCR.B.UCPRE=0; //Set channel prescaler to divide by 1
+	EMIOS_0.CH[7].CCR.B.UCPRE=1; //Set channel prescaler to divide by 1
 	EMIOS_0.CH[7].CCR.B.UCPEN = 1;	//Enable prescaler; uses default divide by 1
 	EMIOS_0.CH[7].CCR.B.FREN = 0;	//Freeze channel counting when in debug mode
 	EMIOS_0.CH[7].CCR.B.EDSEL=0; //Edge Select rising edge

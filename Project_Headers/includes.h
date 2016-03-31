@@ -47,6 +47,7 @@ typedef unsigned long int DWORD;
 #include "steer.h"
 #include "analysis.h"
 #include "supersonic.h"
+#include "pit.h"
 #include "SD.h"
 
 #define ABS(x)              ((x) > 0 ? (x) : 0-(x))
