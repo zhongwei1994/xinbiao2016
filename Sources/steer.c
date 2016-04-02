@@ -10,8 +10,8 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=10,Steer_kd=0;//舵机P、D值
-unsigned int RIGHT=3550;
-unsigned int LEFT=4200;
+unsigned int RIGHT=3575;
+unsigned int LEFT=4250;//此时向左和向右转弯直径均为570，且在此舵机值左右，每单位舵机值对应半径值为7
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机接口函数***********************/

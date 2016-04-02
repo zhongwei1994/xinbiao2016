@@ -84,7 +84,7 @@ extern int pwm_num;
 
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[4].CBDR.R // ¶æ»úÖµ
-#define CENTER 3900//3720
+#define CENTER 3905
 
 ///***************supersonic*****************/
 //#define supersonic_0_trigger SIU.GPDO[31].R //³¬Éù0
