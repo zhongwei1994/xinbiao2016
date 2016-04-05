@@ -19,7 +19,8 @@ extern byte a_pix[ROWS][COLUMNS];
 
 void FieldInputCapture(void);
 void RowInputCapture(void);
-void PixelInputCapture(void);
+void FieldInputCapture_2(void);
+void RowInputCapture_2(void);
 extern void VideoCopy(byte a[ROWS][COLUMNS],byte b[ROWS][COLUMNS]);
 
 #endif /* VIDEO_H_ */

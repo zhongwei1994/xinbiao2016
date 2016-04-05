@@ -46,6 +46,8 @@ typedef unsigned long int DWORD;
 #include "speed.h"
 #include "steer.h"
 #include "analysis.h"
+#include "supersonic.h"
+#include "pit.h"
 #include "SD.h"
 
 #define ABS(x)              ((x) > 0 ? (x) : 0-(x))
@@ -84,6 +86,15 @@ extern int pwm_num;
 #define Y5 SIU.GPDI[51].R
 #define Y6 SIU.GPDI[54].R
 #define Y7 SIU.GPDI[53].R
+
+#define X0 SIU.GPDI[11].R
+#define X1 SIU.GPDI[10].R
+#define X2 SIU.GPDI[6].R
+#define X3 SIU.GPDI[66].R
+#define X4 SIU.GPDI[76].R
+#define X5 SIU.GPDI[5].R
+#define X6 SIU.GPDI[9].R
+#define X7 SIU.GPDI[3].R
 
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[4].CBDR.R // ¶æ»úÖµ

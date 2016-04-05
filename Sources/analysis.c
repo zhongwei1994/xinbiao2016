@@ -64,7 +64,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		}
 		for(i=x;i<=80;i++)
 		{
-			if(a_pix[i][y]<130)
+			if(a_pix[i][y]<video_t)
 			{
 				down=i-1;
 				break;
@@ -72,7 +72,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		}
 		for(i=x;i>=0;i--)
 		{
-			if(a_pix[i][y]<130)
+			if(a_pix[i][y]<video_t)
 			{
 				up=i+1;
 				break;
@@ -126,7 +126,6 @@ byte point_search_2(byte *pix_i,byte *pix_j)
 }
 void lamp_search_2(byte *pix_i,byte *pix_j)
 {
-	byte i,j;
 	//line的值的调试依据：该次扫描的Line为前一次刚好能扫描到时的白色区域上限值
 	if(point_search(pix_i,pix_j,7,7,80))
 		return;

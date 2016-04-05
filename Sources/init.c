@@ -14,8 +14,9 @@ void initALL(void)
 	enableIrq();
 	initEMIOS_0MotorAndSteer();
 	initEMIOS_0Image();
+	initEMIOS_0Image_2();
 	initLINFlex_0_UART();
-
+	init_supersonic();
 //	initKeys_Switchs_Infrared();
 	
 	initTestIO();
@@ -177,16 +178,41 @@ void initEMIOS_0Image(void)
 //	EMIOS_0.CH[5].CCR.B.FEN=1;  //interupt enbale
 	SIU.PCR[30].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
 	SIU.PSMI[16].R=1;//E0UC[6]选择B14
-	INTC_InstallINTCInterruptHandler(FieldInputCapture,144,4);
+	INTC_InstallINTCInterruptHandler(FieldInputCapture,144,7);
 	
-	//B14行中断捕捉上升沿
+	//B13行中断捕捉上升沿
 	EMIOS_0.CH[5].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
 	EMIOS_0.CH[5].CCR.B.BSL = 0x01; /* Use counter bus B (default) */
 	EMIOS_0.CH[5].CCR.B.EDPOL=1; //Edge Select rising edge
 	//EMIOS_0.CH[7].CCR.B.FEN=1;  //interupt enbale
 	SIU.PCR[29].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input 
 	SIU.PSMI[15].R=1;//E0UC[5]选择B13
-	INTC_InstallINTCInterruptHandler(RowInputCapture,143,3); 
+	INTC_InstallINTCInterruptHandler(RowInputCapture,143,6); 
+}
+
+void initEMIOS_0Image_2(void) 
+{
+	//eMIOS0 A通道23设置/* EMIOS 0 CH 0: Modulus Counter */
+	EMIOS_0.CH[23].CCR.B.UCPRE=0;	    /* Set channel prescaler to divide by 1 */
+	EMIOS_0.CH[23].CCR.B.UCPEN = 1;   /* Enable prescaler; uses default divide by 1 */
+	//EMIOS_0.CH[23].CCR.B.FREN = 1; 	/* Freeze channel counting when in debug mode */
+	EMIOS_0.CH[23].CADR.R = 50000;/********设置周期20ms  50HZ*******/
+	EMIOS_0.CH[23].CCR.B.MODE = 0x50; /* Modulus Counter Buffered (MCB) */
+	EMIOS_0.CH[23].CCR.B.BSL = 0x3;	/* Use internal counter */
+	
+	//D14场中断捕捉下降沿
+	EMIOS_0.CH[26].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
+	EMIOS_0.CH[26].CCR.B.BSL = 0x01; /* Use counter bus B (default) */
+	EMIOS_0.CH[26].CCR.B.EDSEL = 1;  //Both edges
+	SIU.PCR[62].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
+	INTC_InstallINTCInterruptHandler(FieldInputCapture_2,154,7);
+	
+	//D13行中断捕捉上升沿
+	EMIOS_0.CH[25].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
+	EMIOS_0.CH[25].CCR.B.BSL = 0x01; /* Use counter bus B (default) */
+	EMIOS_0.CH[25].CCR.B.EDPOL=1; //Edge Select rising edge
+	SIU.PCR[61].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input 
+	INTC_InstallINTCInterruptHandler(RowInputCapture_2,153,6); 
 }
 
 //*****************************************************************************************************************
@@ -221,7 +247,35 @@ void initLINFlex_0_UART(void)
     SIU.PCR[19].R = 0x0103;    /* MPC56xxB: Configure port B3 as LIN0RX */
   //	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,6); 
 }
+/*************************超声波初始化***********************/
+void init_supersonic(void)
+{	
+	EMIOS_0.CH[1].CCR.B.MODE = 0x04; // Mode is Input Pulse Width Measurement 
+	EMIOS_0.CH[1].CCR.B.BSL = 0x3;   // Use internal counter
+	EMIOS_0.CH[1].CCR.B.UCPRE=1; //Set channel prescaler to divide by 1
+	EMIOS_0.CH[1].CCR.B.UCPEN = 1;	//Enable prescaler; uses default divide by 1
+	EMIOS_0.CH[1].CCR.B.FREN = 0;	//Freeze channel counting when in debug mode
+	EMIOS_0.CH[1].CCR.B.EDSEL=0; //Edge Select rising edge
+	EMIOS_0.CH[1].CCR.B.EDPOL=1;
+	EMIOS_0.CH[1].CCR.B.FEN=1;  //interupt enbale
 
+	SIU.PCR[1].R = 0x0100;  //
+	INTC_InstallINTCInterruptHandler(intc_get_supersonic_time_1, 141, 2);
+	
+	EMIOS_0.CH[3].CCR.B.MODE = 0x04; // Mode is Input Pulse Width Measurement 
+	EMIOS_0.CH[3].CCR.B.BSL = 0x3;   // Use internal counter
+	EMIOS_0.CH[3].CCR.B.UCPRE=1; //Set channel prescaler to divide by 1
+	EMIOS_0.CH[3].CCR.B.UCPEN = 1;	//Enable prescaler; uses default divide by 1
+	EMIOS_0.CH[3].CCR.B.FREN = 0;	//Freeze channel counting when in debug mode
+	EMIOS_0.CH[3].CCR.B.EDSEL=0; //Edge Select rising edge
+	EMIOS_0.CH[3].CCR.B.EDPOL=1;
+	EMIOS_0.CH[3].CCR.B.FEN=1;  //interupt enbale
+
+	SIU.PCR[27].R = 0x0100;  //
+	SIU.PSMI[13].R=1;
+	INTC_InstallINTCInterruptHandler(intc_get_supersonic_time_2, 142, 2);
+	
+}
 
 
 
@@ -258,9 +312,10 @@ void initTestIO(void)
 		SIU.PCR[73].R = 0x0200; //BEE     E9
 	
 	//超声
-	//	SIU.PCR[28].R = 0x0200;//     B12  超声0触发
-	//	SIU.PCR[31].R = 0x0200;//     B15  超声1 触发
-		
+		SIU.PCR[28].R = 0x0200;//     B12  超声2触发
+		SIU.PCR[31].R = 0x0200;//     B15  超声1 触发
+		SIU.GPDO[28].R = 0;
+		SIU.GPDO[31].R = 0;
 	//SWITCH + KEY
 	//	SIU.PCR[0].R = 0x0100;//SWITCH   A0
 	//	SIU.PCR[43].R = 0x0100;//SWITCH   C11
@@ -286,14 +341,14 @@ void initTestIO(void)
 
 		
 	//摄像头2
-	//	SIU.PCR[66].R = 0x0102;//   E2
-	//	SIU.PCR[121].R = 0x0102;//   H9
-	//	SIU.PCR[32].R = 0x0102;//   C0
-	//	SIU.PCR[33].R = 0x0102;//   C1
-	//	SIU.PCR[122].R = 0x0102;//   H10
-	//	SIU.PCR[6].R = 0x0102;//   A6
-	//	SIU.PCR[5].R = 0x0102;//   A5
-	//	SIU.PCR[76].R = 0x0102;//   E12
+	SIU.PCR[11].R = 0x0102;//   A11
+	SIU.PCR[10].R = 0x0102;//   A10
+	SIU.PCR[6].R = 0x0102;//    A6
+	SIU.PCR[66].R = 0x0102;//   E2
+	SIU.PCR[76].R = 0x0102;//   E12
+	SIU.PCR[5].R = 0x0102;//    A5
+	SIU.PCR[9].R = 0x0102;//    A9
+	SIU.PCR[3].R = 0x0102;//    A3
 		
 	//光编
 	//	SIU.PCR[41].R = 0x0200;//COUNTER1 C9
