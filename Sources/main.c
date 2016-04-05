@@ -9,7 +9,8 @@ int main(void) {
 	initPIT();
 	
 	SET_motor(85,85);	
-	//EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
+	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
+	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	for(;;) 
 	{		
 		if(fieldover)//本场采样结束标志
@@ -26,6 +27,8 @@ int main(void) {
 			BlueTx();
 			EMIOS_0.CH[6].CSR.B.FLAG = 1;//清除场中断标志位
 			EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断
+//			EMIOS_0.CH[26].CSR.B.FLAG = 1;//清除场中断标志位_video2
+//			EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断_viedo2
 		}
 //		x_duoji = TargetSteer;
 //		//OLED_Num(x_duoji);

@@ -26,7 +26,16 @@ void PitISR(void)//1ms一个控制周期
 		if(pitcount2>=20)                          //100ms一次
 		{
 			pitcount2=0;
-			trigger_supersonic_0();
+			trigger_supersonic_1();
+		}
+	}
+	if(pitcount0==3)
+	{
+		pitcount3++;
+		if(pitcount3>=20)                          //100ms一次
+		{
+			pitcount3=0;
+			trigger_supersonic_2();
 		}
 	}
 	if(pitcount0==5)
@@ -36,8 +45,11 @@ void PitISR(void)//1ms一个控制周期
 		if(pitcount5>=100)                         //1s一次
 		{
 			pitcount5=0;
+			OLED_Fill(0x00);
 			OLED_SetPointer(3,20);
-			OLED_Num(distance);
+			OLED_Num(OLED_distance1);
+			OLED_SetPointer(4,20);
+			OLED_Num(OLED_distance2);
 		}
 	}
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位
