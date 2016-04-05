@@ -255,7 +255,7 @@ void initTestIO(void)
 
 		
 	//·äÃùÆ÷
-	//	SIU.PCR[73].R = 0x0200; //BEE     E9
+		SIU.PCR[73].R = 0x0200; //BEE     E9
 	
 	//³¬Éù
 	//	SIU.PCR[28].R = 0x0200;//     B12  ³¬Éù0´¥·¢
