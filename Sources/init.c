@@ -252,7 +252,7 @@ void init_supersonic(void)
 {	
 	EMIOS_0.CH[1].CCR.B.MODE = 0x04; // Mode is Input Pulse Width Measurement 
 	EMIOS_0.CH[1].CCR.B.BSL = 0x3;   // Use internal counter
-	EMIOS_0.CH[1].CCR.B.UCPRE=1; //Set channel prescaler to divide by 1
+	EMIOS_0.CH[1].CCR.B.UCPRE=3; //Set channel prescaler to divide by 1
 	EMIOS_0.CH[1].CCR.B.UCPEN = 1;	//Enable prescaler; uses default divide by 1
 	EMIOS_0.CH[1].CCR.B.FREN = 0;	//Freeze channel counting when in debug mode
 	EMIOS_0.CH[1].CCR.B.EDSEL=0; //Edge Select rising edge
@@ -260,11 +260,11 @@ void init_supersonic(void)
 	EMIOS_0.CH[1].CCR.B.FEN=1;  //interupt enbale
 
 	SIU.PCR[1].R = 0x0100;  //
-	INTC_InstallINTCInterruptHandler(intc_get_supersonic_time_1, 141, 2);
+	INTC_InstallINTCInterruptHandler(intc_get_supersonic_time_1, 141, 9);
 	
 	EMIOS_0.CH[3].CCR.B.MODE = 0x04; // Mode is Input Pulse Width Measurement 
 	EMIOS_0.CH[3].CCR.B.BSL = 0x3;   // Use internal counter
-	EMIOS_0.CH[3].CCR.B.UCPRE=1; //Set channel prescaler to divide by 1
+	EMIOS_0.CH[3].CCR.B.UCPRE=3; //Set channel prescaler to divide by 1
 	EMIOS_0.CH[3].CCR.B.UCPEN = 1;	//Enable prescaler; uses default divide by 1
 	EMIOS_0.CH[3].CCR.B.FREN = 0;	//Freeze channel counting when in debug mode
 	EMIOS_0.CH[3].CCR.B.EDSEL=0; //Edge Select rising edge
@@ -273,7 +273,7 @@ void init_supersonic(void)
 
 	SIU.PCR[27].R = 0x0100;  //
 	SIU.PSMI[13].R=1;
-	INTC_InstallINTCInterruptHandler(intc_get_supersonic_time_2, 142, 2);
+	INTC_InstallINTCInterruptHandler(intc_get_supersonic_time_2, 142, 9);
 	
 }
 
@@ -310,6 +310,7 @@ void initTestIO(void)
 		
 	//·äÃùÆ÷
 		SIU.PCR[73].R = 0x0200; //BEE     E9
+		BEE = 0;
 	
 	//³¬Éù
 		SIU.PCR[28].R = 0x0200;//     B12  ³¬Éù2´¥·¢

@@ -126,7 +126,7 @@ void BlueTx(void)                             //蓝牙发数据
 				break;}
 	case 1:
 		LINFlex_TX(video);
-		Ts=4;//2
+		Ts=2;
 		break;
 	case 2: 
 		LINFlex_TX(SendHexHigh(a_pix[Ti][Tj]));        //发送左CCD图像

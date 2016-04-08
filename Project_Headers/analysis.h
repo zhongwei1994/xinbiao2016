@@ -8,7 +8,7 @@
 #ifndef ANALYSIS_H_
 #define ANALYSIS_H_
 
-#define video_t 130 
+#define video_t 150 
 #define video_t2 150
 
 extern byte pix_x,pix_y;

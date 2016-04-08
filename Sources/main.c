@@ -6,11 +6,12 @@
 int main(void) {
 //	int x_duoji = 0,i=0;
 	initALL();
-	initPIT();
+	//initPIT();
+	
 	BEE = 1;
 	delay_ms(1000);
 	BEE = 0;
-	SET_motor(85,85);
+	SET_motor(40,40);
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	SET_steer(CENTER);

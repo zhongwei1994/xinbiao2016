@@ -61,7 +61,7 @@ extern int pwm_num_precision;
 extern int pwm_num;
 
 /***************bee*****************/
-#define Bee  SIU.GPDO[0].R
+#define BEE  SIU.GPDO[73].R
 
 /***************keys*****************/
 #define S6 SIU.GPDI[15].R
