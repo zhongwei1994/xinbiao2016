@@ -11,6 +11,9 @@ unsigned long distance1=0;
 int OLED_distance1=0;
 unsigned long distance2=0;
 int OLED_distance2=0;
+word distance_T=2000;
+byte barrier_left_flag=0,barrier_right_flag=0;
+byte blf_cnt=0,brf_cnt=0;
 
 void intc_get_supersonic_time_1(void)
 {
@@ -24,6 +27,19 @@ void intc_get_supersonic_time_1(void)
 	else
 	{
 		distance1 = 0xffffffff - tmp_b + tmp_a;
+	}
+	if(distance1<distance_T&&distance1>0)
+	{
+		brf_cnt++;
+		if(brf_cnt>=2)
+		{
+			brf_cnt=0;
+			barrier_right_flag=1;
+		}
+	}
+	else
+	{
+		brf_cnt=0;
 	}
 	OLED_distance1=distance1;
 	EMIOS_0.CH[1].CSR.B.FLAG = 1;	
@@ -41,6 +57,19 @@ void intc_get_supersonic_time_2(void)
 	else
 	{
 		distance2 = 0xffffffff - tmp_b + tmp_a;
+	}
+	if(distance2<distance_T&&distance2>0)
+	{
+		blf_cnt++;
+		if(blf_cnt>=2)
+		{
+			blf_cnt=0;
+			barrier_left_flag=1;
+		}
+	}
+	else
+	{
+		blf_cnt=0;
 	}
 	OLED_distance2=distance2;
 	EMIOS_0.CH[3].CSR.B.FLAG = 1;	

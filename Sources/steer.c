@@ -10,8 +10,6 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=10,Steer_kd=0;//舵机P、D值
-unsigned int RIGHT=3550;
-unsigned int LEFT=4200;
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机接口函数***********************/
@@ -69,15 +67,17 @@ void Steer_PDSet(void)
 /*************************舵机控制，PD***********************/
 void SteerControl(void)
 {
+	if(barrier_left_flag==1||barrier_right_flag==1)
+		return;
 	if(wrong_flag==1)
 	{
-//		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
-//		SET_steer(Steer_PWM[3]);
-//		//存舵机值
-//		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-//		return;
-		Steer_PWM[3]=LEFT;
+		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
 		SET_steer(Steer_PWM[3]);
+		//存舵机值
+		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+		return;
+//		Steer_PWM[3]=LEFT;
+//		SET_steer(Steer_PWM[3]);
 	}
 	else
 	{
@@ -112,5 +112,21 @@ void SteerControl(void)
 			}
 	}
 	
+}
+
+byte BarrierJudge(void)
+{
+	if(barrier_left_flag==1)
+	{
+		SET_steer(LEFT);
+		return 1;
+	}
+	else if(barrier_right_flag==1)
+	{
+		SET_steer(RIGHT);
+		return 2;
+	}
+	else
+		return 0;
 }
 
