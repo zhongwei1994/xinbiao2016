@@ -13,7 +13,6 @@ double Steer_kp=10,Steer_kd=0;//舵机P、D值
 unsigned int RIGHT=3575;
 unsigned int LEFT=4250;//此时向左和向右转弯直径均为570，且在此舵机值左右，每单位舵机值对应半径值为7
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
-
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
 {EMIOS_0.CH[4].CBDR.R = steer;}
@@ -69,6 +68,18 @@ void Steer_PDSet(void)
 /*************************舵机控制，PD***********************/
 void SteerControl(void)
 {
+	if(distance1<1000)
+	{
+		Steer_PWM[3]=RIGHT;
+		SET_steer(Steer_PWM[3]);
+		return;
+	}
+	if(distance2<1000)
+	{
+		Steer_PWM[3]=LEFT;
+		SET_steer(Steer_PWM[3]);
+		return;
+	}
 	if(wrong_flag==1)
 	{
 //		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
@@ -77,13 +88,12 @@ void SteerControl(void)
 //		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 //		return;	
 		BEE = 1;
-		delay_ms(666);
-		BEE = 0;
 		Steer_PWM[3]=LEFT;
 		SET_steer(Steer_PWM[3]);
 	}
 	else
 	{
+		BEE=0;
 		if(pix_i<40)
 			{
 				target_offset=pix_j-50;
