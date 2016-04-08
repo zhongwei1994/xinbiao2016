@@ -71,13 +71,15 @@ void SteerControl(void)
 		return;
 	if(wrong_flag==1)
 	{
-		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+//		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+		BEE = 1;
+		delay_ms(666);
+		BEE = 0;
+		Steer_PWM[3]=LEFT;
 		SET_steer(Steer_PWM[3]);
 		//´æ¶æ»úÖµ
 		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 		return;
-//		Steer_PWM[3]=LEFT;
-//		SET_steer(Steer_PWM[3]);
 	}
 	else
 	{

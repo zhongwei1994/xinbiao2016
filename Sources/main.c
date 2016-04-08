@@ -8,16 +8,20 @@ int main(void) {
 	initALL();
 	initPIT();
 	
-	SET_motor(95,95);	
+	BEE = 1;
+	delay_ms(1000);
+	BEE = 0;
+	SET_motor(85,85);
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
+	SET_steer(CENTER);
 	for(;;) 
 	{		
 		if(fieldover)//本场采样结束标志
 		{
 			fieldover=0;         //标志清零
 			wrong_flag=0;
-			pix_x=0;pix_y=0;
+			//pix_x=0;pix_y=0;
 			pix_x2=0;pix_y2=0;
 			//lamp_search(&pix_x,&pix_y);
 			lamp_search_2(&pix_x2,&pix_y2);

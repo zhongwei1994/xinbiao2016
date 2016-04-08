@@ -75,6 +75,9 @@ extern int pwm_num;
 #define LED2 SIU.GPDO[14].R
 #define LED3 SIU.GPDO[15].R
 
+/***************BEE	*****************/
+#define BEE	SIU.GPDO[73].R
+
 #define Y0 SIU.GPDI[56].R
 #define Y1 SIU.GPDI[55].R
 #define Y2 SIU.GPDI[50].R
@@ -95,7 +98,7 @@ extern int pwm_num;
 
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[4].CBDR.R // ¶æ»úÖµ
-#define CENTER 3900//3720
+#define CENTER 3905
 
 ///***************supersonic*****************/
 //#define supersonic_0_trigger SIU.GPDO[31].R //³¬Éù0

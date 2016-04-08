@@ -126,7 +126,7 @@ void BlueTx(void)                             //蓝牙发数据
 				break;}
 	case 1:
 		LINFlex_TX(video);
-		Ts=2;
+		Ts=4;//2
 		break;
 	case 2: 
 		LINFlex_TX(SendHexHigh(a_pix[Ti][Tj]));        //发送左CCD图像
@@ -173,6 +173,27 @@ void BlueTx(void)                             //蓝牙发数据
 		LINFlex_TX(SendInt2(CurrentSteer));
 		LINFlex_TX(SendInt3(CurrentSteer));
 		LINFlex_TX(SendInt4(CurrentSteer));
+		//发送亮点周围10*10个点的灰度值
+		LINFlex_TX('W'); 
+		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j-1]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j-1]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j+1]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j+1]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j-1]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j-1]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j+1]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j+1]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j-1]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j-1]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j]));
+		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j+1]));
+		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j+1]));
+		
 //		LINFlex_TX(SendUnsignedLong1(time3));
 //		LINFlex_TX(SendUnsignedLong2(time3));
 //		LINFlex_TX(SendUnsignedLong3(time3));
