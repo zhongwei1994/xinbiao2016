@@ -187,7 +187,7 @@ void initEMIOS_0Image(void)
 	//EMIOS_0.CH[7].CCR.B.FEN=1;  //interupt enbale
 	SIU.PCR[29].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input 
 	SIU.PSMI[15].R=1;//E0UC[5]—°‘ÒB13
-	INTC_InstallINTCInterruptHandler(RowInputCapture,143,6); 
+	INTC_InstallINTCInterruptHandler(RowInputCapture,143,11); 
 }
 
 void initEMIOS_0Image_2(void) 

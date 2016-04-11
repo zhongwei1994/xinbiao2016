@@ -8,6 +8,7 @@
 #include "includes.h"
 
 /*************************舵机参数***************************/
+byte wrong_count=0;
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=10,Steer_kd=0;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -70,27 +71,36 @@ void SteerControl(void)
 		return;
 	if(wrong_flag==1)
 	{
-//		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
-		BEE = 1;
-		Steer_PWM[3]=LEFT;
-		SET_steer(Steer_PWM[3]);
-		//存舵机值
-		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-		return;
+		wrong_count++;
+		if(wrong_count==1)
+		{
+			Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+			SET_steer(Steer_PWM[3]);
+			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+			return;
+		}
+		else if(wrong_count>=2)
+		{
+			BEE = 1;
+			Steer_PWM[3]=LEFT;
+			SET_steer(Steer_PWM[3]);
+			//存舵机值
+			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+			return;
+		}
 	}
 	else
 	{
+		wrong_count=0;
 		BEE=0;
-		if(pix_i<37)
+		if(pix_i<41)
 			{
 				target_offset=pix_j-50;
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
-
 				SET_steer(Steer_PWM[3]);
-				
 				//存舵机值和offset值
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 				last_offset=target_offset;
@@ -98,7 +108,7 @@ void SteerControl(void)
 		else
 			{
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值50进行修正如下
-				target_offset=pix_j-10;
+				target_offset=pix_j-20;
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;

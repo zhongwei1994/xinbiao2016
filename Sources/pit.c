@@ -25,7 +25,7 @@ void PitISR(void)//1ms一个控制周期
 	if(pitcount0==2)
 	{
 		pitcount2++;
-		if(pitcount2>=20)                          //100ms一次,超声波触发
+		if(pitcount2>=15)                          //75ms一次,超声波触发
 		{
 			pitcount2=0;
 			OLED_SetPointer(5,20);
@@ -57,11 +57,11 @@ void PitISR(void)//1ms一个控制周期
 			{
 				BEE=1;
 				barrier_delay++;
-				if(barrier_delay>=8)
+				if(barrier_delay>=4)
 				{
 					SET_steer(LEFT);
 				}
-				if(barrier_delay>=13)
+				if(barrier_delay>=8)
 				{
 					barrier_delay=0;
 					BEE=0;

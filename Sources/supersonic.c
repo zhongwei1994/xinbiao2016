@@ -11,7 +11,7 @@ unsigned long distance1=0;
 int OLED_distance1=0;
 unsigned long distance2=0;
 int OLED_distance2=0;
-word distance_T=2300;
+word distance_T=2700;
 byte barrier_left_flag=0,barrier_right_flag=0;
 byte blf_cnt=0,brf_cnt=0;
 
@@ -31,7 +31,7 @@ void intc_get_supersonic_time_1(void)
 	if(distance1<distance_T&&distance1>0)
 	{
 		brf_cnt++;
-		if(brf_cnt>=2)
+		if(brf_cnt>=3)//3为判断障碍物的次数（time_2也是）
 		{
 			brf_cnt=0;
 			barrier_right_flag=1;
@@ -61,7 +61,7 @@ void intc_get_supersonic_time_2(void)
 	if(distance2<distance_T&&distance2>0)
 	{
 		blf_cnt++;
-		if(blf_cnt>=2)
+		if(blf_cnt>=3)//3为判断障碍物的次数
 		{
 			blf_cnt=0;
 			barrier_left_flag=1;
