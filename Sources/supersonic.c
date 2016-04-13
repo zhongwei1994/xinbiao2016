@@ -11,7 +11,7 @@ unsigned long distance1=0;
 int OLED_distance1=0;
 unsigned long distance2=0;
 int OLED_distance2=0;
-word distance_T=2700;
+word distance_T=3000;
 byte barrier_left_flag=0,barrier_right_flag=0;
 byte blf_cnt=0,brf_cnt=0;
 

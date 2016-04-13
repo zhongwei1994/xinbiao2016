@@ -28,10 +28,6 @@ void PitISR(void)//1ms一个控制周期
 		if(pitcount2>=15)                          //75ms一次,超声波触发
 		{
 			pitcount2=0;
-			OLED_SetPointer(5,20);
-			OLED_Num(barrier_left_flag);
-			OLED_SetPointer(6,20);
-			OLED_Num(barrier_right_flag);
 			if(pix_i<40&&pix_i>0)                           //接近灯塔，超声波延时
 			{
 				ss_delay_flag2=1;
@@ -40,11 +36,11 @@ void PitISR(void)//1ms一个控制周期
 			{
 				BEE=1;
 				barrier_delay++;
-				if(barrier_delay>=4)
+				if(barrier_delay>=3)
 				{
 					SET_steer(RIGHT);
 				}
-				if(barrier_delay>=8)
+				if(barrier_delay>=6)
 				{
 					barrier_delay=0;
 					BEE=0;
@@ -57,11 +53,11 @@ void PitISR(void)//1ms一个控制周期
 			{
 				BEE=1;
 				barrier_delay++;
-				if(barrier_delay>=4)
+				if(barrier_delay>=3)
 				{
 					SET_steer(LEFT);
 				}
-				if(barrier_delay>=8)
+				if(barrier_delay>=6)
 				{
 					barrier_delay=0;
 					BEE=0;
@@ -94,8 +90,11 @@ void PitISR(void)//1ms一个控制周期
 //				}
 //				else                               //不需要延时的时候，触发超声波
 //				{
+				if(close_supersonic==0)
+				{
 					trigger_supersonic_1();
 					trigger_supersonic_2();
+				}
 //				}
 			}
 		}
@@ -118,6 +117,8 @@ void PitISR(void)//1ms一个控制周期
 		{
 			pitcount5=0;
 			OLED_Fill(0x00);
+			OLED_SetPointer(2,20);
+			OLED_Num(targetmotor);
 			OLED_SetPointer(3,20);
 			OLED_Num(OLED_distance1);
 			OLED_SetPointer(4,20);

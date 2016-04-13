@@ -9,6 +9,7 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
+byte close_supersonic=0;
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=10,Steer_kd=0;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -93,22 +94,34 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-		if(pix_i<41)
-			{
-				target_offset=pix_j-50;
-				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
-				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
-				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
-				SET_steer(Steer_PWM[3]);
-				//存舵机值和offset值
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				last_offset=target_offset;
-			}
-		else
+		if(pix_i<35)
+		{
+			if(pix_i<33)
 			{
+					close_supersonic=0;
+					SET_motor(targetmotor,targetmotor);
+			}
+			else
+			{
+				close_supersonic=1;//触发关闭超声波标志
+				SET_motor(targetmotor,targetmotor);
+			}
+			target_offset=pix_j-50;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
+			if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
+			else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
+			SET_steer(Steer_PWM[3]);
+			//存舵机值和offset值
+			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+			last_offset=target_offset;
+		}
+		else
+		{
+				close_supersonic=1;//触发关闭超声波标志
+				SET_motor(100,100);
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值50进行修正如下
-				target_offset=pix_j-20;
+				target_offset=pix_j-27;
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
@@ -119,7 +132,7 @@ void SteerControl(void)
 				//存舵机值和offset值
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 				last_offset=target_offset;
-			}
+		}
 	}
 	
 }

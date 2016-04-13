@@ -12,6 +12,7 @@
 #define LEFT 4250//左极限角度为4200
 
 extern byte wrong_count;
+extern byte close_supersonic;
 extern int target_offset,last_offset;
 extern unsigned int Steer_PWM[4];
 
