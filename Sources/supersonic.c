@@ -11,14 +11,14 @@ unsigned long distance1=0;
 int OLED_distance1=0;
 unsigned long distance2=0;
 int OLED_distance2=0;
-word distance_T=3000;
+word distance_T=3800;
 byte barrier_left_flag=0,barrier_right_flag=0;
 byte blf_cnt=0,brf_cnt=0;
 
 void intc_get_supersonic_time_1(void)
 {
 	unsigned long tmp_a, tmp_b;
-	tmp_a = EMIOS_0.CH[1].CADR.R;
+	tmp_a = EMIOS_0.CH[1].CADR.R;		//tmp_a为超声波脉冲下降沿，tmp_b为上升沿
 	tmp_b = EMIOS_0.CH[1].CBDR.R;
 	if(tmp_a >= tmp_b)
 	{
@@ -31,7 +31,7 @@ void intc_get_supersonic_time_1(void)
 	if(distance1<distance_T&&distance1>0)
 	{
 		brf_cnt++;
-		if(brf_cnt>=3)//3为判断障碍物的次数（time_2也是）
+		if(brf_cnt>=3)//3为判断障碍物的次数（time_2中也是）
 		{
 			brf_cnt=0;
 			barrier_right_flag=1;

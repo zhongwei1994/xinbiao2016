@@ -9,7 +9,7 @@
 
 unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
 unsigned int barrier_delay=0;
-unsigned int supson_delay1=0,supson_delay2=0,ss_delay_flag1=0,ss_delay_flag2=0;
+unsigned int supson_delay1=0,supson_delay2=0;
 
 void initPIT(void) 
 {                                   //1ms一个控制周期// NOTE:  DIVIDER FROM SYSCLK TO PIT ASSUMES DEFAULT DIVIDE BY 1 
@@ -25,45 +25,39 @@ void PitISR(void)//1ms一个控制周期
 	if(pitcount0==2)
 	{
 		pitcount2++;
-		if(pitcount2>=15)                          //75ms一次,超声波触发
+		if(pitcount2>=14)                          //75ms一次,超声波触发
 		{
 			pitcount2=0;
-			if(pix_i<40&&pix_i>0)                           //接近灯塔，超声波延时
-			{
-				ss_delay_flag2=1;
-			}
 			if(BarrierJudge()==1)                  //障碍物判断，左转
 			{
 				BEE=1;
 				barrier_delay++;
-				if(barrier_delay>=3)
+				if(barrier_delay>=4)				//延时后右转
 				{
 					SET_steer(RIGHT);
 				}
-				if(barrier_delay>=6)
+				if(barrier_delay>=9)				//右转延时
 				{
 					barrier_delay=0;
 					BEE=0;
 					barrier_left_flag=0;
 					barrier_right_flag=0;
-					ss_delay_flag1=1;
 				}
 			}
 			else if(BarrierJudge()==2)               //障碍物判断，右转
 			{
 				BEE=1;
 				barrier_delay++;
-				if(barrier_delay>=3)
+				if(barrier_delay>=4)
 				{
 					SET_steer(LEFT);
 				}
-				if(barrier_delay>=6)
+				if(barrier_delay>=9)
 				{
 					barrier_delay=0;
 					BEE=0;
 					barrier_left_flag=0;
 					barrier_right_flag=0;
-					ss_delay_flag1=1;
 				}
 			}
 			else
