@@ -10,6 +10,8 @@
 /*************************舵机参数***************************/
 byte wrong_count=0;
 byte close_supersonic=0;
+byte success=0;
+byte OLED_success=0;
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=8,Steer_kd=0;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -76,23 +78,39 @@ void SteerControl(void)
 	if(wrong_flag==1)
 	{
 		wrong_count++;
-		if(wrong_count==1)
+		if(success)
 		{
-			Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
-			SET_steer(Steer_PWM[3]);
-			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			return;
-		}
-		else if(wrong_count>=2)
-		{
+			OLED_success=1;
 			close_supersonic=1;
-			SET_motor(33,90);
+			SET_motor(90,90);
 			BEE = 1;
 			Steer_PWM[3]=LEFT;
 			SET_steer(Steer_PWM[3]);
 			//存舵机值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+			success=0;
 			return;
+		}
+		else
+		{
+			if(wrong_count==1)
+			{
+				Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+				SET_steer(Steer_PWM[3]);
+				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+				return;
+			}
+			else if(wrong_count>=2)
+			{
+				close_supersonic=1;
+				SET_motor(90,90);
+				BEE = 1;
+				Steer_PWM[3]=LEFT;
+				SET_steer(Steer_PWM[3]);
+				//存舵机值
+				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+				return;
+			}
 		}
 	}
 	else
@@ -123,10 +141,14 @@ void SteerControl(void)
 		}
 		else
 		{
+			if(pix_i>55)
+			{
+				success=1;
+			}
 				close_supersonic=1;//触发关闭超声波标志
-				SET_motor(targetmotor,targetmotor);
+				SET_motor(90,90);
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				target_offset=pix_j-31;
+				target_offset=pix_j-26;
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
@@ -138,10 +160,8 @@ void SteerControl(void)
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 				last_offset=target_offset;
 		}
-	}
-	
+	}	
 }
-
 byte BarrierJudge(void)
 {
 	if(barrier_left_flag==1)

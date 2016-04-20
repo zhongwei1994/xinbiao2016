@@ -6,7 +6,7 @@
 int main(void) {
 //	int x_duoji = 0,i=0;
 	initALL();
-	initPIT();
+	//initPIT();
 	BEE = 1;
 	delay_ms(1000);
 	BEE = 0;
