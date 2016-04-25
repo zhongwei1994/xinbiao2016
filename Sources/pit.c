@@ -118,7 +118,7 @@ void PitISR(void)//1ms一个控制周期
 			OLED_SetPointer(4,20);
 			OLED_Num(OLED_distance2);
 			OLED_SetPointer(5,20);
-			OLED_Num(OLED_success);
+			OLED_Num(pix_i);
 		}
 	}
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位
