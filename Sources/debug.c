@@ -13,7 +13,7 @@ unsigned int Ts=0;
 unsigned int Ti=ROWS-1;
 unsigned int Tj=0;
 int CurrentSteer=0;
-byte targetmotor=120;
+byte targetmotor=140;
 
 unsigned char S3_last=1;
 unsigned char S4_last=1;
@@ -231,19 +231,19 @@ void KeyJudge(void)
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-	    targetmotor-=5;
+	    cyclespeed+=5;
 	    SET_motor(targetmotor,targetmotor);
 	    //tsr+=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-		targetmotor+=1;
+		cycle_j+=1;
 		SET_motor(targetmotor,targetmotor);
 		//tsl-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4; 
-		targetmotor-=1;
+		cycle_j-=1;
 		SET_motor(targetmotor,targetmotor);
 		//tsl+=10;
 		}

@@ -11,7 +11,8 @@
 byte wrong_count=0;
 byte close_supersonic=1;
 byte success=0;
-byte cyclespeed=95;
+byte cyclespeed=110;
+byte cycle_j=30;
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=8,Steer_kd=0;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -76,10 +77,10 @@ void SteerControl(void)
 	}
 	if(wrong_flag==1)
 	{
+		close_supersonic=1;//触发关闭超声波标志
 		wrong_count++;
 		if(success)
 		{
-			close_supersonic=1;
 			SET_motor(cyclespeed,cyclespeed);
 			BEE = 1;
 			Steer_PWM[3]=LEFT;
@@ -100,7 +101,6 @@ void SteerControl(void)
 			}
 			else if(wrong_count>=2)
 			{
-				close_supersonic=1;
 				SET_motor(cyclespeed,cyclespeed);
 				BEE = 1;
 				Steer_PWM[3]=LEFT;
@@ -115,18 +115,17 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-
-		if(pix_i<39)
+		if(pix_i<31)
 		{
-			if(pix_i<33)
+			if(pix_i<31)
 			{
 					close_supersonic=1;
-					SET_motor(targetmotor,targetmotor);
+					SET_motor(cyclespeed,cyclespeed);
 			}
 			else
 			{  
 				close_supersonic=1;//触发关闭超声波标志
-				SET_motor(targetmotor,targetmotor);
+				SET_motor(cyclespeed,cyclespeed);
 			}
 			target_offset=pix_j-44;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
@@ -139,13 +138,13 @@ void SteerControl(void)
 		}
 		else
 		{
+			close_supersonic=1;//触发关闭超声波标志
 			if(pix_i>55)
 			{
 				success=1;
 			}
-			if(pix_i>64&&pix_j<18)
+			if(pix_i>55&&pix_j<cycle_j)
 			{
-				close_supersonic=1;
 				SET_motor(cyclespeed,cyclespeed);
 				BEE = 1;
 				Steer_PWM[3]=LEFT;
@@ -156,10 +155,9 @@ void SteerControl(void)
 			}
 			else
 			{
-				close_supersonic=1;//触发关闭超声波标志
 				SET_motor(cyclespeed,cyclespeed);
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				target_offset=pix_j-20;
+				target_offset=pix_j-26;
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
