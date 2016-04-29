@@ -13,6 +13,7 @@ void initALL(void)
 	initModesAndClock();
 	enableIrq();
 	initEMIOS_0MotorAndSteer();
+	initEMIOS_0ModulusCounter();
 	initEMIOS_0Image();
 	initEMIOS_0Image_2();
 	initLINFlex_0_UART();
@@ -133,7 +134,7 @@ void initEMIOS_0MotorAndSteer(void)
 	SIU.PCR[4].R = 0x0600;    //[11:10]Ñ¡ÔñAFx ´Ë´¦AF1   A4¿Ú¶æ»úÊä³ö
 }
 /*************************¹â±à³õÊ¼»¯***********************/
-void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êı¼ÆÊıÆ÷Èë¿Ú£¬ÉÏÉıÑØ£¬D11,A6¹â±àÕı·´×ª
+void initEMIOS_0ModulusCounter(void) //A8,D12Ä£Êı¼ÆÊıÆ÷Èë¿Ú£¬ÉÏÉıÑØ£¬C15,C9¹â±àÕı·´×ª
 {
 	//D12
 	//EMIOS_0.CH[24].CCR.B.MODE = 0x51; // Mode is MCB, 
@@ -145,7 +146,7 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êı¼ÆÊıÆ÷Èë¿Ú£¬ÉÏÉıÑØ£¬D11,A6¹â±àÕ
 	EMIOS_0.CH[24].CCR.B.EDPOL=1; //Edge Select rising edge
 	EMIOS_0.CH[24].CADR.R=0xffff;
 	SIU.PCR[60].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-	SIU.PCR[59].R = 0x0102;  //PD11×óÂÖ¹â±àÕı·´×ª £¬¸ßµçÆ½Õı×ª£¬µÍµçÆ½·´×ª
+	SIU.PCR[41].R = 0x0102;  //C9ÓÒÂÖ¹â±àÕı·´×ª £¬¸ßµçÆ½Õı×ª£¬µÍµçÆ½·´×ª
 	 
 	 //A8 
 	 //	EMIOS_0.CH[8].CCR.B.MODE = 0x51; // Mode is MCB, 
@@ -157,7 +158,7 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êı¼ÆÊıÆ÷Èë¿Ú£¬ÉÏÉıÑØ£¬D11,A6¹â±àÕ
 	EMIOS_0.CH[8].CCR.B.EDPOL=1; //Edge Select rising edge
 	EMIOS_0.CH[8].CADR.R=0xffff;
 	SIU.PCR[8].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-	SIU.PCR[6].R=0x0102;  //A6ÓÒÂÖ¹â±àÕı·´×ª£¬¸ßµçÆ½·´×ª£¬µÍµçÆ½Õı×ª
+	SIU.PCR[47].R=0x0102;  //C15×óÂÖ¹â±àÕı·´×ª£¬¸ßµçÆ½·´×ª£¬µÍµçÆ½Õı×ª
 }
 
 void initEMIOS_0Image(void) 

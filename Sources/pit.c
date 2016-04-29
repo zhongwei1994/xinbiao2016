@@ -93,16 +93,24 @@ void PitISR(void)//1ms一个控制周期
 			}
 		}
 	}
-//	if(pitcount0==3)
-//	{
-//		pitcount3++;
-//		if(pitcount3>=1)                          //100ms一次，未启用
-//		{
-//			pitcount3=0;
-//			
-//			
-//		}
-//	}
+	if(pitcount0==3)
+	{
+		pitcount3++;
+		if(pitcount3>=3)                          //15ms一次
+		{
+			pitcount3=0;
+			SpeedCount();
+		}
+	}
+	if(pitcount0==7)
+	{
+		pitcount4++;
+		if(pitcount4>=3)                          //25ms一次速度控制
+		{
+			pitcount4=0;
+			SpeedControl();
+		}
+	}
 	if(pitcount0==5)
 	{
 		pitcount0=0;
@@ -112,7 +120,7 @@ void PitISR(void)//1ms一个控制周期
 			pitcount5=0;
 			OLED_Fill(0x00);
 			OLED_SetPointer(2,20);
-			OLED_Num(targetmotor);
+			OLED_Num(straightspeed);
 			OLED_SetPointer(3,20);
 			OLED_Num(OLED_distance1);
 			OLED_SetPointer(4,20);
@@ -121,6 +129,14 @@ void PitISR(void)//1ms一个控制周期
 			OLED_Num(cyclespeed);
 			OLED_SetPointer(6,20);
 			OLED_Num(cycle_j);
+			OLED_SetPointer(7,20);
+			OLED_Num(csl);
+			OLED_SetPointer(7,50);
+			OLED_Num(csr);
+			OLED_SetPointer(7,80);
+			OLED_Num(oled_csl);
+			OLED_SetPointer(7,110);
+			OLED_Num(oled_csr);
 		}
 	}
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位

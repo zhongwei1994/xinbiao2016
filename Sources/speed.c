@@ -8,14 +8,20 @@
 #include "includes.h"
 
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
+int oled_csl=0,oled_csr=0;
+double oled_cslcount=0,oled_csrcount=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
-int targetspeed=0;
+int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=80;
+unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;	
 double r=0;
-
+//**********************电机PID参数**********************************************;	
+signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
+double Speed_kp_Left=15,Speed_ki_Left=0,Speed_kd_Left=0;//16
+double Speed_kp_Right=15,Speed_ki_Right=0,Speed_kd_Right=0;	//电机PID
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
 {
@@ -25,12 +31,82 @@ void SET_motor(int leftSpeed,int rightSpeed)
 		else {EMIOS_0.CH[19].CBDR.R = 0;EMIOS_0.CH[20].CBDR.R = -rightSpeed;}//右轮  E3右进   E4右退
 }
 /*************************速度控制函数*********************/
-void Speed_control(void)
+//void Speed_control(void)
+//{
+//	RPID=CENTER-Steer_PWM[3];
+//	r=Speed_kc/RPID;
+//	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+//	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
+//	SET_motor(tsl,tsr);
+//}
+
+/*************************光编计数函数***********************/
+void SpeedCount(void)
 {
-	RPID=CENTER-Steer_PWM[3];
-	r=Speed_kc/RPID;
-	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
-	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
+	speedcounter1=EMIOS_0.CH[8].CCNTR.R;              //左A8
+	if(speedcounter1<speedcounter2)
+		csl=speedcounter1+65536-speedcounter2;         //current speed left
+	else 
+		csl=speedcounter1-speedcounter2;
+//	if(forewardleft)
+//		csl=csl;
+//	else 
+//		csl=-csl;
+	speedcounter2=speedcounter1;
+	
+	speedcounter3=EMIOS_0.CH[24].CCNTR.R;               //右D12
+	if(speedcounter3<speedcounter4)
+	{
+		csr=speedcounter3+65536-speedcounter4;         //current speed right
+	}
+	else 
+		csr=speedcounter3-speedcounter4;	
+//	if(backwardright) 
+//		csr=-csr;
+//	else 
+//		csr=csr;
+	speedcounter4=speedcounter3;
+	oled_cslcount++;
+	oled_csrcount++;
+	if(oled_cslcount>200&&oled_cslcount<500)
+		oled_csl=(oled_csl*(oled_cslcount-301)+csl)/(oled_cslcount-300);
+	if(oled_csrcount>200&&oled_csrcount<500)
+		oled_csr=(oled_csr*(oled_csrcount-301)+csr)/(oled_csrcount-300);
+}
+//*****************************************************************************************************************
+//************************************************后轮差速PID速度控制************************************************    	  *
+//*****************************************************************************************************************
+void SpeedControl(void)//闭环,加差速
+{
+//	RPID=CENTER-Steer_PWM[3];
+//	r=Speed_kc/RPID;
+//	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+//	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
+//	SET_motor(tsl,tsr);
+	tsl=targetspeed;
+	tsr=targetspeed;
+	
+	ErrorLeft=(signed int)(tsl)-(signed int)(csl);
+	ErrorRight=(signed int)(tsr)-(signed int)(csr);
+	
+	SumErrorLeft+=ErrorLeft;
+	if(SumErrorLeft>350) SumErrorLeft=350;
+	if(SumErrorLeft<-350) SumErrorLeft=-350;	    
+	SumErrorRight+=ErrorRight;
+	if(SumErrorRight>350) SumErrorRight=350;
+	if(SumErrorRight<-350) SumErrorRight=-350;
+	
+	tsl=Speed_kp_Left*ErrorLeft+Speed_ki_Left*SumErrorLeft+Speed_kd_Left*(ErrorLeft-PreErrorLeft);
+	tsr=Speed_kp_Right*ErrorRight+Speed_ki_Left*SumErrorRight+Speed_kd_Left*(ErrorRight-PreErrorRight);
+	
+	if(tsl>Motor_PWM_MAX)  tsl=Motor_PWM_MAX;
+	else if(tsl<Motor_PWM_MIN)  tsl=Motor_PWM_MIN;	    
+	if(tsr>Motor_PWM_MAX)  tsr=Motor_PWM_MAX;
+	else if(tsr<Motor_PWM_MIN)  tsr=Motor_PWM_MIN;
+
 	SET_motor(tsl,tsr);
+	
+	PreErrorLeft=ErrorLeft;
+	PreErrorRight=ErrorRight;
 }
 

@@ -99,7 +99,9 @@ extern int pwm_num;
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[4].CBDR.R // 舵机值
 #define CENTER 3920
-
+/***************speed*****************/
+#define backwardleft SIU.GPDI[47].R		//光编检测车实际方向: 0左前进 1左倒退
+#define backwardright SIU.GPDI[41].R	//光编检测车实际方向: 0右前进 1右倒退
 ///***************supersonic*****************/
 //#define supersonic_0_trigger SIU.GPDO[31].R //超声0
 //#define supersonic_1_trigger SIU.GPDO[28].R//超声1

@@ -18,7 +18,7 @@ extern unsigned long time1;
 extern unsigned long time2;
 extern unsigned long time3;
 extern unsigned long time3_2;
-extern byte targetmotor;
+extern byte straightspeed;
 
 extern unsigned char S3_last;
 extern unsigned char S4_last;
