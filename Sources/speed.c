@@ -8,10 +8,9 @@
 #include "includes.h"
 
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
-int oled_csl=0,oled_csr=0;
-double oled_cslcount=0,oled_csrcount=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=80;
+byte cyclespeed=90,straightspeed=120;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
@@ -66,12 +65,6 @@ void SpeedCount(void)
 //	else 
 //		csr=csr;
 	speedcounter4=speedcounter3;
-	oled_cslcount++;
-	oled_csrcount++;
-	if(oled_cslcount>200&&oled_cslcount<500)
-		oled_csl=(oled_csl*(oled_cslcount-301)+csl)/(oled_cslcount-300);
-	if(oled_csrcount>200&&oled_csrcount<500)
-		oled_csr=(oled_csr*(oled_csrcount-301)+csr)/(oled_csrcount-300);
 }
 //*****************************************************************************************************************
 //************************************************后轮差速PID速度控制************************************************    	  *

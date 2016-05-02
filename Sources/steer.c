@@ -11,7 +11,6 @@
 byte wrong_count=0;
 byte close_supersonic=1;
 byte success=0;
-byte cyclespeed=110;
 byte cycle_j=30;
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=8,Steer_kd=0;//舵机P、D值

@@ -13,7 +13,6 @@ unsigned int Ts=0;
 unsigned int Ti=ROWS-1;
 unsigned int Tj=0;
 int CurrentSteer=0;
-byte straightspeed=115;
 
 unsigned char S3_last=1;
 unsigned char S4_last=1;

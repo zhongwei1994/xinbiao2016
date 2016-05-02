@@ -102,7 +102,7 @@ void PitISR(void)//1ms一个控制周期
 			SpeedCount();
 		}
 	}
-	if(pitcount0==7)
+	if(pitcount0==4)
 	{
 		pitcount4++;
 		if(pitcount4>=3)                          //25ms一次速度控制
@@ -133,10 +133,6 @@ void PitISR(void)//1ms一个控制周期
 			OLED_Num(csl);
 			OLED_SetPointer(7,50);
 			OLED_Num(csr);
-			OLED_SetPointer(7,80);
-			OLED_Num(oled_csl);
-			OLED_SetPointer(7,110);
-			OLED_Num(oled_csr);
 		}
 	}
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位
