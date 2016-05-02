@@ -126,13 +126,14 @@ void BlueTx(void)                             //蓝牙发数据
 				break;}
 	case 1:
 		LINFlex_TX(video);
-		Ts=2;
+		Ts=4;
 		break;
-	case 2: 
+		//以下为发送图像数据
+	case 50: 
 		LINFlex_TX(SendHexHigh(a_pix[Ti][Tj]));        //发送左CCD图像
 		Ts=3;
 		break;
-	case 3: 
+	case 51: 
 		LINFlex_TX(SendHexLow(a_pix[Ti][Tj]));
 		if(Ti>0)
 		{
@@ -175,24 +176,32 @@ void BlueTx(void)                             //蓝牙发数据
 		LINFlex_TX(SendInt4(CurrentSteer));
 		//发送亮点周围10*10个点的灰度值
 		LINFlex_TX('W'); 
-		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j-1]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j-1]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j+1]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j+1]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j-1]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j-1]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j+1]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j+1]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j-1]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j-1]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j]));
-		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j+1]));
-		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j+1]));
+		LINFlex_TX(SendInt1(csl));
+		LINFlex_TX(SendInt2(csl));
+		LINFlex_TX(SendInt3(csl));
+		LINFlex_TX(SendInt4(csl));
+		LINFlex_TX(SendInt1(csr));
+		LINFlex_TX(SendInt2(csr));
+		LINFlex_TX(SendInt3(csr));
+		LINFlex_TX(SendInt4(csr));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j-1]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j-1]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j+1]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j+1]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j-1]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j-1]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i][pix_j+1]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i][pix_j+1]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j-1]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j-1]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j]));
+//		LINFlex_TX(SendHexHigh(a_pix[pix_i+1][pix_j+1]));
+//		LINFlex_TX(SendHexLow(a_pix[pix_i+1][pix_j+1]));
 		
 //		LINFlex_TX(SendUnsignedLong1(time3));
 //		LINFlex_TX(SendUnsignedLong2(time3));
@@ -225,25 +234,21 @@ void KeyJudge(void)
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
 		straightspeed+=5;
-		SET_motor(straightspeed,straightspeed);
 		//tsr-=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
 	    cyclespeed+=5;
-	    SET_motor(straightspeed,straightspeed);
 	    //tsr+=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
 		cycle_j+=1;
-		SET_motor(straightspeed,straightspeed);
 		//tsl-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4; 
 		cycle_j-=1;
-		SET_motor(straightspeed,straightspeed);
 		//tsl+=10;
 		}
 	S3_last=S3;             //保存按键的状态

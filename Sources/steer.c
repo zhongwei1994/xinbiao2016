@@ -119,12 +119,12 @@ void SteerControl(void)
 			if(pix_i<31)
 			{
 					close_supersonic=1;
-					targetspeed=straightspeed;
+					targetspeed=cyclespeed;
 			}
 			else
 			{  
 				close_supersonic=1;//触发关闭超声波标志
-				targetspeed=straightspeed;
+				targetspeed=cyclespeed;
 			}
 			target_offset=pix_j-44;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD

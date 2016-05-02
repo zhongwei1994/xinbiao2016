@@ -19,8 +19,8 @@ signed int RPID=0;
 double r=0;
 //**********************电机PID参数**********************************************;	
 signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
-double Speed_kp_Left=15,Speed_ki_Left=0,Speed_kd_Left=0;//16
-double Speed_kp_Right=15,Speed_ki_Right=0,Speed_kd_Right=0;	//电机PID
+double Speed_kp_Left=5,Speed_ki_Left=0,Speed_kd_Left=0;//16
+double Speed_kp_Right=5,Speed_ki_Right=0,Speed_kd_Right=0;	//电机PID
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
 {
