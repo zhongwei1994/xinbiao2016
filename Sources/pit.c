@@ -16,7 +16,7 @@ void initPIT(void)
   PIT.PITMCR.R = 0x00000001;       // Enable PIT and configure timers to stop in debug mode 
   PIT.CH[1].LDVAL.R = 80000;      // PIT1 timeout = 80000 sysclks x 1sec/80M sysclks = 1 msec 
   PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
-  INTC_InstallINTCInterruptHandler(PitISR,60,10); 
+  INTC_InstallINTCInterruptHandler(PitISR,60,10); //10
 }
 
 void PitISR(void)//1ms一个控制周期
@@ -100,6 +100,7 @@ void PitISR(void)//1ms一个控制周期
 		{
 			pitcount3=0;
 			SpeedCount();
+			SpeedControl();
 		}
 	}
 	if(pitcount0==4)
@@ -108,7 +109,6 @@ void PitISR(void)//1ms一个控制周期
 		if(pitcount4>=3)                          //25ms一次速度控制
 		{
 			pitcount4=0;
-			SpeedControl();
 		}
 	}
 	if(pitcount0==5)
@@ -122,9 +122,11 @@ void PitISR(void)//1ms一个控制周期
 			OLED_SetPointer(2,20);
 			OLED_Num(straightspeed);
 			OLED_SetPointer(3,20);
-			OLED_Num(OLED_distance1);
+			OLED_Num((Speed_ki_Left*100));
+			//OLED_Num(OLED_distance1);
 			OLED_SetPointer(4,20);
-			OLED_Num(OLED_distance2);
+			OLED_Num((Speed_kp_Right*100));
+			//OLED_Num(OLED_distance2);
 			OLED_SetPointer(5,20);
 			OLED_Num(cyclespeed);
 			OLED_SetPointer(6,20);

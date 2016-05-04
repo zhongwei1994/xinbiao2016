@@ -10,7 +10,8 @@ int main(void) {
 	BEE = 1;
 	delay_ms(1000);
 	BEE = 0;
-	SET_motor(straightspeed,straightspeed);
+//	targetspeed=80;
+//	SET_motor(straightspeed,straightspeed);
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	SET_steer(CENTER);
@@ -36,6 +37,7 @@ int main(void) {
 //		x_duoji = TargetSteer;
 //		//OLED_Num(x_duoji);
 		KeyJudge();
+		BlueTx();
 	}
 }
 

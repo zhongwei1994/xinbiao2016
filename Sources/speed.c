@@ -9,8 +9,8 @@
 
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
-int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=80;
-byte cyclespeed=90,straightspeed=120;
+int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=-200;
+byte cyclespeed=150,straightspeed=200;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
@@ -19,15 +19,15 @@ signed int RPID=0;
 double r=0;
 //**********************电机PID参数**********************************************;	
 signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
-double Speed_kp_Left=15,Speed_ki_Left=0,Speed_kd_Left=0;//16
-double Speed_kp_Right=15,Speed_ki_Right=0,Speed_kd_Right=0;	//电机PID
+double Speed_kp_Left=0.1,Speed_ki_Left=0.5,Speed_kd_Left=0;
+double Speed_kp_Right=0.1,Speed_ki_Right=0.5,Speed_kd_Right=0;	//电机PID
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
 {
-	if(leftSpeed>=0) {EMIOS_0.CH[21].CBDR.R = 0;EMIOS_0.CH[22].CBDR.R =leftSpeed;}
-		else {EMIOS_0.CH[21].CBDR.R = -leftSpeed;EMIOS_0.CH[22].CBDR.R =-0;}//左轮  E5左退   E6左进
-	if(rightSpeed>=0) {EMIOS_0.CH[19].CBDR.R = rightSpeed;EMIOS_0.CH[20].CBDR.R = 0;}
-		else {EMIOS_0.CH[19].CBDR.R = 0;EMIOS_0.CH[20].CBDR.R = -rightSpeed;}//右轮  E3右进   E4右退
+	if(leftSpeed>=0) {EMIOS_0.CH[20].CBDR.R = 0;EMIOS_0.CH[19].CBDR.R =leftSpeed;}
+		else {EMIOS_0.CH[20].CBDR.R = -leftSpeed;EMIOS_0.CH[19].CBDR.R =-0;}//左轮  E5左退   E6左进
+	if(rightSpeed>=0) {EMIOS_0.CH[22].CBDR.R = rightSpeed;EMIOS_0.CH[21].CBDR.R = 0;}
+		else {EMIOS_0.CH[22].CBDR.R = 0;EMIOS_0.CH[21].CBDR.R = -rightSpeed;}//右轮  E3右进   E4右退
 }
 /*************************速度控制函数*********************/
 //void Speed_control(void)
@@ -44,7 +44,7 @@ void SpeedCount(void)
 {
 	speedcounter1=EMIOS_0.CH[8].CCNTR.R;              //左A8
 	if(speedcounter1<speedcounter2)
-		csl=speedcounter1+65536-speedcounter2;         //current speed left
+		csl=speedcounter1+65535-speedcounter2;         //current speed left
 	else 
 		csl=speedcounter1-speedcounter2;
 //	if(forewardleft)
@@ -56,7 +56,7 @@ void SpeedCount(void)
 	speedcounter3=EMIOS_0.CH[24].CCNTR.R;               //右D12
 	if(speedcounter3<speedcounter4)
 	{
-		csr=speedcounter3+65536-speedcounter4;         //current speed right
+		csr=speedcounter3+65535-speedcounter4;         //current speed right
 	}
 	else 
 		csr=speedcounter3-speedcounter4;	
@@ -90,13 +90,13 @@ void SpeedControl(void)//闭环,加差速
 	if(SumErrorRight<-350) SumErrorRight=-350;
 	
 	tsl=Speed_kp_Left*ErrorLeft+Speed_ki_Left*SumErrorLeft+Speed_kd_Left*(ErrorLeft-PreErrorLeft);
-	tsr=Speed_kp_Right*ErrorRight+Speed_ki_Left*SumErrorRight+Speed_kd_Left*(ErrorRight-PreErrorRight);
+	tsr=Speed_kp_Right*ErrorRight+Speed_ki_Right*SumErrorRight+Speed_kd_Right*(ErrorRight-PreErrorRight);
 	
 	if(tsl>Motor_PWM_MAX)  tsl=Motor_PWM_MAX;
 	else if(tsl<Motor_PWM_MIN)  tsl=Motor_PWM_MIN;	    
 	if(tsr>Motor_PWM_MAX)  tsr=Motor_PWM_MAX;
 	else if(tsr<Motor_PWM_MIN)  tsr=Motor_PWM_MIN;
-
+	
 	SET_motor(tsl,tsr);
 	
 	PreErrorLeft=ErrorLeft;
