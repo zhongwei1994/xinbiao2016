@@ -124,7 +124,7 @@ void SteerControl(void)
 			else				//在近处，现在超声全关了
 			{  
 				close_supersonic=1;//触发关闭超声波标志
-				targetspeed=straightspeed;
+				targetspeed=cyclespeed;
 			}
 			target_offset=pix_j-44;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
