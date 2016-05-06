@@ -12,6 +12,7 @@ void SET_motor(int leftSpeed,int rightSpeed);
 void SpeedCount(void);
 void SpeedControl(void);
 
+extern byte backflag;
 extern int csl,csr;
 extern int tsl,tsr;
 extern int targetspeed;

@@ -11,7 +11,7 @@
 void initPIT(void);
 void PitISR(void);
 
-extern unsigned int pitcount0,pitcount1,pitcount2,pitcount3,pitcount4,pitcount5;
+extern unsigned int pitcount0,pitcount1,pitcount2,pitcount3,pitcount4,pitcount5,pitcount6;
 
 
 #endif /* PIT_H_ */

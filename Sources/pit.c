@@ -7,7 +7,7 @@
 
 #include "includes.h"
 
-unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
+unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0,pitcount6=0;
 unsigned int barrier_delay=0;
 unsigned int supson_delay1=0,supson_delay2=0;
 
@@ -100,7 +100,27 @@ void PitISR(void)//1ms一个控制周期
 		{
 			pitcount3=0;
 			SpeedCount();
-			SpeedControl();
+			if(backflag)
+			{
+				if(pitcount6>20)
+				{
+					pitcount6=0;
+					backflag=0;
+				}
+				else
+				{
+					pitcount6++;
+					Steer_PWM[3]=4000;
+					SET_steer(Steer_PWM[3]);
+					Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+					SET_motor(-255,-255);
+				}
+
+			}
+			else
+			{
+				SpeedControl();
+			}
 		}
 	}
 	if(pitcount0==4)
@@ -134,9 +154,9 @@ void PitISR(void)//1ms一个控制周期
 			OLED_SetPointer(7,20);
 			OLED_Num(csl);
 			OLED_SetPointer(7,50);
-			OLED_Num(backwardleft);
+			OLED_Num(csr);
 			OLED_SetPointer(7,80);
-			OLED_Num(backwardright);
+			OLED_Num(targetspeed);
 		}
 	}
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位

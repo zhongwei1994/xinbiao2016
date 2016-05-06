@@ -7,10 +7,11 @@
 
 #include "includes.h"
 
+byte backflag=0;
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=-200;
-int cyclespeed=150,straightspeed=280;
+int cyclespeed=160,straightspeed=290;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
@@ -19,8 +20,8 @@ signed int RPID=0;
 double r=0;
 //**********************电机PID参数**********************************************;	
 signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
-double Speed_kp_Left=0.08,Speed_ki_Left=0.6,Speed_kd_Left=0;
-double Speed_kp_Right=0.075,Speed_ki_Right=0.85,Speed_kd_Right=0;	//电机PID
+double Speed_kp_Left=0.1,Speed_ki_Left=0.6,Speed_kd_Left=0;
+double Speed_kp_Right=0.1,Speed_ki_Right=0.85,Speed_kd_Right=0;	//电机PID
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
 {
@@ -47,10 +48,10 @@ void SpeedCount(void)
 		csl=speedcounter1+65535-speedcounter2;         //current speed left
 	else 
 		csl=speedcounter1-speedcounter2;
-//	if(forewardleft)
-//		csl=csl;
-//	else 
-//		csl=-csl;
+	if(backwardleft)
+		csl=-csl;
+	else 
+		csl=csl;
 	speedcounter2=speedcounter1;
 	
 	speedcounter3=EMIOS_0.CH[24].CCNTR.R;               //右D12
@@ -60,11 +61,13 @@ void SpeedCount(void)
 	}
 	else 
 		csr=speedcounter3-speedcounter4;	
-//	if(backwardright) 
-//		csr=-csr;
-//	else 
-//		csr=csr;
+	if(backwardright) 
+		csr=-csr;
+	else 
+		csr=csr;
 	speedcounter4=speedcounter3;
+//	if(csl==0||csr==0)
+//		backflag=1;
 }
 //*****************************************************************************************************************
 //************************************************后轮差速PID速度控制************************************************    	  *
@@ -76,14 +79,6 @@ void SpeedControl(void)//闭环,加差速
 //	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
 //	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
 //	SET_motor(tsl,tsr);
-	if(csl==0||csr==0)
-	{
-		Steer_PWM[3]=4000;
-		SET_steer(Steer_PWM[3]);
-		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-		SET_motor(-255,-255);
-		delay_ms(500);
-	}
 	tsl=targetspeed;
 	tsr=targetspeed;
 	

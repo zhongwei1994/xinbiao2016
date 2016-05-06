@@ -11,9 +11,9 @@
 byte wrong_count=0;
 byte close_supersonic=1;
 byte success=0;
-byte cycle_j=30;
+byte cycle_j=32;
 int target_offset=0,last_offset=0;	//舵机偏差值记录
-double Steer_kp=8,Steer_kd=0;//舵机P、D值
+double Steer_kp=0,Steer_kd=0;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
@@ -70,7 +70,11 @@ void Steer_PDSet(void)
 /*************************舵机控制，PD***********************/
 void SteerControl(void)
 {
-	if(barrier_left_flag==1||barrier_right_flag==1)
+	if(targetspeed==straightspeed)
+		Steer_kp=5;
+	else
+		Steer_kp=8;
+	if(barrier_left_flag==1||barrier_right_flag==1||backflag==1)
 	{
 		return;
 	}
@@ -116,7 +120,7 @@ void SteerControl(void)
 		BEE=0;
 		if(pix_i<29)	
 		{
-			if(pix_i<29)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+			if(pix_i<27)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
 				close_supersonic=1;
 				targetspeed=straightspeed;
@@ -126,7 +130,7 @@ void SteerControl(void)
 				close_supersonic=1;//触发关闭超声波标志
 				targetspeed=cyclespeed;
 			}
-			target_offset=pix_j-44;
+			target_offset=pix_j-41;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 			if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 			else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
@@ -142,7 +146,7 @@ void SteerControl(void)
 			{
 				success=1;
 			}
-			if(pix_i>55&&pix_j<cycle_j)		//靠近灯塔，位置符合灯塔在左下角条件，开始转向
+			if(pix_i>53&&pix_j<cycle_j)		//靠近灯塔，位置符合灯塔在左下角条件，开始转向
 			{
 				targetspeed=cyclespeed;
 				BEE = 1;
