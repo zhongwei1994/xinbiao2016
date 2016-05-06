@@ -114,9 +114,9 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-		if(pix_i<31)	
+		if(pix_i<29)	
 		{
-			if(pix_i<31)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+			if(pix_i<29)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
 				close_supersonic=1;
 				targetspeed=straightspeed;
@@ -156,7 +156,7 @@ void SteerControl(void)
 			{
 				targetspeed=cyclespeed;
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				target_offset=pix_j-26;
+				target_offset=pix_j-28;
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;

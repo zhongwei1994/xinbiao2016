@@ -157,23 +157,23 @@ void BlueTx(void)                             //蓝牙发数据
 		break;
 	case 4: 
 		LINFlex_TX('X'); 
-		LINFlex_TX(SendHexHigh(pix_x));        //发送白点坐标
-		LINFlex_TX(SendHexLow(pix_x));
-		LINFlex_TX(SendHexHigh(pix_y));
-		LINFlex_TX(SendHexLow(pix_y));
-		LINFlex_TX(SendHexHigh(pix_x2));        //发送白点坐标
-		LINFlex_TX(SendHexLow(pix_x2));
-		LINFlex_TX(SendHexHigh(pix_y2));
-		LINFlex_TX(SendHexLow(pix_y2));
-		LINFlex_TX(SendHexHigh(pix_i));
-		LINFlex_TX(SendHexLow(pix_i));
-		LINFlex_TX(SendHexHigh(pix_j));
-		LINFlex_TX(SendHexLow(pix_j));
-		CurrentSteer=TargetSteer;
-		LINFlex_TX(SendInt1(CurrentSteer));
-		LINFlex_TX(SendInt2(CurrentSteer));
-		LINFlex_TX(SendInt3(CurrentSteer));
-		LINFlex_TX(SendInt4(CurrentSteer));
+//		LINFlex_TX(SendHexHigh(pix_x));        //发送白点坐标
+//		LINFlex_TX(SendHexLow(pix_x));
+//		LINFlex_TX(SendHexHigh(pix_y));
+//		LINFlex_TX(SendHexLow(pix_y));
+//		LINFlex_TX(SendHexHigh(pix_x2));        //发送白点坐标
+//		LINFlex_TX(SendHexLow(pix_x2));
+//		LINFlex_TX(SendHexHigh(pix_y2));
+//		LINFlex_TX(SendHexLow(pix_y2));
+//		LINFlex_TX(SendHexHigh(pix_i));
+//		LINFlex_TX(SendHexLow(pix_i));
+//		LINFlex_TX(SendHexHigh(pix_j));
+//		LINFlex_TX(SendHexLow(pix_j));
+//		CurrentSteer=TargetSteer;
+//		LINFlex_TX(SendInt1(CurrentSteer));
+//		LINFlex_TX(SendInt2(CurrentSteer));
+//		LINFlex_TX(SendInt3(CurrentSteer));
+//		LINFlex_TX(SendInt4(CurrentSteer));
 		//发送亮点周围10*10个点的灰度值
 //		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j-1]));
 //		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j-1]));
@@ -202,6 +202,14 @@ void BlueTx(void)                             //蓝牙发数据
 		LINFlex_TX(SendInt2(csr));
 		LINFlex_TX(SendInt3(csr));
 		LINFlex_TX(SendInt4(csr));
+		LINFlex_TX(SendInt1(tsl));
+		LINFlex_TX(SendInt2(tsl));
+		LINFlex_TX(SendInt3(tsl));
+		LINFlex_TX(SendInt4(tsl));
+		LINFlex_TX(SendInt1(tsr));
+		LINFlex_TX(SendInt2(tsr));
+		LINFlex_TX(SendInt3(tsr));
+		LINFlex_TX(SendInt4(tsr));
 //		LINFlex_TX(SendUnsignedLong1(time3));
 //		LINFlex_TX(SendUnsignedLong2(time3));
 //		LINFlex_TX(SendUnsignedLong3(time3));
@@ -236,7 +244,7 @@ void KeyJudge(void)
 		//Speed_kp_Right+=0.01;
 		//straightspeed+=5;
 		//SET_motor(straightspeed,straightspeed);
-		straightspeed+=5;
+		straightspeed+=10;
 		//tsr-=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
