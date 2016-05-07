@@ -150,7 +150,7 @@ void PitISR(void)//1ms一个控制周期
 			OLED_SetPointer(5,20);
 			OLED_Num(cyclespeed);
 			OLED_SetPointer(6,20);
-			OLED_Num(cycle_j);
+			OLED_Num(turnleft);
 			OLED_SetPointer(7,20);
 			OLED_Num(csl);
 			OLED_SetPointer(7,50);

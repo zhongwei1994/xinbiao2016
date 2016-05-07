@@ -122,7 +122,7 @@ void BlueTx(void)                             //蓝牙发数据
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=1;
+				Ts=4;
 				break;}
 	case 1:
 		LINFlex_TX(video);
@@ -261,7 +261,7 @@ void KeyJudge(void)
 		//Speed_ki_Right+=0.1;
 		//cycle_j+=1;
 		//SET_motor(straightspeed,straightspeed);
-		cycle_j+=1;
+		turnleft+=1;
 		//tsl-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
@@ -270,7 +270,7 @@ void KeyJudge(void)
 		//Speed_ki_Right-=0.1;
 		//cycle_j-=1;
 		//SET_motor(straightspeed,straightspeed);
-		cycle_j-=1;
+		turnleft-=1;
 		//tsl+=10;
 		}
 	S3_last=S3;        //保存按键的状态
