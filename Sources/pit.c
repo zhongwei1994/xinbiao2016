@@ -92,7 +92,7 @@ void PitISR(void)//1ms一个控制周期
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位
 }
 
-void PITSR(void)
+void PitISR2(void)
 {
 	SpeedCount();
 	if(backflag)
