@@ -118,11 +118,11 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-		if(pix_i<29)	
+		if(pix_i<33)	
 		{
 			if(pix_i<29)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
-				close_supersonic=1;
+				close_supersonic=0;
 				targetspeed=straightspeed;
 			}
 			else				//在近处，现在超声全关了

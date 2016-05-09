@@ -34,7 +34,7 @@ int main(void) {
 //		x_duoji = TargetSteer;
 //		//OLED_Num(x_duoji);
 		KeyJudge();
-		BlueTx();
+		//BlueTx();
 	}
 }
 

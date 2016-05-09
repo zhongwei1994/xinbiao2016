@@ -39,7 +39,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 {
 	byte left,right,up,down;
 	byte i,j;
-	if(x<40)
+	if(x<20)
 	{
 		*pix_i=x;
 		*pix_j=y;

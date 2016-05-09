@@ -71,15 +71,17 @@ void PitISR(void)//1ms一个控制周期
 		pitcount0=0;
 		OLED_Fill(0x00);
 		OLED_SetPointer(2,20);
-		OLED_Num(straightspeed);
-		OLED_SetPointer(3,20);
-		OLED_Num((Speed_kp_Left*10));
+		OLED_Num((pix_i));
 		//OLED_Num(OLED_distance1);
-		OLED_SetPointer(4,20);
-		OLED_Num((Speed_kp_Right*10));
+		OLED_SetPointer(3,20);
+		OLED_Num((pix_x2));
 		//OLED_Num(OLED_distance2);
+		OLED_SetPointer(4,20);
+		OLED_Num(OLED_distance1);
+//		OLED_Num(straightspeed);
 		OLED_SetPointer(5,20);
-		OLED_Num(cyclespeed);
+		OLED_Num(OLED_distance2);
+//		OLED_Num(cyclespeed);
 		OLED_SetPointer(6,20);
 		OLED_Num(turnleft);
 		OLED_SetPointer(7,20);
@@ -87,7 +89,8 @@ void PitISR(void)//1ms一个控制周期
 		OLED_SetPointer(7,50);
 		OLED_Num(csr);
 		OLED_SetPointer(7,80);
-		OLED_Num(targetspeed);
+		OLED_Num(distance_T);
+//		OLED_Num(targetspeed);
 	}
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位
 }
@@ -116,4 +119,5 @@ void PitISR2(void)
 	{
 		SpeedControl();
 	}
+	PIT.CH[2].TFLG.B.TIF = 1;
 }
