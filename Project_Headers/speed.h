@@ -16,7 +16,9 @@ extern byte backflag;
 extern int csl,csr;
 extern int tsl,tsr;
 extern int targetspeed;
-extern int cyclespeed,straightspeed;;
+extern int cyclespeed,straightspeed;
+extern int cyclespeedleft,cyclespeedright;
+extern byte cycle_flag;
 
 extern double Speed_kp_Left,Speed_ki_Left,Speed_kd_Left;
 extern double Speed_kp_Right,Speed_ki_Right,Speed_kd_Right;	//µç»úPID
