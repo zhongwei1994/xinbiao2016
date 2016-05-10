@@ -71,9 +71,9 @@ void Steer_PDSet(void)
 void SteerControl(void)
 {
 	if(targetspeed==straightspeed)
-		Steer_kp=5;
+		Steer_kp=3;//5
 	else
-		Steer_kp=8;
+		Steer_kp=5;//8
 	if(barrier_left_flag==1||barrier_right_flag==1||backflag==1)
 	{
 		return;
@@ -122,7 +122,7 @@ void SteerControl(void)
 		{
 			if(pix_i<29)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
-				close_supersonic=0;
+				close_supersonic=1;
 				targetspeed=straightspeed;
 			}
 			else				//在近处，现在超声全关了

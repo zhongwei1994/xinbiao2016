@@ -10,8 +10,8 @@
 byte backflag=0;
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
-int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=-200;
-int cyclespeed=160,straightspeed=280;
+int targetspeed=0,Motor_PWM_MAX=400,Motor_PWM_MIN=-400;
+int cyclespeed=130,straightspeed=230;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
@@ -20,8 +20,8 @@ signed int RPID=0;
 double r=0;
 //**********************电机PID参数**********************************************;	
 signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
-double Speed_kp_Left=5,Speed_ki_Left=0.6,Speed_kd_Left=0.5;
-double Speed_kp_Right=5,Speed_ki_Right=0.85,Speed_kd_Right=0.5;	//电机PID
+double Speed_kp_Left=1,Speed_ki_Left=0.6,Speed_kd_Left=0.1;
+double Speed_kp_Right=1,Speed_ki_Right=0.85,Speed_kd_Right=0.1;	//电机PID
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
 {
