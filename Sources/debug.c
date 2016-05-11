@@ -246,14 +246,15 @@ void KeyJudge(void)
 		//Speed_kp_Right+=0.01;
 		//straightspeed+=5;
 		//SET_motor(straightspeed,straightspeed);
-		straightspeed+=10;
+		turnleft+=1;
 		//tsr-=10;
 		}
 	if(S4==0&&S4_last==1){   //°´¼üS4°´ÏÂ
 	    keymode=2;
 //		Speed_kp_Left-=1;
 //		Speed_kp_Right-=1;
-	    cyclespeed+=5;
+//	    cyclespeed+=5;
+	    turnleft-=1;
 	    //Speed_kp_Left-=0.01;
 	    //Speed_kp_Right-=0.01;
 	    //SET_motor(straightspeed,straightspeed);

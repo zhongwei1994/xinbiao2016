@@ -74,9 +74,11 @@ void PitISR(void)//1ms一个控制周期
 		OLED_Num((pix_i));
 		//OLED_Num(OLED_distance1);
 		OLED_SetPointer(2,60);
-		OLED_Num((CurrentSteer));
+		OLED_Num((pix_j));
 		OLED_SetPointer(3,20);
-		OLED_Num((pix_x2));
+		OLED_Num((TargetSteer));
+		OLED_SetPointer(3,60);
+		OLED_Num((turnleft));
 		//OLED_Num(OLED_distance2);
 		OLED_SetPointer(4,20);
 //		OLED_Num(OLED_distance1);
@@ -88,11 +90,11 @@ void PitISR(void)//1ms一个控制周期
 //		OLED_Num(close_supersonic);
 		OLED_Num(turnleft);
 		OLED_SetPointer(7,20);
-		OLED_Num(csl);
-		OLED_SetPointer(7,50);
-		OLED_Num(csr);
-		OLED_SetPointer(7,80);
 		OLED_Num(cyclespeedright);
+		OLED_SetPointer(7,50);
+		OLED_Num(csl);
+		OLED_SetPointer(7,80);
+		OLED_Num(csr);	
 //		OLED_Num(distance_T);
 //		OLED_Num(targetspeed);
 	}
