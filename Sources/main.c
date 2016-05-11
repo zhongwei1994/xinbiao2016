@@ -2,6 +2,7 @@
 //
 #include "includes.h"
 
+
 int main(void) {
 //	int x_duoji = 0,i=0;
 	initALL();
@@ -25,7 +26,7 @@ int main(void) {
 			central_search_2(&pix_i,&pix_j,pix_x2,pix_y2);
 			//TargetSteer=3900-24*(pix_j-50);
 			SteerControl();
-			BlueTx();
+			//BlueTx();
 			EMIOS_0.CH[6].CSR.B.FLAG = 1;//清除场中断标志位
 			EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断
 //			EMIOS_0.CH[26].CSR.B.FLAG = 1;//清除场中断标志位_video2

@@ -27,9 +27,10 @@ void Steer_PDSet(void)
 		if(pix_j>58||pix_j<42)
 		{
 			if(targetspeed==straightspeed)
-				Steer_kp=5;
+				Steer_kp=3+0.5*(ABS(pix_j-50)-8);
 			else
 				Steer_kp=8;
+				Steer_kp=5+0.5*(ABS(pix_j-50)-8);
 		}
 		else
 		{

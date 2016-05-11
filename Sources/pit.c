@@ -73,6 +73,8 @@ void PitISR(void)//1ms一个控制周期
 		OLED_SetPointer(2,20);
 		OLED_Num((pix_i));
 		//OLED_Num(OLED_distance1);
+		OLED_SetPointer(2,60);
+		OLED_Num((CurrentSteer));
 		OLED_SetPointer(3,20);
 		OLED_Num((pix_x2));
 		//OLED_Num(OLED_distance2);
