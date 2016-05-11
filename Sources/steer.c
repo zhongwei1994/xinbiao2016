@@ -22,58 +22,35 @@ void SET_steer(unsigned int steer)
 void Steer_PDSet(void)
 {
 	//target_offset=error;
-	if(targetspeed<100)
+	if(pix_i<40)
 	{
-		Steer_kp=6;Steer_kd=0;
-		return;
-	}
-	else if(targetspeed<130)//120-5 8 8 12 12 10//125
-	{
-		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=0;}
-		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<30)  {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<35)  {Steer_kp=12;Steer_kd=0;}
-		else if(ABS(target_offset)<40)  {Steer_kp=12;Steer_kd=0;}
-		else							{Steer_kp=10;Steer_kd=0;}
-		return;
-	}
-	else if(targetspeed<150)
-	{
-		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=5;}
-		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=5;}
-		else if(ABS(target_offset)<30)  {Steer_kp=8;Steer_kd=6;}
-		else if(ABS(target_offset)<35)  {Steer_kp=11;Steer_kd=5;}
-		else if(ABS(target_offset)<40)  {Steer_kp=12;Steer_kd=5;}
-		else                            {Steer_kp=10;Steer_kd=5;}
-		return;
-	}
-	else if(targetspeed<200)
-	{
-		if(ABS(target_offset)<5)        {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=0;}
-		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
-		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
-		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
-		else                            {Steer_kp=14;Steer_kd=0;}
-		return;
+		if(pix_j>58||pix_j<42)
+		{
+			if(targetspeed==straightspeed)
+				Steer_kp=5;
+			else
+				Steer_kp=8;
+		}
+		else
+		{
+			if(targetspeed==straightspeed)
+				Steer_kp=3;
+			else
+				Steer_kp=5;
+		}
 	}
 	else
 	{
-		if(ABS(target_offset)<5)        {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=0;}
-		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
-		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
-		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
-		else                            {Steer_kp=15;Steer_kd=0;}	
+		if(targetspeed==straightspeed)
+			Steer_kp=3;
+		else
+			Steer_kp=5;
 	}
 }
 /*************************¶æ»ú¿ØÖÆ£¬PD***********************/
 void SteerControl(void)
 {
-	if(targetspeed==straightspeed)
-		Steer_kp=3;//5
-	else
-		Steer_kp=5;//8
+	Steer_PDSet();
 	if(barrier_left_flag==1||barrier_right_flag==1||backflag==1)
 	{
 		return;
