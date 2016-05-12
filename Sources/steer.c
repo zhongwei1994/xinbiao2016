@@ -11,7 +11,7 @@
 byte wrong_count=0;
 byte close_supersonic=1,cycle_flag=0;
 byte success=0;
-byte cycle_j=62,turnleft=61;
+byte cycle_j=67,turnleft=65;
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=3,Steer_kd=0;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -22,41 +22,44 @@ void SET_steer(unsigned int steer)
 void Steer_PDSet(void)
 {
 	//target_offset=error;
-	if(pix_i<48)
+	if(pix_i<40)
 	{
 		if(pix_j>58||pix_j<42)
 		{
 			if(pix_j<80&&pix_j>20)
 			{
 				if(targetspeed==straightspeed)
-					Steer_kp=5.2-0.1*(ABS(pix_j-50)-8);
-//					Steer_kp=4.5+0.035*(ABS(pix_j-50)-8);
+//					Steer_kp=4.6-0.025*(ABS(pix_j-50)-8);//①
+//					Steer_kp=5.2-0.1*(ABS(pix_j-50)-8);
+					Steer_kp=3.5+0.2*(ABS(pix_j-50)-8);
 				else
-					Steer_kp=7.2-0.10*(ABS(pix_j-50)-8);
-					//Steer_kp=5+0.17*(ABS(pix_j-50)-8);
+//					Steer_kp=5.5-0.08*(ABS(pix_j-50)-8);//②
+//					Steer_kp=7.2-0.10*(ABS(pix_j-50)-8);
+					Steer_kp=3+1*(ABS(pix_j-50)-8);
 			}
 			else
 			{
 				if(targetspeed==straightspeed)
-					Steer_kp=3;
+					Steer_kp=7.9;//为①中kp末值
 				else
-					Steer_kp=5;
+					Steer_kp=25;//为②中kp末值
 			}
 		}
 		else
 		{
 			if(targetspeed==straightspeed)
-				Steer_kp=3;
+				Steer_kp=3.5;//为①中首值
 			else
-				Steer_kp=7.2;
+				Steer_kp=3+1.5*(ABS(pix_j-50)-8);
+//				Steer_kp=10;//为②中首值
 		}
 	}
 	else
 	{
 		if(targetspeed==straightspeed)
-			Steer_kp=3;
+			Steer_kp=7;//约为①中首值
 		else
-			Steer_kp=7.2;
+			Steer_kp=8;//约为②中首值
 	}
 }
 /*************************舵机控制，PD***********************/
@@ -110,9 +113,9 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-		if(pix_i<29)	
+		if(pix_i<27)	
 		{
-			if(pix_i<28)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+			if(pix_i<27)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
 				close_supersonic=1;
 				targetspeed=straightspeed;
@@ -127,6 +130,15 @@ void SteerControl(void)
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 			if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 			else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
+			//*****5.12新加，高速时限值舵机转角*****//
+			if(targetspeed==straightspeed)
+			{
+				if(Steer_kp*target_offset>170)
+					Steer_PWM[3]=CENTER-210;
+				else if(Steer_kp*target_offset<-170)
+					Steer_PWM[3]=CENTER+210;	
+			}
+			//*****5.12新加，高速时限值舵机转角*****//
 			SET_steer(Steer_PWM[3]);
 			//存舵机值和offset值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
@@ -139,7 +151,7 @@ void SteerControl(void)
 			{
 				success=1;
 			}
-			if(pix_i>50&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
+			if(pix_i>54&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
 			{
 				cycle_flag=1;
 				targetspeed=cyclespeed;

@@ -2,7 +2,6 @@
 //
 #include "includes.h"
 
-
 int main(void) {
 //	int x_duoji = 0,i=0;
 	initALL();
