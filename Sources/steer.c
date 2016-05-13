@@ -26,23 +26,23 @@ void Steer_PDSet(void)
 	{
 		if(pix_j>59)
 		{
-			if(pix_j<72)
+			if(pix_j<74)
 			{
 				if(targetspeed==straightspeed)
 //					Steer_kp=4.6-0.025*(ABS(pix_j-50)-8);//①
 //					Steer_kp=5.2-0.1*(ABS(pix_j-50)-8);
-					Steer_kp=3.5+0.27*(pix_j-59);
+					Steer_kp=3+0.55*(pix_j-59);
 				else
 //					Steer_kp=5.5-0.08*(ABS(pix_j-50)-8);//②
 //					Steer_kp=7.2-0.10*(ABS(pix_j-50)-8);
-					Steer_kp=4+0.6*(pix_j-59);
+					Steer_kp=3.5+1*(pix_j-59);
 			}
 			else
 			{
 				if(targetspeed==straightspeed)
-					Steer_kp=7.55;//为①中kp末值
+					Steer_kp=11.25;//为①中kp末值
 				else
-					Steer_kp=13;//为②中kp末值
+					Steer_kp=18.5;//为②中kp末值
 			}
 		}
 		else
@@ -50,7 +50,7 @@ void Steer_PDSet(void)
 			if(targetspeed==straightspeed)
 				Steer_kp=2+0.12*(ABS(pix_j-59));//为①中首值
 			else		//3.5//
-				Steer_kp=2.5+0.*(ABS(pix_j-59));
+				Steer_kp=2.5+0.07*(ABS(pix_j-59));
 						//4//
 //				Steer_kp=10;//为②中首值
 		}
@@ -127,24 +127,24 @@ void SteerControl(void)
 				targetspeed=cyclespeed;
 			}
 			cycle_flag=0;
-			target_offset=pix_j-53;
+			target_offset=pix_j-51;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 //			if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 //			else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
 			//*****5.12新加，限值舵机转角*****//
 			if(targetspeed==straightspeed)
 			{
-				if(Steer_PWM[3]>4025)
-					Steer_PWM[3]=4025;
-				else if(Steer_PWM[3]<3765)
-					Steer_PWM[3]=3765;	
+				if(Steer_PWM[3]>4000)
+					Steer_PWM[3]=4000;
+				else if(Steer_PWM[3]<3790)
+					Steer_PWM[3]=3790;	
 			}
 			else
 			{
-				if(Steer_PWM[3]>4065)
-					Steer_PWM[3]=4065;
-				else if(Steer_PWM[3]<3725)
-					Steer_PWM[3]=3725;	
+				if(Steer_PWM[3]>4020)
+					Steer_PWM[3]=4020;
+				else if(Steer_PWM[3]<3770)
+					Steer_PWM[3]=3770;	
 			}
 			//*****5.12新加，限值舵机转角*****//
 			SET_steer(Steer_PWM[3]);
