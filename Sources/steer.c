@@ -29,38 +29,41 @@ void Steer_PDSet(void)
 			if(pix_j<74)
 			{
 				if(targetspeed==straightspeed)
-//					Steer_kp=4.6-0.025*(ABS(pix_j-50)-8);//①
-//					Steer_kp=5.2-0.1*(ABS(pix_j-50)-8);
-					Steer_kp=3+0.55*(pix_j-59);
+					Steer_kp=2.5+0.6*(pix_j-59);
+				else if(targetspeed==cyclespeed)
+					Steer_kp=3+0.85*(pix_j-59);
 				else
-//					Steer_kp=5.5-0.08*(ABS(pix_j-50)-8);//②
-//					Steer_kp=7.2-0.10*(ABS(pix_j-50)-8);
 					Steer_kp=3.5+1*(pix_j-59);
 			}
 			else
 			{
 				if(targetspeed==straightspeed)
-					Steer_kp=11.25;//为①中kp末值
+					Steer_kp=11.5;//为①中kp末值
+				else if(targetspeed==cyclespeed)
+					Steer_kp=15.75;//为②中kp末值
 				else
-					Steer_kp=18.5;//为②中kp末值
+					Steer_kp=18.5;
 			}
 		}
 		else
 		{
 			if(targetspeed==straightspeed)
-				Steer_kp=2+0.12*(ABS(pix_j-59));//为①中首值
-			else		//3.5//
-				Steer_kp=2.5+0.07*(ABS(pix_j-59));
-						//4//
-//				Steer_kp=10;//为②中首值
+				Steer_kp=2+0.09*(ABS(pix_j-59));//为①中首值
+			else if(targetspeed==cyclespeed)	
+				Steer_kp=3+0.07*(ABS(pix_j-59));
+			else
+				Steer_kp=3.5+0.09*(ABS(pix_j-59));
+					
 		}
 	}
 	else
 	{
 		if(targetspeed==straightspeed)
 			Steer_kp=5;//约为①中首值
+		else if(targetspeed==cyclespeed)
+			Steer_kp=6;//约为②中首值
 		else
-			Steer_kp=7;//约为②中首值
+			Steer_kp=7;
 	}
 }
 /*************************舵机控制，PD***********************/
@@ -174,16 +177,16 @@ void SteerControl(void)
 			if(pix_i<43)
 			{
 				cycle_flag=0;
-				targetspeed=cyclespeed;
+				targetspeed=turnspeed;
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
 				target_offset=pix_j-59;
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 //				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 //				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
-				if(Steer_PWM[3]>4150)
-					Steer_PWM[3]=4150;
-				else if(Steer_PWM[3]<3620)
-					Steer_PWM[3]=3620;	
+				if(Steer_PWM[3]>4200)
+					Steer_PWM[3]=4200;
+				else if(Steer_PWM[3]<3570)
+					Steer_PWM[3]=3570;	
 				SET_steer(Steer_PWM[3]);
 				//存舵机值和offset值
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
