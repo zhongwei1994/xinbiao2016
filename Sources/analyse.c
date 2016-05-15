@@ -1,121 +1,265 @@
 /*
- * analyse.c
-
+ * analysis.c
 
  *
- *  Created on: Mar 14, 2016
- *      Author: WUSHUN
+ *  Created on: Mar 15, 2016
+ *      Author: wushun
  */
+//目标追寻
 #include "includes.h"
-void central_point(int * pointx,int * pointy)
-{
-	int up=80,down,left=100,right=0,downflag=0;
-	int i = 0,j = 0,n = 0;
-	for(i = 80;i > 0;i--)
-	{
-		for(j = 0;j < 100;j++)
-		{
-			if(a_pix[i][j] > 200&&downflag==0)
-				if(a_pix[i][j+2] < 150&&a_pix[i][j+3] < 150&&a_pix[i][j+4]<150
-				       &&a_pix[i+1][j] >200&&a_pix[i+2][j] >200&&a_pix[i+3][j] >200)
-					{
-					down=i;
-					downflag=1;
-					}
-				else if(a_pix[i][j] > 200)
-				if(a_pix[i][j+1] >200&&a_pix[i][j+2] >200&&a_pix[i][j+3]>200
-					   &&a_pix[i+2][j] <150&&a_pix[i+3][j] <150&&a_pix[i+4][j] <150)
-					{
-					if(left>j)
-						left=j;
-					}
-				else if(a_pix[i][j] > 200)
-				if(a_pix[i][j+1] <150&&a_pix[i][j+2] <150&&a_pix[i][j+3]<150
-						&&a_pix[i+2][j] <150&&a_pix[i+3][j] <150&&a_pix[i+4][j] <150)
-					{
-					if(right<j)
-						right=j;
-					}	
-				else if(a_pix[i][j] > 200)
-								if(a_pix[i][j+1] <150&&a_pix[i][j+2] <150&&a_pix[i][j+3]<150
-										&&a_pix[i+2][j] <150&&a_pix[i+3][j] <150&&a_pix[i+4][j] <150)
-									{
-									if(up>i)
-										up=i;
-									}
-		}
-	}
-	*pointx=(left+right)/2;
-	*pointy=(up+down)/2;
-}
 
+byte pix_x=0,pix_y=0;
+byte pix_x2=0,pix_y2=0;
+byte pix_i=0,pix_j=0;
+byte wrong_flag=0;
 
-void search_lamp(int *pix_x,int *pix_y)
-{
-	int pix_left,pix_right;
-	int i = 0,j = 0,n = 0;
-	int pix_delta[80] = {0},left[80] = {0},right[80] = {0},pix_delta_max = 0,i_max = 0;
-	for(i = 80;i > 0;i--)
-	{
-		for(j = 0;j < 100;j++)
-		{
-			if(a_pix[i][j+4] - a_pix[i][j] > 80)
-				if(a_pix[i][j+5] - a_pix[i][j+1] > 80)
-					if(a_pix[i][j+6] - a_pix[i][j+2] > 80)
-						if(a_pix[i][j+7] - a_pix[i][j+3] > 80)
-							left[n] = j+4;
-			
-			if(a_pix[i][j+4] - a_pix[i][j] < -80)
-						if(a_pix[i][j+5] - a_pix[i][j+1] < -80)
-							if(a_pix[i][j+6] - a_pix[i][j+2] < -80)
-								if(a_pix[i][j+7] - a_pix[i][j+3] < -80)
-									right[n] = j+3;	
-			pix_delta[n] = right[n] - left[n];
-		}
-		n++;
-	}	
-	pix_delta_max = pix_delta[0];
-	i_max = 0;
-	for(i = 0;i < 80;i++)
-	{
-		if(pix_delta_max < pix_delta[i])
-		{
-			pix_delta_max = pix_delta[i];
-			i_max = i;		
-		}
-	}
-	*pix_x = (right[i_max] + left[i_max])/2;
-	*pix_y = i_max;
-}
+//a_pix 80*100
 
-void search_central(int *pix_x,int *pix_y)
-{
-	
-	//int m;
-
-	//if(a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240)
-	//    m=4;
-	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240))
-	//	m=3;
-	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]>240))
-	//	m=2;
-	//if((a_pix[i][j+4]>240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]>240&&a_pix[i+4][j]<240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]>240&&a_pix[i-4][j]<240)||(a_pix[i][j+4]<240&&a_pix[i][j-4]<240&&a_pix[i+4][j]<240&&a_pix[i-4][j]>240))
-	//	m=1;
-	
-	int i,j,m,n,p=0;
-	for(i=m-3;i<=m+3;i++)
+int lamp_judge(byte pix_i,byte pix_j)
+{	
+	int i,j,p=0,p2=0;
+	int flag=0;
+	for(i=pix_i-2;i<=pix_i+2;i++)
 	{
-		for(j=n-3;j<=n+3;j++)
+		for(j=pix_j-1;j<=pix_j+1;j++)
 		{
-		if(a_pix[i][j]>240)
-			p++;
+			if(a_pix[i][j]>video_t2)
+				p2++;
+//			if(a_pix[i][j]>video_t)
+//				p++;
 		}	
 	}
-	if(p>5)
+	if(p2>2)
 	{
-		*pix_x=m;
-		*pix_y=n;
+		flag=1;
 	}
+	return flag;
+}
+void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
+{
+	byte left,right,up,down;
+	byte i,j;
+	if(x<30)
+	{
+		*pix_i=x;
+		*pix_j=y;
+	}
+	else
+	{
+		for(j=y;j<=100;j++)
+		{
+			if(a_pix[x][j]<video_t)//130为判断黑白交界的阈值，可更改，下同
+			{
+				right=j-1;
+				break;
+			}
+		}
+		for(j=y;j>=0;j--)
+		{
+			if(a_pix[x][j]<video_t)
+			{
+				left=j+1;
+				break;
+			}
+		}
+		for(i=x;i<=80;i++)
+		{
+			if(a_pix[i][y]<video_t)
+			{
+				down=i-1;
+				break;
+			}
+		}
+		for(i=x;i>=0;i--)
+		{
+			if(a_pix[i][y]<video_t)
+			{
+				up=i+1;
+				break;
+			}
+		}
+		*pix_i=(up+down)/2;
+		*pix_j=(left+right)/2;
+	}
+}
+byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
+{
+	//byte flag=0;
+	byte i,j;
+	for(i=m;i < line;i+=8)
+	{
+		for(j=n;j < 100;j+=8)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				if(lamp_judge(i,j))
+				{
+					*pix_i = i;
+				    *pix_j = j;
+				    return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+byte point_search_2(byte *pix_i,byte *pix_j)
+{
+	//byte flag=0;
+	byte i,j;
+	for(i=0;i < 40;i+=2)
+	{
+		for(j=0;j < 100;j++)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				if(lamp_judge(i,j))
+				{
+					*pix_i = i;
+				    *pix_j = j;
+				    return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+//以下为近灯塔时从下往上扫描
+byte point_search_3(byte *pix_i,byte *pix_j,byte m,byte n)
+{
+	//byte flag=0;
+	byte i,j;
+	for(i=80-m;i > 32;i-=8)
+	{
+		for(j=n;j < 100;j+=8)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				if(lamp_judge(i,j))
+				{
+					*pix_i = i;
+				    *pix_j = j;
+				    return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+void lamp_search(byte *pix_i,byte *pix_x2,byte *pix_y2)
+{
+	if(*pix_i>35)
+	{
+		lamp_search_1(pix_x2,pix_y2);
+		if(wrong_flag)
+			lamp_search_2(pix_x2,pix_y2);
+	}
+	else
+		lamp_search_2(pix_x2,pix_y2);
 	
 }
-
+void lamp_search_1(byte *pix_i,byte *pix_j)
+{
+	if(point_search_3(pix_i,pix_j,7,7))
+		return;
+	if(point_search_3(pix_i,pix_j,3,3))
+		return;
+	if(point_search_3(pix_i,pix_j,7,3))
+		return;
+	if(point_search_3(pix_i,pix_j,3,7))
+		return;
+	if(point_search_3(pix_i,pix_j,5,5))
+		return;
+	if(point_search_3(pix_i,pix_j,1,1))
+		return;
+	if(point_search_3(pix_i,pix_j,1,5))
+		return;
+	if(point_search_3(pix_i,pix_j,5,1))
+		return;
+	wrong_flag=1;
+}
+void lamp_search_2(byte *pix_i,byte *pix_j)
+{
+	//line的值的调试依据：该次扫描的Line为前一次刚好能扫描到时的白色区域上限值
+	if(point_search(pix_i,pix_j,7,7,80))
+		return;
+	if(point_search(pix_i,pix_j,3,3,80))
+		return;
+	if(point_search(pix_i,pix_j,7,3,70))
+		return;
+	if(point_search(pix_i,pix_j,3,7,70))
+		return;
+	if(point_search(pix_i,pix_j,5,4,60))
+		return;
+	if(point_search(pix_i,pix_j,1,0,60))
+		return;
+	if(point_search(pix_i,pix_j,1,4,50))
+		return;
+	if(point_search(pix_i,pix_j,5,0,50))
+		return;
+	if(point_search(pix_i,pix_j,3,5,50))
+		return;
+	if(point_search(pix_i,pix_j,3,1,40))
+		return;
+	if(point_search(pix_i,pix_j,7,1,40))
+		return;
+	if(point_search(pix_i,pix_j,7,5,40))
+		return;
+	if(point_search(pix_i,pix_j,1,2,40))
+		return;
+	if(point_search(pix_i,pix_j,1,6,40))
+		return;
+	if(point_search(pix_i,pix_j,5,2,40))
+		return;
+	if(point_search(pix_i,pix_j,5,6,40))
+		return;
+	//以上十六组初始坐标仍然寻找不到时，以下十六组坐标将作为补充
+	if(point_search(pix_i,pix_j,1,1,40))
+		return;
+	if(point_search(pix_i,pix_j,1,3,40))
+		return;
+	if(point_search(pix_i,pix_j,1,5,40))
+		return;
+	if(point_search(pix_i,pix_j,1,7,40))
+		return;
+	if(point_search(pix_i,pix_j,3,0,40))
+		return;
+	if(point_search(pix_i,pix_j,3,2,40))
+		return;
+	if(point_search(pix_i,pix_j,3,4,40))
+		return;
+	if(point_search(pix_i,pix_j,3,6,40))
+		return;
+	if(point_search(pix_i,pix_j,5,1,40))
+		return;
+	if(point_search(pix_i,pix_j,5,3,40))
+		return;
+	if(point_search(pix_i,pix_j,5,5,40))
+		return;
+	if(point_search(pix_i,pix_j,5,7,40))
+		return;
+	if(point_search(pix_i,pix_j,7,0,40))
+		return;
+	if(point_search(pix_i,pix_j,7,2,40))
+		return;
+	if(point_search(pix_i,pix_j,7,4,40))
+		return;
+	if(point_search(pix_i,pix_j,7,6,40))
+		return;
+	//如果以上16组坐标仍然找不到，则遍历前40行剩余所有点
+	if(point_search_2(pix_i,pix_j))
+		return;
+	wrong_flag=1;
+}
+//void lamp_search_far_near(byte *pix_i,byte *pix_j)
+//{
+//	lamp_search_2(&pix_x2,&pix_y2,video_t);
+//	if(pix_x2==79&&pix_y2==0)
+//	{
+//		lamp_search_2(&pix_x2,&pix_y2,video_t2);
+//		if(pix_x2==79&&pix_y2==0)
+//		{
+//				
+//		}		
+//	}
+//}

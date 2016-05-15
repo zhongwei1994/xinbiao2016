@@ -21,7 +21,7 @@ int main(void) {
 			//pix_x=0;pix_y=0;
 			pix_x2=0;pix_y2=0;
 			//lamp_search(&pix_x,&pix_y);
-			lamp_search_2(&pix_x2,&pix_y2);
+			lamp_search(&pix_i,&pix_x2,&pix_y2);
 			central_search_2(&pix_i,&pix_j,pix_x2,pix_y2);
 			//TargetSteer=3900-24*(pix_j-50);
 			SteerControl();
@@ -34,7 +34,7 @@ int main(void) {
 //		x_duoji = TargetSteer;
 //		//OLED_Num(x_duoji);
 		KeyJudge();
-		//BlueTx();
+		BlueTx();
 	}
 }
 

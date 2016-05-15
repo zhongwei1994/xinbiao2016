@@ -3,9 +3,9 @@
 
  *
  *  Created on: Mar 15, 2016
- *      Author: zhongwei
+ *      Author: wushun
  */
-
+//目标追寻
 #include "includes.h"
 
 byte pix_x=0,pix_y=0;
@@ -124,6 +124,60 @@ byte point_search_2(byte *pix_i,byte *pix_j)
 	}
 	return 0;
 }
+//以下为近灯塔时从下往上扫描
+byte point_search_3(byte *pix_i,byte *pix_j,byte m,byte n)
+{
+	//byte flag=0;
+	byte i,j;
+	for(i=80-m;i > 32;i-=8)
+	{
+		for(j=n;j < 100;j+=8)
+		{
+			if(a_pix[i][j] > video_t)
+			{
+				if(lamp_judge(i,j))
+				{
+					*pix_i = i;
+				    *pix_j = j;
+				    return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+void lamp_search(byte *pix_i,byte *pix_x2,byte *pix_y2)
+{
+	if(*pix_i>35)
+	{
+		lamp_search_1(pix_x2,pix_y2);
+		if(wrong_flag)
+			lamp_search_2(pix_x2,pix_y2);
+	}
+	else
+		lamp_search_2(pix_x2,pix_y2);
+	
+}
+void lamp_search_1(byte *pix_i,byte *pix_j)
+{
+	if(point_search_3(pix_i,pix_j,7,7))
+		return;
+	if(point_search_3(pix_i,pix_j,3,3))
+		return;
+	if(point_search_3(pix_i,pix_j,7,3))
+		return;
+	if(point_search_3(pix_i,pix_j,3,7))
+		return;
+	if(point_search_3(pix_i,pix_j,5,5))
+		return;
+	if(point_search_3(pix_i,pix_j,1,1))
+		return;
+	if(point_search_3(pix_i,pix_j,1,5))
+		return;
+	if(point_search_3(pix_i,pix_j,5,1))
+		return;
+	wrong_flag=1;
+}
 void lamp_search_2(byte *pix_i,byte *pix_j)
 {
 	//line的值的调试依据：该次扫描的Line为前一次刚好能扫描到时的白色区域上限值
@@ -147,17 +201,17 @@ void lamp_search_2(byte *pix_i,byte *pix_j)
 		return;
 	if(point_search(pix_i,pix_j,3,1,40))
 		return;
-	if(point_search(pix_i,pix_j,5,2,40))
-		return;
-	if(point_search(pix_i,pix_j,1,2,40))
-		return;
-	if(point_search(pix_i,pix_j,5,6,40))
+	if(point_search(pix_i,pix_j,7,1,40))
 		return;
 	if(point_search(pix_i,pix_j,7,5,40))
 		return;
-	if(point_search(pix_i,pix_j,7,1,40))
+	if(point_search(pix_i,pix_j,1,2,40))
 		return;
 	if(point_search(pix_i,pix_j,1,6,40))
+		return;
+	if(point_search(pix_i,pix_j,5,2,40))
+		return;
+	if(point_search(pix_i,pix_j,5,6,40))
 		return;
 	//以上十六组初始坐标仍然寻找不到时，以下十六组坐标将作为补充
 	if(point_search(pix_i,pix_j,1,1,40))

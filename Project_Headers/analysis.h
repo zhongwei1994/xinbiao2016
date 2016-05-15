@@ -8,8 +8,8 @@
 #ifndef ANALYSIS_H_
 #define ANALYSIS_H_
 
-#define video_t 253 
-#define video_t2 250
+#define video_t 240 
+#define video_t2 220
 
 extern byte pix_x,pix_y;
 extern byte pix_x2,pix_y2;
@@ -21,7 +21,10 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y);
 
 byte point_search(byte *pix_i,byte *pix_j,byte i,byte j,byte line);
 byte point_search_2(byte *pix_i,byte *pix_j);
-extern void lamp_search_2(byte *pix_i,byte *pix_j);
+byte point_search_3(byte *pix_i,byte *pix_j,byte m,byte n);
+extern void lamp_search(byte *pix_i,byte *pix_x2,byte *pix_y2);
+void lamp_search_1(byte *pix_i,byte *pix_j);
+void lamp_search_2(byte *pix_i,byte *pix_j);
 //extern void lamp_search_far_near(byte *pix_i,byte *pix_j);
 
 

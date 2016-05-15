@@ -11,7 +11,7 @@
 byte wrong_count=0;
 byte close_supersonic=1,cycle_flag=0;
 byte success=0;
-byte cycle_j=59,turnleft=65;//turnleft为近处目标方向，不宜轻易改变
+byte cycle_j=59,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=3,Steer_kd=0.05;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -24,36 +24,43 @@ void Steer_PDSet(void)
 	//target_offset=error;
 	if(pix_i<55)
 	{
-		if(pix_j>59)
+		if(pix_j>edge)
 		{
-			if(pix_j<74)
+			if(pix_j<edge+15)
 			{
 				if(targetspeed==straightspeed)
-					Steer_kp=2.5+0.6*(pix_j-59);
+					Steer_kp=2.5+0.57*(pix_j-edge);
 				else if(targetspeed==cyclespeed)
-					Steer_kp=3+0.85*(pix_j-59);
+					Steer_kp=3+0.8*(pix_j-edge);
 				else
-					Steer_kp=3.5+1*(pix_j-59);
+					Steer_kp=3+0.9*(pix_j-edge);
 			}
 			else
 			{
 				if(targetspeed==straightspeed)
-					Steer_kp=11.5;//为①中kp末值
+					Steer_kp=11.05;//为①中kp末值
 				else if(targetspeed==cyclespeed)
-					Steer_kp=15.75;//为②中kp末值
+					Steer_kp=15;//为②中kp末值
 				else
-					Steer_kp=18.5;
+					Steer_kp=16.5;
 			}
 		}
 		else
 		{
+			if(pix_j>40)
+			{
 			if(targetspeed==straightspeed)
-				Steer_kp=2+0.09*(ABS(pix_j-59));//为①中首值
+				Steer_kp=3+0.1*(ABS(pix_j-edge));//为①中首值
 			else if(targetspeed==cyclespeed)	
-				Steer_kp=3+0.07*(ABS(pix_j-59));
+				Steer_kp=4+0.1*(ABS(pix_j-edge));
+//				+0.04*(ABS(pix_j-59));
 			else
-				Steer_kp=3.5+0.09*(ABS(pix_j-59));
-					
+				Steer_kp=3.5+0.1*(ABS(pix_j-edge));
+			}
+			else
+			{
+				Steer_kp=5;
+			}
 		}
 	}
 	else
@@ -74,7 +81,7 @@ void SteerControl(void)
 	{
 		return;
 	}
-	if(wrong_flag==1)		
+	if(wrong_flag)		
 	{
 		close_supersonic=1;//触发关闭超声波标志
 		wrong_count++;
@@ -92,7 +99,7 @@ void SteerControl(void)
 		}
 		else
 		{
-			if(wrong_count<=2)	//1或2次没看到灯塔，保持舵机值
+			if(wrong_count<2)	//1次没看到灯塔，保持舵机值
 			{
 				cycle_flag=0;
 				Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
@@ -100,7 +107,7 @@ void SteerControl(void)
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 				return;
 			}
-			else if(wrong_count>=3)	//3次没看到灯塔，向左打足转圈
+			else if(wrong_count>=2)	//2次没看到灯塔，向左打足转圈
 			{
 				cycle_flag=1;
 				targetspeed=cyclespeed;
@@ -130,7 +137,7 @@ void SteerControl(void)
 				targetspeed=cyclespeed;
 			}
 			cycle_flag=0;
-			target_offset=pix_j-51;
+			target_offset=pix_j-53;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 //			if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 //			else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
@@ -162,7 +169,7 @@ void SteerControl(void)
 			{
 				success=1;
 			}
-			if(pix_i>49&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
+			if(pix_i>50&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
 			{
 				cycle_flag=1;
 				targetspeed=cyclespeed;
@@ -174,7 +181,7 @@ void SteerControl(void)
 				return;
 			}
 			//*****5.13新加*****//
-			if(pix_i<43)
+			if(pix_i<40)
 			{
 				cycle_flag=0;
 				targetspeed=turnspeed;
