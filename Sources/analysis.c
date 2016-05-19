@@ -76,9 +76,9 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 				break;
 			}
 		}
-		if(*pix_i>=50&&(up+down)/2<50)
+		if(*pix_i>=40&&(up+down)/2<40)
 		{
-			*pix_i=50;
+			*pix_i=40;
 		}
 		else
 		{

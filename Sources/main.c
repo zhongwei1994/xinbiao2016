@@ -9,6 +9,7 @@ int main(void) {
 	BEE = 1;
 	delay_ms(1000);
 	BEE = 0;
+	//targetspeed=170;
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	for(;;) 	
@@ -33,7 +34,7 @@ int main(void) {
 //		x_duoji = TargetSteer;
 //		//OLED_Num(x_duoji);
 		KeyJudge();
-//		BlueTx();
+		//BlueTx();
 	}
 }
 

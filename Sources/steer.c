@@ -22,17 +22,17 @@ void SET_steer(unsigned int steer)
 /*************************舵机error参数设置***********************/
 void steer_error(void)
 {
-	if(pix_i<28)
-		target_offset=pix_j-(0.9*pix_i+23)-aim;
+	if(pix_i<28)	//远处
+		target_offset=pix_j-(0.3*pix_i+55)-aim;//0.9
 	else if(pix_i<40)
-		target_offset=pix_j-(0.333*pix_i+45.67)-aim;
+		target_offset=pix_j-(0.3*pix_i+55)-aim;//0.333, 45.67
 	else
-		target_offset=pix_j-(0.6*pix_i+38.2)-aim;
+		target_offset=pix_j-(0.6*pix_i+38.2)-aim;//0.6,38.2
 }
 /*************************舵机PD参数设置***********************/
 void Steer_PDSet(void)
 {
-	if(pix_i<50)
+	if(pix_i<40)		//远处
 	{
 		Steer_kp=4;
 	}
@@ -131,6 +131,7 @@ void SteerControl(void)
 			}
 			else if(wrong_count>=2)	//2次没看到灯塔，向左打足转圈
 			{
+				pix_i=0;pix_j=0;
 				cycle_flag=1;
 				targetspeed=cyclespeed;
 				BEE = 1;

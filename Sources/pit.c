@@ -92,7 +92,8 @@ void PitISR(void)//1ms一个控制周期
 //		OLED_Num(close_supersonic);
 		OLED_Num(Steer_kp);
 		OLED_SetPointer(7,20);
-		OLED_Num(cyclespeedright);
+		OLED_Num(targetspeed);
+		//OLED_Num(cyclespeedright);
 		OLED_SetPointer(7,50);
 		OLED_Num(csl);
 		OLED_SetPointer(7,80);
