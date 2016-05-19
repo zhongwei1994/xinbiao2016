@@ -240,46 +240,36 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-//		Speed_kp_Left+=1;
-//		Speed_kp_Right+=1;
-		//Speed_kp_Left+=0.01;
-		//Speed_kp_Right+=0.01;
+		aim-=1;
+//		TargetSteer+=5;
 		//straightspeed+=5;
 		//SET_motor(straightspeed,straightspeed);
-		turnleft+=1;
+//		turnleft+=1;
 		//tsr-=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-//		Speed_kp_Left-=1;
-//		Speed_kp_Right-=1;
+	    aim+=1;
+//	    TargetSteer-=5;
 //	    cyclespeed+=5;
-	    turnleft-=1;
-	    //Speed_kp_Left-=0.01;
-	    //Speed_kp_Right-=0.01;
+//	    turnleft-=1;
 	    //SET_motor(straightspeed,straightspeed);
 	    //tsr+=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-//		Speed_kp_Left+=0.1;
-//		Speed_kp_Right+=0.1;
-		//Speed_ki_Left+=0.1;
-		//Speed_ki_Right+=0.1;
+		Steer_kp-=1;
 //		cycle_j+=1;
 		//SET_motor(straightspeed,straightspeed);
-		cyclespeedright+=10;
+//		cyclespeedright+=10;
 		//tsl-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4; 
-//		Speed_kp_Left-=0.1;
-//		Speed_kp_Right-=0.1;
-		//Speed_ki_Left-=0.1;
-		//Speed_ki_Right-=0.1;
+		Steer_kp+=1;
 //		cycle_j-=1;
 		//SET_motor(straightspeed,straightspeed);
-		cyclespeedright-=10;
+//		cyclespeedright-=10;
 		//tsl+=10;
 		}
 	S3_last=S3;        //保存按键的状态

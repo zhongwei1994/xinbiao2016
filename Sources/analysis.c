@@ -12,9 +12,7 @@ byte pix_x=0,pix_y=0;
 byte pix_x2=0,pix_y2=0;
 byte pix_i=0,pix_j=0;
 byte wrong_flag=0;
-
 //a_pix 80*100
-
 int lamp_judge(byte pix_i,byte pix_j)
 {	
 	int i,j,p=0,p2=0;
@@ -78,8 +76,15 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 				break;
 			}
 		}
-		*pix_i=(up+down)/2;
-		*pix_j=(left+right)/2;
+		if(*pix_i>=50&&(up+down)/2<50)
+		{
+			*pix_i=50;
+		}
+		else
+		{
+			*pix_i=(up+down)/2;
+			*pix_j=(left+right)/2;
+		}
 	}
 }
 byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)

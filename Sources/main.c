@@ -11,7 +11,6 @@ int main(void) {
 	BEE = 0;
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
-	SET_steer(CENTER);
 	for(;;) 	
 	{		
 		if(fieldover)//本场采样结束标志
@@ -34,7 +33,7 @@ int main(void) {
 //		x_duoji = TargetSteer;
 //		//OLED_Num(x_duoji);
 		KeyJudge();
-		BlueTx();
+//		BlueTx();
 	}
 }
 

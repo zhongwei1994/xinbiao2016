@@ -12,13 +12,15 @@
 #define LEFT 4340//左极限角度为4200 //4320
 
 extern byte wrong_count;
+extern byte aim;
 extern byte success;
 extern byte close_supersonic;
 extern byte cycle_j,turnleft;
-extern int target_offset,last_offset;
+extern double target_offset,last_offset,Steer_kp;
 extern unsigned int Steer_PWM[4];
 
 void SET_steer(unsigned int steer);
+void steer_error(void);
 extern void Steer_PDSet(void);
 extern void SteerControl(void);
 extern byte BarrierJudge(void);
