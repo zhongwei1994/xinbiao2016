@@ -22,24 +22,26 @@ void SET_steer(unsigned int steer)
 /*************************舵机error参数设置***********************/
 void steer_error(void)
 {
-	if(pix_i<28)	//远处
-		target_offset=pix_j-(0.3*pix_i+55)-aim;//0.9
-	else if(pix_i<40)
-		target_offset=pix_j-(0.3*pix_i+55)-aim;//0.333, 45.67
+	if(pix_i<30)	//远处
+		target_offset=pix_j-(0.5*pix_i+42.8);//0.9
+	else if(pix_i<43)
+		target_offset=pix_j-(0.385*pix_i+46.245);//0.3, 50.2
 	else
-		target_offset=pix_j-(0.6*pix_i+38.2)-aim;//0.6,38.2
+		target_offset=pix_j-(1*pix_i+19.8);//0.6,38.2
 }
 /*************************舵机PD参数设置***********************/
 void Steer_PDSet(void)
 {
-	if(pix_i<40)		//远处
-	{
-		Steer_kp=4;
-	}
+	if(pix_i<40)
+		Steer_kp=3;
 	else
-	{
 		Steer_kp=10;
-	}
+//	if(pix_i<30)		//远处
+//		Steer_kp=0.167*pix_i-1.008;
+//	else if(pix_i<43)
+//		Steer_kp=0.154*pix_i-0.62;
+//	else
+//		Steer_kp=0.667-22.681;
 }
 //void Steer_PDSet(void)
 //{
@@ -110,7 +112,6 @@ void SteerControl(void)
 		if(success)		//判断到灯塔边上
 		{
 			cycle_flag=1;
-			targetspeed=cyclespeed;
 			BEE = 1;
 			Steer_PWM[3]=RIGHT;
 			SET_steer(Steer_PWM[3]);
@@ -131,9 +132,8 @@ void SteerControl(void)
 			}
 			else if(wrong_count>=2)	//2次没看到灯塔，向左打足转圈
 			{
-				pix_i=0;pix_j=0;
+//				pix_i=0;pix_j=0;
 				cycle_flag=1;
-				targetspeed=cyclespeed;
 				BEE = 1;
 				Steer_PWM[3]=RIGHT;
 				SET_steer(Steer_PWM[3]);
@@ -147,9 +147,9 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-		if(pix_i<28)	
+		if(pix_i<33)	
 		{
-			if(pix_i<28)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+			if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
 				close_supersonic=1;
 				targetspeed=straightspeed;
@@ -195,7 +195,6 @@ void SteerControl(void)
 //			if(pix_i>50&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
 //			{
 //				cycle_flag=1;
-//				targetspeed=cyclespeed;
 //				BEE = 1;
 //				Steer_PWM[3]=RIGHT;
 //				SET_steer(Steer_PWM[3]);
@@ -204,7 +203,7 @@ void SteerControl(void)
 //				return;
 //			}
 			//*****5.13新加*****//
-			if(pix_i<40)
+			if(pix_i<43)
 			{
 				cycle_flag=0;
 				targetspeed=turnspeed;
