@@ -13,7 +13,7 @@ byte aim=0;
 byte close_supersonic=1,cycle_flag=0;
 byte success=0;
 byte cycle_j=59,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
-double target_offset=0,last_offset=0;	//舵机偏差值记录
+double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 /*************************舵机接口函数***********************/
@@ -23,17 +23,33 @@ void SET_steer(unsigned int steer)
 void steer_error(void)
 {
 	if(pix_i<30)	//远处
-		target_offset=pix_j-(0.5*pix_i+42.8);//0.9
+	{
+		target_center=0.5*pix_i+43.5;
+		target_offset=pix_j-target_center;//0.9
+	}
 	else if(pix_i<43)
-		target_offset=pix_j-(0.385*pix_i+46.245);//0.3, 50.2
+	{
+		target_center=0.385*pix_i+46.945;
+		target_offset=pix_j-target_center;//0.3, 50.2
+	}
 	else
-		target_offset=pix_j-(1*pix_i+19.8);//0.6,38.2
+	{
+		target_center=1*pix_i+20.5;
+		target_offset=pix_j-target_center;//0.6,38.2
+	}
 }
 /*************************舵机PD参数设置***********************/
 void Steer_PDSet(void)
 {
 	if(pix_i<40)
-		Steer_kp=3;
+	{
+		if(ABS(pix_j-target_center)<10)
+		{
+			Steer_kp=3+0.2*ABS(pix_j-target_center)+0.05*(pix_i-27);
+		}
+		else
+			Steer_kp=5+0.05*(pix_i-27);
+	}
 	else
 		Steer_kp=10;
 //	if(pix_i<30)		//远处
@@ -147,9 +163,9 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-		if(pix_i<33)	
+		if(pix_i<34)	
 		{
-			if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+			if(pix_i<34)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
 				close_supersonic=1;
 				targetspeed=straightspeed;
@@ -167,17 +183,17 @@ void SteerControl(void)
 			//*****5.12新加，限值舵机转角*****//
 			if(targetspeed==straightspeed)
 			{
-				if(Steer_PWM[3]>4100)
-					Steer_PWM[3]=4100;
-				else if(Steer_PWM[3]<3690)
-					Steer_PWM[3]=3690;	
+				if(Steer_PWM[3]>4020)
+					Steer_PWM[3]=4020;
+				else if(Steer_PWM[3]<3714)
+					Steer_PWM[3]=3714;	
 			}
 			else
 			{
-				if(Steer_PWM[3]>4120)
-					Steer_PWM[3]=4120;
-				else if(Steer_PWM[3]<3670)
-					Steer_PWM[3]=3670;	
+				if(Steer_PWM[3]>4020)
+					Steer_PWM[3]=4020;
+				else if(Steer_PWM[3]<3714)
+					Steer_PWM[3]=3714;	
 			}
 			//*****5.12新加，限值舵机转角*****//
 			SET_steer(Steer_PWM[3]);
@@ -212,10 +228,10 @@ void SteerControl(void)
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 //				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 //				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
-				if(Steer_PWM[3]>4200)
-					Steer_PWM[3]=4200;
-				else if(Steer_PWM[3]<3570)
-					Steer_PWM[3]=3570;	
+				if(Steer_PWM[3]>4100)
+					Steer_PWM[3]=4100;
+				else if(Steer_PWM[3]<3634)
+					Steer_PWM[3]=3634;	
 				SET_steer(Steer_PWM[3]);
 				//存舵机值和offset值
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
