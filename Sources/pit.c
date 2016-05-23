@@ -20,7 +20,7 @@ void initPIT(void)
 	udelay(1);
 	PIT.CH[1].LDVAL.R = 6000000;      // PIT1 timeout = 6000000 sysclks x 1sec/80M sysclks = 75 msec 
 	PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
-	INTC_InstallINTCInterruptHandler(PitISR,60,10); 
+	INTC_InstallINTCInterruptHandler(PitISR,60,12); 
 }
 
 void PitISR(void)//1ms一个控制周期
@@ -30,16 +30,16 @@ void PitISR(void)//1ms一个控制周期
 	{
 		BEE=1;
 		barrier_delay++;
-		if(barrier_delay>=4)				//延时后右转
-		{
-			SET_steer(RIGHT);
-		}
-		if(barrier_delay>=5)				//右转延时
+//		if(barrier_delay>=2)				
+//		{
+//			SET_steer(RIGHT);
+//		}
+		if(barrier_delay>=2)			
 		{
 			barrier_delay=0;
 			BEE=0;
 			barrier_left_flag=0;
-			//barrier_right_flag=0;
+//			barrier_right_flag=0;
 		}
 	}
 //	else if(BarrierJudge()==2)               //障碍物判断，右转
