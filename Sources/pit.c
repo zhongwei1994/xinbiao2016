@@ -26,22 +26,22 @@ void initPIT(void)
 void PitISR(void)//1ms一个控制周期
 {
 	pitcount0++;                                  //5ms一次清零
-//	if(BarrierJudge()==1)                  //障碍物判断，左转
-//	{
-//		BEE=1;
-//		barrier_delay++;
-//		if(barrier_delay>=4)				//延时后右转
-//		{
-//			SET_steer(RIGHT);
-//		}
-//		if(barrier_delay>=9)				//右转延时
-//		{
-//			barrier_delay=0;
-//			BEE=0;
-//			barrier_left_flag=0;
-//			barrier_right_flag=0;
-//		}
-//	}
+	if(BarrierJudge()==1)                  //障碍物判断，左转
+	{
+		BEE=1;
+		barrier_delay++;
+		if(barrier_delay>=4)				//延时后右转
+		{
+			SET_steer(RIGHT);
+		}
+		if(barrier_delay>=5)				//右转延时
+		{
+			barrier_delay=0;
+			BEE=0;
+			barrier_left_flag=0;
+			//barrier_right_flag=0;
+		}
+	}
 //	else if(BarrierJudge()==2)               //障碍物判断，右转
 //	{
 //		BEE=1;
@@ -58,14 +58,14 @@ void PitISR(void)//1ms一个控制周期
 //			barrier_right_flag=0;
 //		}
 //	}
-//	else
-//	{
-//		if(close_supersonic==0)
-//		{
-//			trigger_supersonic_1();
-//			trigger_supersonic_2();
-//		}
-//	}
+	else
+	{
+		if(close_supersonic==0)
+		{
+			//trigger_supersonic_1();
+			trigger_supersonic_2();
+		}
+	}
 	if(pitcount0>13)
 	{
 		pitcount0=0;
@@ -81,13 +81,14 @@ void PitISR(void)//1ms一个控制周期
 		OLED_Num((target_offset*100));
 		//OLED_Num(OLED_distance2);
 		OLED_SetPointer(4,20);
-//		OLED_Num(OLED_distance1);
 		OLED_Num(straightspeed);
 		OLED_SetPointer(4,60);
 		OLED_Num(Steer_kp*10);
 		OLED_SetPointer(5,20);
-//		OLED_Num(OLED_distance2);
-		OLED_Num(cyclespeed);
+		OLED_Char('d');
+		OLED_SetPointer(5,40);
+		OLED_Num(OLED_distance2);
+//		OLED_Num(cyclespeed);
 		OLED_SetPointer(6,50);
 //		OLED_Num(close_supersonic);
 		OLED_Num(Steer_kp);

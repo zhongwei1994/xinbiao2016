@@ -22,19 +22,19 @@ void SET_steer(unsigned int steer)
 /*************************舵机error参数设置***********************/
 void steer_error(void)
 {
-	if(pix_i<30)	//远处
+	if(pix_i<29)	//远处
 	{
-		target_center=0.5*pix_i+43.5;
+		target_center=0.3*pix_i+51.3;//0.5,43.5
 		target_offset=pix_j-target_center;//0.9
 	}
-	else if(pix_i<43)
+	else if(pix_i<40)
 	{
-		target_center=0.385*pix_i+46.945;
+		target_center=0.364*pix_i+49.44;//0.385,46.945
 		target_offset=pix_j-target_center;//0.3, 50.2
 	}
 	else
 	{
-		target_center=1*pix_i+20.5;
+		target_center=0.778*pix_i+32.88;//1,19.8
 		target_offset=pix_j-target_center;//0.6,38.2
 	}
 }
@@ -117,7 +117,7 @@ void Steer_PDSet(void)
 void SteerControl(void)
 {
 	Steer_PDSet();
-	if(barrier_left_flag==1||barrier_right_flag==1||backflag==1)
+	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)
 	{
 		return;
 	}
@@ -163,17 +163,17 @@ void SteerControl(void)
 	{
 		wrong_count=0;
 		BEE=0;
-		if(pix_i<34)	
+		if(pix_i<32)	
 		{
-			if(pix_i<34)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+			if(pix_i<28)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 			{
-				close_supersonic=1;
+				close_supersonic=0;
 				targetspeed=straightspeed;
 			}
 			else				//在近处，现在超声全关了
 			{  
 				close_supersonic=1;//触发关闭超声波标志
-				targetspeed=cyclespeed;
+				targetspeed=straightspeed;
 			}
 			cycle_flag=0;
 			steer_error();
@@ -219,7 +219,7 @@ void SteerControl(void)
 //				return;
 //			}
 			//*****5.13新加*****//
-			if(pix_i<43)
+			if(pix_i<40)
 			{
 				cycle_flag=0;
 				targetspeed=turnspeed;
@@ -263,16 +263,20 @@ void SteerControl(void)
 }
 byte BarrierJudge(void)	//超声优先级
 {
+	if(blf_cnt>=2)
+	{
+		targetspeed=cyclespeed;
+	}
 	if(barrier_left_flag==1)
 	{
 		SET_steer(LEFT);
 		return 1;
 	}
-	else if(barrier_right_flag==1)
-	{
-		SET_steer(RIGHT);
-		return 2;
-	}
+//	else if(barrier_right_flag==1)
+//	{
+//		SET_steer(RIGHT);
+//		return 2;
+//	}
 	else
 		return 0;
 }

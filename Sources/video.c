@@ -51,7 +51,7 @@ void RowInputCapture(void) 		//²¶×½ÐÐÖÐ¶Ï
 			//a_pix[prow][pcolumn]=Y4*16+Y5*32+Y6*64+Y7*128;
 			//a_pix[prow][pcolumn]=Y5*32+Y6*64+Y7*128;
 			__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);__asm(nop);
-			__asm(nop);__asm(nop);  
+			__asm(nop);__asm(nop); __asm(nop);  __asm(nop); 
 		}
 		prow++;
 		if(prow<amp_start)
