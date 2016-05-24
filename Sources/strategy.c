@@ -9,19 +9,18 @@
 
 unsigned char s_data=0;
 unsigned char S[5]={0,0,0,0,0};
-unsigned char lamp_turn=0;   //灯的序号
+unsigned char lamp_turn=5;   //灯的序号
 unsigned char switch_flag=0;  //转换标志位
 
 void Strategy_Switch(void)  //灯塔切换
 {
-	if(switch_flag==3)
+	if(switch_flag==1)
 	{
 		lamp_turn++;
 		if(lamp_turn>=5)
 			lamp_turn=0;
 	}
 }
-
 void Strategy_Judge(void)  //判断左右转
 {
 	if(S[lamp_turn]==0)     //左转

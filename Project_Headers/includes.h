@@ -49,6 +49,7 @@ typedef unsigned long int DWORD;
 #include "supersonic.h"
 #include "pit.h"
 #include "SD.h"
+#include "strategy.h"
 
 #define ABS(x)              ((x) > 0 ? (x) : 0-(x))
 

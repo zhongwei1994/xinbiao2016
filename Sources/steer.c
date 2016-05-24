@@ -151,6 +151,7 @@ void SteerControl_left(void)
 			SET_steer(Steer_PWM[3]);//存舵机值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 			success=0;
+			switch_flag=0;
 			return;
 		}
 		else
@@ -213,9 +214,10 @@ void SteerControl_left(void)
 		else
 		{
 			close_supersonic=1;//触发关闭超声波标志
-			if(pix_i>48)
+			if(pix_i>42)
 			{
 				success=1;
+				switch_flag++;
 			}
 			if(pix_i>cycle_i&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
 			{
