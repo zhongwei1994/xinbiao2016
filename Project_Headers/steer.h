@@ -22,7 +22,8 @@ extern unsigned int Steer_PWM[4];
 void SET_steer(unsigned int steer);
 void steer_error(void);
 extern void Steer_PDSet(void);
-extern void SteerControl(void);
+extern void SteerControl_left(void);
+extern void SteerControl_right(void);
 extern byte BarrierJudge(void);
 
 
