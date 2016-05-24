@@ -126,7 +126,7 @@ void PitISR2(void)
 	}
 	else
 	{
-			SpeedControl();
+			//SpeedControl();
 	}
 	PIT.CH[2].TFLG.B.TIF = 1;
 }
