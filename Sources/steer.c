@@ -19,22 +19,41 @@ unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
 {EMIOS_0.CH[4].CBDR.R = steer;}
-/*************************舵机error参数设置***********************/
-void steer_error(void)
+/*************************向左转时舵机error参数设置***********************/
+void steer_error_left(void)
 {
 	if(pix_i<29)	//远处
 	{
-		target_center=0.3*pix_i+51;//-0.3
+		target_center=0.3*pix_i+51.3;
 		target_offset=pix_j-target_center;
 	}
 	else if(pix_i<40)
 	{
-		target_center=0.364*pix_i+49.14;//-0.3
+		target_center=0.364*pix_i+49.44;
 		target_offset=pix_j-target_center;
 	}
 	else
 	{
-		target_center=0.778*pix_i+32.58;//-0.3
+		target_center=0.778*pix_i+32.88;
+		target_offset=pix_j-target_center;
+	}
+}
+/*************************向右转时舵机error参数设置***********************/
+void steer_error_right(void)
+{
+	if(pix_i<29)	//远处
+	{
+		target_center=-0.3*pix_i+53.7;
+		target_offset=pix_j-target_center;
+	}
+	else if(pix_i<40)
+	{
+		target_center=-0.364*pix_i+55.924;
+		target_offset=pix_j-target_center;
+	}
+	else
+	{
+		target_center=-0.778*pix_i+72.12;
 		target_offset=pix_j-target_center;
 	}
 }
@@ -168,7 +187,7 @@ void SteerControl_left(void)
 			else				//在近处，现在超声全关了
 				close_supersonic=1;//触发关闭超声波标志
 			cycle_flag=0;
-			steer_error();
+			steer_error_left();
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 			//*****5.12新加，限制舵机转角*****//
 			if(targetspeed==straightspeed)
@@ -212,7 +231,7 @@ void SteerControl_left(void)
 				cycle_flag=0;
 				targetspeed=turnspeed;
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				steer_error();
+				steer_error_left();
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 				if(Steer_PWM[3]>4100)
 					Steer_PWM[3]=4100;
@@ -226,7 +245,7 @@ void SteerControl_left(void)
 			{
 				cycle_flag=0;
 				targetspeed=cyclespeed;
-				steer_error();
+				steer_error_left();
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 				//*****5.12新加，限值舵机转角*****//
 				if(Steer_PWM[3]>4150)
@@ -303,7 +322,7 @@ void SteerControl_right(void)
 				targetspeed=straightspeed;
 			}
 			cycle_flag=0;
-			steer_error();
+			steer_error_right();
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 //			if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 //			else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
@@ -351,7 +370,7 @@ void SteerControl_right(void)
 				cycle_flag=0;
 				targetspeed=turnspeed;
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				steer_error();
+				steer_error_right();
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 //				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 //				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
@@ -370,7 +389,7 @@ void SteerControl_right(void)
 				cycle_flag=0;
 				targetspeed=cyclespeed;
 				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				steer_error();
+				steer_error_right();
 				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 //				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 //				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
