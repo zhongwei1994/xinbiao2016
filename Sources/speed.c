@@ -11,7 +11,7 @@ byte backflag=0;
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int targetspeed=0,Motor_PWM_MAX=400,Motor_PWM_MIN=-400;
-int cyclespeed=120,turnspeed=120,straightspeed=190,cyclespeedleft=120,cyclespeedright=95;
+int cyclespeed=120,turnspeed=120,straightspeed=200,cyclespeedleft=100,cyclespeedright=80;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************²îËÙ²ÎÊı***************************/
 signed int Speed_kc=15000;
