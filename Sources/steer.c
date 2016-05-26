@@ -24,19 +24,19 @@ void steer_error_left(void)
 {
 	if(pix_i<27)	//Ô¶´¦
 	{
-		target_center=0.417*pix_i+48.745+aim;
+		target_center=0.465*pix_i+50.745+aim;
 		//target_center=0.3*pix_i+52.3;
 		target_offset=pix_j-target_center;
 	}
 	else if(pix_i<40)
 	{
-		target_center=0.308*pix_i+51.68+aim;
+		target_center=0.169*pix_i+58.74+aim;
 		//target_center=0.364*pix_i+50.44;
 		target_offset=pix_j-target_center;
 	}
 	else
 	{
-		target_center=1*pix_i+24+aim;
+		target_center=0.85*pix_i+31.5+aim;
 		//target_center=0.778*pix_i+33.88;
 		target_offset=pix_j-target_center;
 	}
@@ -70,7 +70,7 @@ void Steer_PDSet(void)
 	{
 		if(ABS(pix_j-target_center)<10)
 		{
-			Steer_kp=3+0.2*ABS(pix_j-target_center)+0.05*(pix_i-27);
+			Steer_kp=3+2*ABS(pix_j-target_center)+0.1*(pix_i-27);
 		}
 		else
 			Steer_kp=5+0.05*(pix_i-27);
