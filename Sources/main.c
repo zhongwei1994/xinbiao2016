@@ -8,10 +8,9 @@ int main(void) {
 	initPIT();
 	BEE = 1;
 	delay_ms(1000);
-	//targetspeed=170;
-	SET_motor(100,100);
-	//EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
-	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
+	Strategy_Input();
+	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
+	EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	for(;;) 	
 	{		
 		if(fieldover)//本场采样结束标志

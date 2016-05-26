@@ -89,9 +89,10 @@ void PitISR(void)//1ms一个控制周期
 		OLED_SetPointer(5,40);
 		OLED_Num(OLED_distance2);
 //		OLED_Num(cyclespeed);
-		OLED_SetPointer(6,50);
-//		OLED_Num(close_supersonic);
-		OLED_Num(Steer_kp);
+		OLED_SetPointer(6,20);
+		OLED_Char('l');
+		OLED_SetPointer(6,40);
+		OLED_Num(lamp_turn);
 		OLED_SetPointer(7,20);
 		OLED_Num(targetspeed);
 		//OLED_Num(cyclespeedright);
@@ -127,7 +128,7 @@ void PitISR2(void)
 	}
 	else
 	{
-			//SpeedControl();
+			SpeedControl();
 	}
 	PIT.CH[2].TFLG.B.TIF = 1;
 }

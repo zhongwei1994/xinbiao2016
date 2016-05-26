@@ -8,7 +8,7 @@
 #ifndef STRATEGY_H_
 #define STRATEGY_H_
 
-extern unsigned char s_data;
+extern unsigned char s_data,lamp_turn;
 extern unsigned char switch_flag;  //转换标志位
 
 void Strategy_Switch();

@@ -16,6 +16,7 @@ void Strategy_Switch(void)  //µÆËþÇÐ»»
 {
 	if(switch_flag==1)
 	{
+		switch_flag=0;
 		lamp_turn++;
 		if(lamp_turn>=5)
 			lamp_turn=0;
@@ -25,11 +26,11 @@ void Strategy_Judge(void)  //ÅÐ¶Ï×óÓÒ×ª
 {
 	if(S[lamp_turn]==0)     //×ó×ª
 	{
-		;
+		SteerControl_left();
 	}
 	else                    //ÓÒ×ª
 	{
-		;
+		SteerControl_right();
 	}
 }
 
