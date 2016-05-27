@@ -14,6 +14,11 @@ unsigned int Ti=ROWS-1;
 unsigned int Tj=0;
 int CurrentSteer=0;
 
+unsigned char RX_data=0;
+unsigned char RX_flag=0;
+unsigned char RX_i=0,RX_j=0;
+unsigned char X[16]={0},Y[25]={0},Z[11]={0};
+
 unsigned char S3_last=1;
 unsigned char S4_last=1;
 unsigned char S5_last=1;
@@ -230,6 +235,73 @@ void BlueTx(void)                             //À¶ÑÀ·¢Êý¾Ý
 		break;
 	}
 	}
+}
+
+void LINFlex_RX_Interrupt(void)
+{
+	RX_data=LINFLEX_0.BDRM.B.DATA4;
+	if(RX_data==69)
+	{
+		switch(RX_flag){
+		case 1:
+			straightspeed=X[1]*100+X[2]*10+X[3];
+			turnspeed=X[4]*100+X[4]*10+X[6];
+			cyclespeed=X[7]*100+X[8]*10+X[9];
+			cyclespeedleft=X[10]*100+X[11]*10+X[12];
+			cyclespeedright=X[13]*100+X[14]*10+X[15];
+			RX_flag=0;
+			break;
+		case 2:
+			Speed_kp_Left=(double)(Y[1]*10+Y[2])+((double)(Y[3]*10+Y[4]))/100;
+			Speed_ki_Left=(double)(Y[5]*10+Y[6])+((double)(Y[7]*10+Y[8]))/100;
+			Speed_kd_Left=(double)(Y[9]*10+Y[10])+((double)(Y[11]*10+Y[12]))/100;
+			Speed_kp_Right=(double)(Y[13]*10+Y[14])+((double)(Y[15]*10+Y[16]))/100;
+			Speed_ki_Right=(double)(Y[17]*10+Y[18])+((double)(Y[19]*10+Y[20]))/100;
+			Speed_kd_Right=(double)(Y[21]*10+Y[22])+((double)(Y[23]*10+Y[24]))/100;
+			RX_flag=0;
+			break;
+		case 3:
+			aim=Z[1]*10+Z[2];
+			aim2=Z[3]*10+Z[4];
+			cycle_i=Z[5]*10+Z[6];
+			cycle_j=Z[7]*10+Z[8];
+			s_data=Z[9]*10+Z[10];
+			RX_flag=0;
+			break;
+		}
+	}
+	else if(RX_data==88)
+	{
+		RX_flag=1;
+		RX_i=0;
+	}
+	else if(RX_data==89)
+	{
+		RX_flag=2;
+		RX_i=0;
+	}
+	else if(RX_data==90)
+	{
+		RX_flag=3;
+		RX_i=0;
+	}
+	switch(RX_flag){
+	case 0:
+		break;
+	case 1:
+		X[RX_i]=RX_data-48;
+		RX_i++;
+		break;
+	case 2:
+		Y[RX_i]=RX_data-48;
+		RX_i++;
+		break;
+	case 3:
+		Z[RX_i]=RX_data-48;
+		RX_i++;
+		break;
+	}
+	LINFLEX_0.UARTSR.B.DRF=1;
 }
 
 //********************************************************************************************************

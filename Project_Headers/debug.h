@@ -19,6 +19,9 @@ extern unsigned long time2;
 extern unsigned long time3;
 extern unsigned long time3_2;
 
+extern unsigned char X[16],Y[25],Z[11];
+extern unsigned char RX_data;
+
 extern unsigned char S3_last;
 extern unsigned char S4_last;
 extern unsigned char S5_last;
@@ -28,6 +31,7 @@ extern unsigned long TimeMesure(void);
 void BlueTx(void); 
 void LINFlex_TX(unsigned char data);
 void LINFlex_TX_Interrupt(void);
+void LINFlex_RX_Interrupt(void);
 void KeyJudge(void);
 
 #endif /* DEBUG_H_ */

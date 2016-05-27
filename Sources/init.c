@@ -233,7 +233,8 @@ void initLINFlex_0_UART(void)
 {
 	LINFLEX_0.LINCR1.B.INIT=1;  //进入初始化模式
 	LINFLEX_0.LINCR1.R=0x00000015; 
-	LINFLEX_0.LINIER.B.DTIE=0; //允许发送中断
+	LINFLEX_0.LINIER.B.DTIE=0; //禁止发送中断
+	LINFLEX_0.LINIER.B.DRIE=1; //允许接收中断
 	/*波特率算法baud=Fperiph_clk/(16*LFDIV)
 	DIV_M=LFDIV整数部分
 	DIV_F=LFDIV小数部分*16  */
@@ -246,6 +247,7 @@ void initLINFlex_0_UART(void)
 	
 	SIU.PCR[18].R = 0x0400;    /* MPC56xxB: Configure port B2 as LIN0TX */
     SIU.PCR[19].R = 0x0103;    /* MPC56xxB: Configure port B3 as LIN0RX */
+    INTC_InstallINTCInterruptHandler(LINFlex_RX_Interrupt,79,13); 
   //	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,6); 
 }
 /*************************超声波初始化***********************/

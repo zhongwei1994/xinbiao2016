@@ -70,6 +70,15 @@ void PitISR(void)//1ms一个控制周期
 	{
 		pitcount0=0;
 		OLED_Fill(0x00);
+		
+		OLED_SetPointer(1,20);
+		OLED_Str("r: ");
+		OLED_Num(RX_data);
+		OLED_Str("z6: ");
+		OLED_Num(Speed_kd_Left*100);
+		OLED_Str("  ");
+		OLED_Num(Speed_ki_Right*100);
+		
 		OLED_SetPointer(2,20);
 		OLED_Num((pix_i));
 		//OLED_Num(OLED_distance1);
