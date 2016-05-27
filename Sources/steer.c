@@ -70,13 +70,13 @@ void Steer_PDSet(void)
 	{
 		if(ABS(pix_j-target_center)<10)
 		{
-			Steer_kp=3+2*ABS(pix_j-target_center)+0.1*(pix_i-27);
+			Steer_kp=3.5+0.5*ABS(pix_j-target_center)+0.1*(pix_i-20);
 		}
 		else
-			Steer_kp=5+0.05*(pix_i-27);
+			Steer_kp=4+0.1*(pix_i-20);
 	}
 	else
-		Steer_kp=10;
+		Steer_kp=1*(pix_i-40)+5;
 //	if(pix_i<30)		//远处
 //		Steer_kp=0.167*pix_i-1.008;
 //	else if(pix_i<43)
@@ -142,7 +142,7 @@ void Steer_PDSet(void)
 void SteerControl_left(void)
 {
 	Steer_PDSet();
-	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)
+	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)//①障碍物降速
 	{
 		return;
 	}
@@ -233,7 +233,7 @@ void SteerControl_left(void)
 		else
 		{
 			close_supersonic=1;//触发关闭超声波标志
-			if(pix_i>42)
+			if(pix_i>47)
 			{
 				success=1;
 			}
@@ -324,7 +324,6 @@ void SteerControl_right(void)
 				}
 //				pix_i=0;pix_j=0;
 				cycle_flag=1;
-				cycle_flag=1;
 				Steer_PWM[3]=RIGHT;
 				SET_steer(Steer_PWM[3]);
 				//存舵机值
@@ -380,7 +379,7 @@ void SteerControl_right(void)
 		else
 		{
 			close_supersonic=1;//触发关闭超声波标志
-			if(pix_i>42)
+			if(pix_i>47)
 			{
 				success=1;
 			}

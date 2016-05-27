@@ -76,15 +76,15 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 				break;
 			}
 		}
-		if(*pix_i>=40&&(up+down)/2<40)
-		{
-			*pix_i=40;
-		}
-		else
-		{
+//		if(*pix_i>=40&&(up+down)/2<40)//当行数检测到40以上时便限制行数下降到40以下，防止舵机p值及速度波动
+//		{
+//			*pix_i=40;
+//		}
+//		else
+//		{
 			*pix_i=(up+down)/2;
 			*pix_j=(left+right)/2;
-		}
+//		}
 	}
 }
 byte point_search(byte *pix_i,byte *pix_j,byte m,byte n,byte line)
