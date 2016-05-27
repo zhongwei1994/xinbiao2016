@@ -142,7 +142,7 @@ void Steer_PDSet(void)
 void SteerControl_left(void)
 {
 	Steer_PDSet();
-	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)
+	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)//①障碍物降速
 	{
 		return;
 	}
@@ -233,7 +233,7 @@ void SteerControl_left(void)
 		else
 		{
 			close_supersonic=1;//触发关闭超声波标志
-			if(pix_i>42)
+			if(pix_i>47)
 			{
 				success=1;
 			}
@@ -324,7 +324,6 @@ void SteerControl_right(void)
 				}
 //				pix_i=0;pix_j=0;
 				cycle_flag=1;
-				cycle_flag=1;
 				Steer_PWM[3]=RIGHT;
 				SET_steer(Steer_PWM[3]);
 				//存舵机值
@@ -380,7 +379,7 @@ void SteerControl_right(void)
 		else
 		{
 			close_supersonic=1;//触发关闭超声波标志
-			if(pix_i>42)
+			if(pix_i>47)
 			{
 				success=1;
 			}
