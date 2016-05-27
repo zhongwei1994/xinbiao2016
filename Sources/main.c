@@ -6,11 +6,10 @@ int main(void) {
 //	int x_duoji = 0,i=0;
 	initALL();
 	initPIT();
-	BEE = 1;
 	delay_ms(1000);
 	Strategy_Input();
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
-	EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
+	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	for(;;) 	
 	{		
 		if(fieldover)//本场采样结束标志
@@ -26,7 +25,7 @@ int main(void) {
 			//SteerControl_right();
 			Strategy_Switch();
 			Strategy_Judge();
-			BlueTx();
+			//BlueTx();
 			EMIOS_0.CH[6].CSR.B.FLAG = 1;//清除场中断标志位
 			EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断
 //			EMIOS_0.CH[26].CSR.B.FLAG = 1;//清除场中断标志位_video2

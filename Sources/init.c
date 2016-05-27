@@ -179,7 +179,7 @@ void initEMIOS_0Image(void)
 //	EMIOS_0.CH[5].CCR.B.FEN=1;  //interupt enbale
 	SIU.PCR[30].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
 	SIU.PSMI[16].R=1;//E0UC[6]选择B14
-	INTC_InstallINTCInterruptHandler(FieldInputCapture,144,7);
+	INTC_InstallINTCInterruptHandler(FieldInputCapture,144,13);
 	
 	//B13行中断捕捉上升沿
 	EMIOS_0.CH[5].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 

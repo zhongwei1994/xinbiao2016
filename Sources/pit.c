@@ -96,7 +96,8 @@ void PitISR(void)//1ms一个控制周期
 		OLED_SetPointer(5,20);
 		OLED_Char('d');
 		OLED_SetPointer(5,40);
-		OLED_Num(OLED_distance2);
+		OLED_Str("aim: ");
+		OLED_Num(aim);
 //		OLED_Num(cyclespeed);
 		OLED_SetPointer(6,20);
 		OLED_Char('l');
