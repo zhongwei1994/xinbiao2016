@@ -9,7 +9,7 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=1.5,aim2=0;
+byte aim=1.5,aim2=4;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
 byte success=0;
 byte cycle_i=58,cycle_j=58,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
@@ -47,21 +47,21 @@ void steer_error_left(void)
 /*************************向右转时舵机error参数设置***********************/
 void steer_error_right(void)
 {
-	if(pix_i<29)	//远处
+	if(pix_i<27)	//远处
 	{
-		target_center=-0.3*pix_i+58.7+aim2;
+		target_center=-0.235*pix_i+52.35+aim2;
 		//target_center=-0.3*pix_i+56.7;
 		target_offset=pix_j-target_center;
 	}
 	else if(pix_i<40)
 	{
-		target_center=-0.364*pix_i+61.924+aim2;
+		target_center=-0.538*pix_i+60.52+aim2;
 		//target_center=-0.364*pix_i+59.924;
 		target_offset=pix_j-target_center;
 	}
 	else
 	{
-		target_center=-0.778*pix_i+78.12+aim2;
+		target_center=-0.4*pix_i+55+aim2;
 		//target_center=-0.778*pix_i+76.12;
 		target_offset=pix_j-target_center;
 	}
@@ -87,60 +87,6 @@ void Steer_PDSet(void)
 //	else
 //		Steer_kp=0.667-22.681;
 }
-//void Steer_PDSet(void)
-//{
-//	//target_offset=error;
-//	if(pix_i<55)
-//	{
-//		if(pix_j>edge)
-//		{
-//			if(pix_j<edge+15)
-//			{
-//				if(targetspeed==straightspeed)
-//					Steer_kp=2.5+0.57*(pix_j-edge);
-//				else if(targetspeed==cyclespeed)
-//					Steer_kp=3+0.8*(pix_j-edge);
-//				else
-//					Steer_kp=3+0.9*(pix_j-edge);
-//			}
-//			else
-//			{
-//				if(targetspeed==straightspeed)
-//					Steer_kp=11.05;//为①中kp末值
-//				else if(targetspeed==cyclespeed)
-//					Steer_kp=15;//为②中kp末值
-//				else
-//					Steer_kp=16.5;
-//			}
-//		}
-//		else
-//		{
-//			if(pix_j>40)
-//			{
-//			if(targetspeed==straightspeed)
-//				Steer_kp=3+0.1*(ABS(pix_j-edge));//为①中首值
-//			else if(targetspeed==cyclespeed)	
-//				Steer_kp=4+0.1*(ABS(pix_j-edge));
-////				+0.04*(ABS(pix_j-59));
-//			else
-//				Steer_kp=3.5+0.1*(ABS(pix_j-edge));
-//			}
-//			else
-//			{
-//				Steer_kp=5;
-//			}
-//		}
-//	}
-//	else
-//	{
-//		if(targetspeed==straightspeed)
-//			Steer_kp=5;//约为①中首值
-//		else if(targetspeed==cyclespeed)
-//			Steer_kp=6;//约为②中首值
-//		else
-//			Steer_kp=7;
-//	}
-//}
 /*************************舵机控制向左转U型弯，PD***********************/
 void SteerControl_left(void)
 {
@@ -298,8 +244,7 @@ void SteerControl_right(void)
 		wrong_count++;
 		if(success)		//判断到灯塔边上
 		{
-			cycle_flag=1;
-			Steer_PWM[3]=RIGHT;
+			cycle_flag=0;
 			SET_steer(Steer_PWM[3]);//存舵机值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 			success=0;
@@ -315,7 +260,7 @@ void SteerControl_right(void)
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 				return;
 			}
-			else if(wrong_count>=2)	//2次没看到灯塔，向左打足转圈
+			else if(wrong_count>=2)	//2次没看到灯塔，向右打足转圈
 			{
 				if(start_flag==0)
 				{
@@ -327,7 +272,6 @@ void SteerControl_right(void)
 				}
 //				pix_i=0;pix_j=0;
 				cycle_flag=1;
-				Steer_PWM[3]=RIGHT;
 				SET_steer(Steer_PWM[3]);
 				//存舵机值
 				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];

@@ -127,7 +127,7 @@ void BlueTx(void)                             //À¶ÑÀ·¢Êý¾Ý
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=4;
+				Ts=1;
 				break;}
 	case 1:
 		LINFlex_TX(video);
