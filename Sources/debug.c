@@ -17,7 +17,8 @@ int CurrentSteer=0;
 unsigned char RX_data=0;
 unsigned char RX_flag=0;
 unsigned char RX_i=0,RX_j=0;
-unsigned char X[16]={0},Y[25]={0},Z[11]={0};
+int X[16]={0};
+ unsigned char Y[25]={0},Z[11]={0};
 
 unsigned char S3_last=1;
 unsigned char S4_last=1;
@@ -127,7 +128,7 @@ void BlueTx(void)                             //À¶ÑÀ·¢Êý¾Ý
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=1;
+				Ts=4;
 				break;}
 	case 1:
 		LINFlex_TX(video);

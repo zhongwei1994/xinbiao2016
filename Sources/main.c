@@ -25,7 +25,7 @@ int main(void) {
 			//SteerControl_right();
 			Strategy_Switch();
 			Strategy_Judge();
-			BlueTx();
+			//BlueTx();
 			EMIOS_0.CH[6].CSR.B.FLAG = 1;//清除场中断标志位
 			EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断
 //			EMIOS_0.CH[26].CSR.B.FLAG = 1;//清除场中断标志位_video2
@@ -33,7 +33,7 @@ int main(void) {
 		}
 //		x_duoji = TargetSteer;
 //		//OLED_Num(x_duoji);
-		KeyJudge();
+		//KeyJudge();
 		//BlueTx();
 	}
 }

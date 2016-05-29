@@ -9,10 +9,10 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=1.5,aim2=4;
+byte aim=3,aim2=6.5;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
 byte success=0;
-byte cycle_i=58,cycle_j=58,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
+byte cycle_i=58,cycle_j=62,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -90,150 +90,6 @@ void Steer_PDSet(void)
 /*************************舵机控制向左转U型弯，PD***********************/
 void SteerControl_left(void)
 {
-	Steer_PDSet();
-	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)//①障碍物降速
-	{
-		return;
-	}
-	if(wrong_flag)		
-	{
-		close_supersonic=1;//触发关闭超声波标志
-		wrong_count++;
-		if(success)		//判断到灯塔边上
-		{
-			cycle_flag=0;
-			//Steer_PWM[3]=LEFT;
-			//SET_steer(Steer_PWM[3]);//存舵机值
-			//Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			success=0;
-			return;
-		}
-		else
-		{
-			if(wrong_count<=1)	//1次没看到灯塔，保持舵机值
-			{
-				cycle_flag=0;
-				Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
-				SET_steer(Steer_PWM[3]);
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				return;
-			}
-			else if(wrong_count>=2)	//2次没看到灯塔，向左打足转圈
-			{
-				if(start_flag==0)
-				{
-					Steer_PWM[3]=CENTER;
-				}
-				else
-				{
-					Steer_PWM[3]=LEFT;
-				}
-	//			pix_i=0;pix_j=0;
-				cycle_flag=1;
-				SET_steer(Steer_PWM[3]);
-				//存舵机值
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				return;
-			}
-		}
-	}
-	else
-	{
-		start_flag=1;
-		if(wrong_count>=2)
-			switch_flag=1;
-		wrong_count=0;
-		if(pix_i<33)	
-		{
-			if(pix_i<30)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
-			{
-				close_supersonic=0;
-				targetspeed=straightspeed;
-			}
-			else				//在近处，现在超声全关了
-				{
-				close_supersonic=1;//触发关闭超声波标志
-				targetspeed=turnspeed;
-				}
-			cycle_flag=0;
-			steer_error_left();
-			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
-			//*****5.12新加，限制舵机转角*****//
-			if(targetspeed==straightspeed)
-			{
-				if(Steer_PWM[3]>4020)
-					Steer_PWM[3]=4020;
-				else if(Steer_PWM[3]<3714)
-					Steer_PWM[3]=3714;	
-			}
-			else
-			{
-				if(Steer_PWM[3]>4020)
-					Steer_PWM[3]=4020;
-				else if(Steer_PWM[3]<3714)
-					Steer_PWM[3]=3714;	
-			}
-			//*****5.12新加，限制舵机转角*****//
-			SET_steer(Steer_PWM[3]);
-			//存舵机值和offset值
-			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			last_offset=target_offset;
-		}
-		else
-		{
-			close_supersonic=1;//触发关闭超声波标志
-			if(pix_i>47)
-			{
-				success=1;
-			}
-//			if(pix_i>cycle_i&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
-//			{
-//				cycle_flag=1;
-//				Steer_PWM[3]=LEFT;
-//				SET_steer(Steer_PWM[3]);
-//				//存舵机值
-//				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-//				return;
-//			}
-			if(pix_i<42)
-			{
-				cycle_flag=0;
-				targetspeed=turnspeed;
-				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				steer_error_left();
-				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
-				if(Steer_PWM[3]>4100)
-					Steer_PWM[3]=4100;
-				else if(Steer_PWM[3]<3634)
-					Steer_PWM[3]=3634;	
-				SET_steer(Steer_PWM[3]);//存舵机值和offset值
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				last_offset=target_offset;
-			}
-			else		//靠近灯塔，但位置不符合灯塔在右下角条件，稍微跑偏一点预转向
-			{
-				cycle_flag=0;
-				targetspeed=cyclespeed;
-				steer_error_left();
-				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
-				//*****5.12新加，限值舵机转角*****//
-				if(Steer_PWM[3]>4150)
-					Steer_PWM[3]=4150;
-				else if(Steer_PWM[3]<3620)
-					Steer_PWM[3]=3620;	
-				//*****5.12新加，限值舵机转角*****//
-				SET_steer(Steer_PWM[3]);
-				//存舵机值和offset值
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				last_offset=target_offset;
-			}
-		}
-	}	
-}
-/*************************舵机控制向右转U型弯，PD***********************/
-void SteerControl_right(void)
-{
-	Steer_PDSet();
 	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)
 	{
 		return;
@@ -242,42 +98,23 @@ void SteerControl_right(void)
 	{
 		close_supersonic=1;//触发关闭超声波标志
 		wrong_count++;
-		if(success)		//判断到灯塔边上
+		if(wrong_count<1)	//1次没看到灯塔，保持舵机值
 		{
 			cycle_flag=0;
-			SET_steer(Steer_PWM[3]);//存舵机值
-			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			success=0;
-			return;
+			Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
 		}
-		else
+		else if(wrong_count>=2)	//2次没看到灯塔，向右打足转圈
 		{
-			if(wrong_count<1)	//1次没看到灯塔，保持舵机值
-			{
-				cycle_flag=0;
-				Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
-				SET_steer(Steer_PWM[3]);
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				return;
-			}
-			else if(wrong_count>=2)	//2次没看到灯塔，向右打足转圈
-			{
-				if(start_flag==0)
-				{
-					Steer_PWM[3]=CENTER;
-				}
-				else
-				{
-					Steer_PWM[3]=RIGHT;
-				}
-//				pix_i=0;pix_j=0;
-				cycle_flag=1;
-				SET_steer(Steer_PWM[3]);
-				//存舵机值
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				return;
-			}
+			cycle_flag=1;
+			if(start_flag==0)
+				Steer_PWM[3]=CENTER;
+			else
+				Steer_PWM[3]=LEFT;
+//			if(success)
+//				success=0;
 		}
+		SET_steer(Steer_PWM[3]);
+		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 	}
 	else
 	{
@@ -285,103 +122,142 @@ void SteerControl_right(void)
 		if(wrong_count>=2)
 			switch_flag=1;
 		wrong_count=0;
-		if(pix_i<33)	
+		cycle_flag=0;
+		Steer_PDSet();
+		steer_error_left();
+		if(pix_i>cycle_i&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
 		{
-			if(pix_i<30)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
-			{
-				close_supersonic=0;
-				targetspeed=straightspeed;
-			}
-			else				//在近处，现在超声全关了
-			{  
-				close_supersonic=1;//触发关闭超声波标志
-				targetspeed=turnspeed;
-			}
-			cycle_flag=0;
-			steer_error_right();
-			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
-//			if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
-//			else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
-			//*****5.12新加，限值舵机转角*****//
-			if(targetspeed==straightspeed)
-			{
-				if(Steer_PWM[3]>4020)
-					Steer_PWM[3]=4020;
-				else if(Steer_PWM[3]<3714)
-					Steer_PWM[3]=3714;	
-			}
-			else
-			{
-				if(Steer_PWM[3]>4020)
-					Steer_PWM[3]=4020;
-				else if(Steer_PWM[3]<3714)
-					Steer_PWM[3]=3714;	
-			}
-			//*****5.12新加，限值舵机转角*****//
+			cycle_flag=1;
+			Steer_PWM[3]=LEFT;
 			SET_steer(Steer_PWM[3]);
-			//存舵机值和offset值
+			//存舵机值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			last_offset=target_offset;
+			return;
+		}
+		if(pix_i<30)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+		{
+			close_supersonic=0;
+			targetspeed=straightspeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
+			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
+		}
+		else if(pix_i<33)
+		{
+			close_supersonic=1;//触发关闭超声波标志
+			targetspeed=turnspeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
+			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
+		}
+		else if(pix_i<42)
+		{
+			close_supersonic=1;//触发关闭超声波标志
+			targetspeed=turnspeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4100) Steer_PWM[3]=4100;
+			else if(Steer_PWM[3]<3634) Steer_PWM[3]=3634;	
 		}
 		else
 		{
 			close_supersonic=1;//触发关闭超声波标志
-			if(pix_i>47)
-			{
-				success=1;
-			}
-//			if(pix_i>cycle_i&&pix_j<(100-cycle_j))		//靠近灯塔，位置符合灯塔在左下角条件，开始转向
-//			{
-//				cycle_flag=1;
-//				Steer_PWM[3]=RIGHT;
-//				SET_steer(Steer_PWM[3]);
-//				//存舵机值
-//				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-//				return;
-//			}
-			//*****5.13新加*****//
-			if(pix_i<42)
-			{
-				cycle_flag=0;
-				targetspeed=turnspeed;
-				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				steer_error_right();
-				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
-//				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
-//				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
-				if(Steer_PWM[3]>4100)
-					Steer_PWM[3]=4100;
-				else if(Steer_PWM[3]<3634)
-					Steer_PWM[3]=3634;	
-				SET_steer(Steer_PWM[3]);
-				//存舵机值和offset值
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				last_offset=target_offset;
-			}
-			//*****5.13新加*****//
-			else		//靠近灯塔，但位置不符合灯塔在右下角条件，稍微跑偏一点预转向
-			{
-				cycle_flag=0;
-				targetspeed=cyclespeed;
-				//小车离灯塔较近时为了使小车不直接朝灯塔跑，将目标值46进行修正如下
-				steer_error_right();
-				Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
-//				if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
-//				else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
-				//*****5.12新加，限值舵机转角*****//
-				if(Steer_PWM[3]>4150)
-					Steer_PWM[3]=4150;
-				else if(Steer_PWM[3]<3620)
-					Steer_PWM[3]=3620;	
-				//*****5.12新加，限值舵机转角*****//
-				SET_steer(Steer_PWM[3]);
-				//存舵机值和offset值
-				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-				last_offset=target_offset;
-			}
+			targetspeed=cyclespeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4150) Steer_PWM[3]=4150;
+			else if(Steer_PWM[3]<3620) Steer_PWM[3]=3620;	
 		}
-	}	
+		SET_steer(Steer_PWM[3]);
+		//存舵机值和offset值
+		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+		last_offset=target_offset;
+	}
 }
+/*************************舵机控制向右转U型弯，PD***********************/
+void SteerControl_right(void)
+{
+	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)
+	{
+		return;
+	}
+	if(wrong_flag)		
+	{
+		close_supersonic=1;//触发关闭超声波标志
+		wrong_count++;
+		if(wrong_count<1)	//1次没看到灯塔，保持舵机值
+		{
+			cycle_flag=0;
+			Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+		}
+		else if(wrong_count>=2)	//2次没看到灯塔，向右打足转圈
+		{
+			cycle_flag=1;
+			if(start_flag==0)
+				Steer_PWM[3]=CENTER;
+			else
+				Steer_PWM[3]=RIGHT;
+//			if(success)
+//				success=0;
+		}
+		SET_steer(Steer_PWM[3]);
+		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+	}
+	else
+	{
+		start_flag=1;
+		if(wrong_count>=2)
+			switch_flag=1;
+		wrong_count=0;
+		cycle_flag=0;
+		Steer_PDSet();
+		steer_error_right();
+		if(pix_i>cycle_i&&pix_j<100-cycle_j)		//靠近灯塔，位置符合灯塔在左下角条件，开始转向
+		{
+			cycle_flag=1;
+			Steer_PWM[3]=RIGHT;
+			SET_steer(Steer_PWM[3]);
+			//存舵机值
+			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+			return;
+		}
+		if(pix_i<30)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+		{
+			close_supersonic=0;
+			targetspeed=straightspeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
+			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
+		}
+		else if(pix_i<33)
+		{
+			close_supersonic=1;//触发关闭超声波标志
+			targetspeed=turnspeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
+			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
+		}
+		else if(pix_i<42)
+		{
+			close_supersonic=1;//触发关闭超声波标志
+			targetspeed=turnspeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4100) Steer_PWM[3]=4100;
+			else if(Steer_PWM[3]<3634) Steer_PWM[3]=3634;	
+		}
+		else
+		{
+			close_supersonic=1;//触发关闭超声波标志
+			targetspeed=cyclespeed;
+			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+			if(Steer_PWM[3]>4150) Steer_PWM[3]=4150;
+			else if(Steer_PWM[3]<3620) Steer_PWM[3]=3620;	
+		}
+		SET_steer(Steer_PWM[3]);
+		//存舵机值和offset值
+		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+		last_offset=target_offset;
+	}
+}
+
 byte BarrierJudge(void)	//超声优先级
 {
 	if(blf_cnt>=2)
@@ -401,4 +277,3 @@ byte BarrierJudge(void)	//超声优先级
 	else
 		return 0;
 }
-

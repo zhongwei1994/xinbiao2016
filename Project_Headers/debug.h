@@ -19,7 +19,8 @@ extern unsigned long time2;
 extern unsigned long time3;
 extern unsigned long time3_2;
 
-extern unsigned char X[16],Y[25],Z[11];
+extern int X[16];
+extern unsigned char Y[25],Z[11];
 extern unsigned char RX_data;
 
 extern unsigned char S3_last;
