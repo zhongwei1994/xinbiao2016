@@ -9,10 +9,10 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=3,aim2=6.5;
+byte aim=5,aim2=9;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
 byte success=0;
-byte cycle_i=58,cycle_j=62,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
+byte cycle_i=60,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -61,7 +61,7 @@ void steer_error_right(void)
 	}
 	else
 	{
-		target_center=-0.4*pix_i+55+aim2;
+		target_center=-0.35*pix_i+53+aim2;
 		//target_center=-0.778*pix_i+76.12;
 		target_offset=pix_j-target_center;
 	}
