@@ -70,46 +70,67 @@ void PitISR(void)//1ms一个控制周期
 	{
 		pitcount0=0;
 		OLED_Fill(0x00);
-		
-		OLED_SetPointer(1,20);
+		//1
+		OLED_SetPointer(1,0);
 		OLED_Str("r: ");
 		OLED_Num(RX_data);
 		OLED_Str("z6: ");
 		OLED_Num(Speed_kd_Left*100);
 		OLED_Str("  ");
 		OLED_Num(Speed_ki_Right*100);
-		
-		OLED_SetPointer(2,20);
+		//2
+		OLED_SetPointer(2,0);
+		OLED_Str("pix_i: ");
+		OLED_SetPointer(2,40);
 		OLED_Num((pix_i));
 		//OLED_Num(OLED_distance1);
-		OLED_SetPointer(2,60);
+		OLED_SetPointer(2,55);
+		OLED_Str("pix_j: ");
+		OLED_SetPointer(2,95);
 		OLED_Num((pix_j));
-		OLED_SetPointer(3,20);
+		//3
+		OLED_SetPointer(3,0);
+		OLED_Str("TStr: ");
+		OLED_SetPointer(3,35);
 		OLED_Num((TargetSteer));
-		OLED_SetPointer(3,60);
+		OLED_SetPointer(3,65);
+		OLED_Str("Toff: ");
+		OLED_SetPointer(3,95);
 		OLED_Num((target_offset*100));
 		//OLED_Num(OLED_distance2);
-		OLED_SetPointer(4,20);
+		//4
+		OLED_SetPointer(4,0);
+		OLED_Str("SSpd: ");
+		OLED_SetPointer(4,35);
 		OLED_Num(straightspeed);
 		OLED_SetPointer(4,60);
+		OLED_Str("StrKp: ");
 		OLED_Num(Steer_kp*10);
-		OLED_SetPointer(5,20);
-		OLED_Char('d');
-		OLED_SetPointer(5,40);
+		//5
+//		OLED_SetPointer(5,20);
+//		OLED_Char('d');
+		OLED_SetPointer(5,0);
 		OLED_Str("aim: ");
 		OLED_Num(aim);
 //		OLED_Num(cyclespeed);
-		OLED_SetPointer(6,20);
-		OLED_Char('l');
-		OLED_SetPointer(6,40);
+		//6
+		OLED_SetPointer(6,0);
+		OLED_Str("No: ");
 		OLED_Num(lamp_turn);
-		OLED_SetPointer(7,20);
+		OLED_SetPointer(6,40);
+		OLED_Str("TarSpd: ");
 		OLED_Num(targetspeed);
 		//OLED_Num(cyclespeedright);
-		OLED_SetPointer(7,50);
+		//7
+		OLED_SetPointer(7,0);
+		OLED_Str("kp: ");
 		OLED_Num(Speed_kp_Left);
-		OLED_SetPointer(7,80);
+		OLED_SetPointer(7,40);
+		OLED_Str("ki: ");
 		OLED_Num(Speed_ki_Left);	
+		OLED_SetPointer(7,80);
+		OLED_Str("kd: ");
+		OLED_Num(Speed_kd_Left);	
 //		OLED_Num(distance_T);
 //		OLED_Num(targetspeed);
 	}
