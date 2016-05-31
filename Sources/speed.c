@@ -19,9 +19,13 @@ signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 double r=0;
 //**********************电机PID参数**********************************************;	
-signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
-double Speed_kp_Left=10,Speed_ki_Left=2,Speed_kd_Left=5;//12,0.6
-double Speed_kp_Right=10,Speed_ki_Right=2,Speed_kd_Right=5;	//12,0.85
+double Speed_kp_Left=12,Speed_ki_Left=1,Speed_kd_Left=0;//12,0.6
+double Speed_kp_Right=13,Speed_ki_Right=1,Speed_kd_Right=0;	//12,0.85
+
+int ErrorLeft=0,PreErrorLeft=0,Pre2ErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,Pre2ErrorRight=0,SumErrorRight=0;
+int intErrorLeft=0,intErrorRight=0;
+float Pwm_Delta_Left=0,Pwm_Delta_Right=0; 
+int tsl_PWM=0,tsr_PWM=0,tsr_Delta=0,error_Delta=0;
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
 {
@@ -111,6 +115,40 @@ void SpeedControl(void)//闭环,加差速,后左轮
 	
 	SET_motor(tsl,tsr);
 	
+	PreErrorLeft=ErrorLeft;
+	PreErrorRight=ErrorRight;
+}
+
+void SpeedControl2(void)//速度控制增量式
+{
+	if(cycle_flag)
+	{
+		tsl=cyclespeedleft;
+		tsr=cyclespeedright;
+	}
+	else
+	{
+		tsl=targetspeed;
+		tsr=targetspeed;
+	}
+	ErrorLeft=tsl-csl;
+	ErrorRight=tsr-csr;
+	
+	tsl_PWM+=(int)(Speed_kp_Left*(ErrorLeft-PreErrorLeft)+Speed_ki_Left*ErrorLeft+Speed_kd_Left*(ErrorLeft+Pre2ErrorLeft-2*PreErrorLeft));
+	
+	tsr_Delta=(int)(Speed_kp_Right*(ErrorRight-PreErrorRight)+Speed_ki_Right*ErrorRight+Speed_kd_Right*(ErrorRight+Pre2ErrorRight-2*PreErrorRight));
+	tsr_PWM+=tsr_Delta;
+
+	if(tsl_PWM>Motor_PWM_MAX)  tsl_PWM=Motor_PWM_MAX;
+	else if(tsl_PWM<Motor_PWM_MIN)  tsl_PWM=Motor_PWM_MIN;	    
+	if(tsr_PWM>Motor_PWM_MAX)  tsr_PWM=Motor_PWM_MAX;
+	else if(tsr_PWM<Motor_PWM_MIN)  tsr_PWM=Motor_PWM_MIN;
+
+	SET_motor(tsl_PWM,tsr_PWM);
+	//SET_motor(100,100);
+	
+	Pre2ErrorLeft=PreErrorLeft;
+	Pre2ErrorRight=PreErrorRight;
 	PreErrorLeft=ErrorLeft;
 	PreErrorRight=ErrorRight;
 }
