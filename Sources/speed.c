@@ -10,8 +10,8 @@
 byte backflag=0;
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
-int targetspeed=0,Motor_PWM_MAX=400,Motor_PWM_MIN=-400;
-int cyclespeed=150,turnspeed=150,straightspeed=270,cyclespeedleft=150,cyclespeedright=105;
+int targetspeed=0,Motor_PWM_MAX=480,Motor_PWM_MIN=-480;
+int cyclespeed=100,turnspeed=100,straightspeed=170,cyclespeedleft=110,cyclespeedright=90;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
@@ -19,8 +19,8 @@ signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 double r=0;
 //**********************电机PID参数**********************************************;	
-double Speed_kp_Left=12,Speed_ki_Left=1,Speed_kd_Left=0;//12,0.6
-double Speed_kp_Right=13,Speed_ki_Right=1,Speed_kd_Right=0;	//12,0.85
+double Speed_kp_Left=0.1,Speed_ki_Left=0.2,Speed_kd_Left=0;//12,0.6
+double Speed_kp_Right=0.1,Speed_ki_Right=0.2,Speed_kd_Right=0;	//12,0.85
 
 int ErrorLeft=0,PreErrorLeft=0,Pre2ErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,Pre2ErrorRight=0,SumErrorRight=0;
 int intErrorLeft=0,intErrorRight=0;
@@ -83,8 +83,8 @@ void SpeedControl(void)//闭环,加差速,后左轮
 //	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
 //	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
 //	SET_motor(tsl,tsr);
-//	if(start_flag==0)
-//		return;
+	if(start_flag==0)
+		return;
 	if(cycle_flag)
 	{
 		tsl=cyclespeedleft;
