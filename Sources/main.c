@@ -9,6 +9,7 @@ int main(void) {
 	delay_ms(1000);
 	Strategy_Input();
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
+	targetspeed=270;
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	for(;;) 	
 	{		
@@ -23,8 +24,8 @@ int main(void) {
 			central_search_2(&pix_i,&pix_j,pix_x2,pix_y2);
 			//TargetSteer=3900-24*(pix_j-50);
 			//SteerControl_right();
-			Strategy_Switch();
-			Strategy_Judge();
+//			Strategy_Switch();
+//			Strategy_Judge();
 			BlueTx();
 			EMIOS_0.CH[6].CSR.B.FLAG = 1;//清除场中断标志位
 			EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断
