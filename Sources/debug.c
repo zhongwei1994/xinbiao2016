@@ -171,10 +171,10 @@ void BlueTx(void)                             //蓝牙发数据
 //		LINFlex_TX(SendHexLow(pix_x2));
 //		LINFlex_TX(SendHexHigh(pix_y2));
 //		LINFlex_TX(SendHexLow(pix_y2));
-//		LINFlex_TX(SendHexHigh(pix_i));
-//		LINFlex_TX(SendHexLow(pix_i));
-//		LINFlex_TX(SendHexHigh(pix_j));
-//		LINFlex_TX(SendHexLow(pix_j));
+		LINFlex_TX(SendHexHigh(pix_i));
+		LINFlex_TX(SendHexLow(pix_i));
+		LINFlex_TX(SendHexHigh(pix_j));
+		LINFlex_TX(SendHexLow(pix_j));
 		//发送亮点周围10*10个点的灰度值
 //		LINFlex_TX(SendHexHigh(a_pix[pix_i-1][pix_j-1]));
 //		LINFlex_TX(SendHexLow(a_pix[pix_i-1][pix_j-1]));

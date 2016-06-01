@@ -121,6 +121,8 @@ void SpeedControl(void)//闭环,加差速,后左轮
 
 void SpeedControl2(void)//速度控制增量式
 {
+	if(start_flag==0)
+		return;
 	if(cycle_flag)
 	{
 		tsl=cyclespeedleft;

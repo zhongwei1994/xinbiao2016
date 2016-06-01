@@ -9,10 +9,10 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=5,aim2=9;
+byte aim=2,aim2=2;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
 byte success=0;
-byte cycle_i=60,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
+byte cycle_i=56,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -24,21 +24,21 @@ void steer_error_left(void)
 {
 	if(pix_i<27)	//远处
 	{
-		target_center=0.375*pix_i+51.875+aim;
+		target_center=0.375*pix_i+46.875+aim;
 		//target_center=0.465*pix_i+50.745+aim;
 		//target_center=0.3*pix_i+52.3;
 		target_offset=pix_j-target_center;
 	}
 	else if(pix_i<40)
 	{
-		target_center=0.269*pix_i+54.74+aim;
+		target_center=0.269*pix_i+49.74+aim;
 		//target_center=0.169*pix_i+58.74+aim;
 		//target_center=0.364*pix_i+50.44;
 		target_offset=pix_j-target_center;
 	}
 	else
 	{
-		target_center=0.9*pix_i+29+aim;
+		target_center=0.9*pix_i+24+aim;
 		//target_center=0.85*pix_i+31.5+aim;
 		//target_center=0.778*pix_i+33.88;
 		target_offset=pix_j-target_center;
@@ -49,19 +49,19 @@ void steer_error_right(void)
 {
 	if(pix_i<27)	//远处
 	{
-		target_center=-0.235*pix_i+52.35+aim2;
+		target_center=-0.235*pix_i+50.35+aim2;
 		//target_center=-0.3*pix_i+56.7;
 		target_offset=pix_j-target_center;
 	}
 	else if(pix_i<40)
 	{
-		target_center=-0.538*pix_i+60.52+aim2;
+		target_center=-0.538*pix_i+58.52+aim2;
 		//target_center=-0.364*pix_i+59.924;
 		target_offset=pix_j-target_center;
 	}
 	else
 	{
-		target_center=-0.35*pix_i+53+aim2;
+		target_center=-0.35*pix_i+51+aim2;
 		//target_center=-0.778*pix_i+76.12;
 		target_offset=pix_j-target_center;
 	}
@@ -73,13 +73,13 @@ void Steer_PDSet(void)
 	{
 		if(ABS(pix_j-target_center)<10)
 		{
-			Steer_kp=3+0.5*ABS(pix_j-target_center)+0.05*(pix_i-20);
+			Steer_kp=2.7+0.1*ABS(pix_j-target_center)+0.05*(pix_i-20);
 		}
 		else
-			Steer_kp=3.5+0.1*(pix_i-20);
+			Steer_kp=3.7+0.05*(pix_i-20);
 	}
 	else
-		Steer_kp=1*(pix_i-40)+4.5;
+		Steer_kp=1*(pix_i-40)+4.5;//4.5
 //	if(pix_i<30)		//远处
 //		Steer_kp=0.167*pix_i-1.008;
 //	else if(pix_i<43)
