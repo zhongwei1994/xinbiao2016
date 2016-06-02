@@ -46,7 +46,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 	{
 		for(j=y;j<=100;j++)
 		{
-			if(a_pix[x][j]<video_t)//130为判断黑白交界的阈值，可更改，下同
+			if(a_pix[x][j]<video_t&&a_pix[x][j+1]<video_t)//130为判断黑白交界的阈值，可更改，下同
 			{
 				right=j-1;
 				break;
@@ -54,7 +54,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		}
 		for(j=y;j>=0;j--)
 		{
-			if(a_pix[x][j]<video_t)
+			if(a_pix[x][j]<video_t&&a_pix[x][j-1]<video_t)
 			{
 				left=j+1;
 				break;
@@ -62,7 +62,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		}
 		for(i=x;i<=80;i++)
 		{
-			if(a_pix[i][y]<video_t)
+			if(a_pix[i][y]<video_t&&a_pix[i+1][y]<video_t)
 			{
 				down=i-1;
 				break;
@@ -70,7 +70,7 @@ void central_search_2(byte *pix_i,byte *pix_j,byte x,byte y)
 		}
 		for(i=x;i>=0;i--)
 		{
-			if(a_pix[i][y]<video_t)
+			if(a_pix[i][y]<video_t&&a_pix[i-1][y]<video_t)
 			{
 				up=i+1;
 				break;

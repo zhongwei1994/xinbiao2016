@@ -214,11 +214,11 @@ void BlueTx(void)                             //蓝牙发数据
 //		LINFlex_TX(SendInt3(tsr));
 //		LINFlex_TX(SendInt4(tsr));
 		//发舵机值
-//		CurrentSteer=TargetSteer;
-//		LINFlex_TX(SendInt1(CurrentSteer));
-//		LINFlex_TX(SendInt2(CurrentSteer));
-//		LINFlex_TX(SendInt3(CurrentSteer));
-//		LINFlex_TX(SendInt4(CurrentSteer));
+		CurrentSteer=TargetSteer;
+		LINFlex_TX(SendInt1(CurrentSteer));
+		LINFlex_TX(SendInt2(CurrentSteer));
+		LINFlex_TX(SendInt3(CurrentSteer));
+		LINFlex_TX(SendInt4(CurrentSteer));
 		//发舵机值
 //		LINFlex_TX(SendUnsignedLong1(time3));
 //		LINFlex_TX(SendUnsignedLong2(time3));
