@@ -28,7 +28,6 @@ void PitISR(void)//1ms一个控制周期
 	pitcount0++;                                  //5ms一次清零
 	if(BarrierJudge()==1)                  //障碍物判断，左转
 	{
-		BEE=1;
 		barrier_delay++;
 //		if(barrier_delay>=2)				
 //		{
@@ -37,7 +36,6 @@ void PitISR(void)//1ms一个控制周期
 		if(barrier_delay>=2)			
 		{
 			barrier_delay=0;
-			BEE=0;
 			barrier_left_flag=0;
 //			barrier_right_flag=0;
 		}
@@ -149,26 +147,6 @@ void PitISR2(void)
 //		pitcount1=0;
 //	}
 	SpeedCount();
-	if(backflag)
-	{
-		if(pitcount6>20)
-		{
-			pitcount6=0;
-			backflag=0;
-		}
-		else
-		{
-			pitcount6++;
-			Steer_PWM[3]=4000;
-			SET_steer(Steer_PWM[3]);
-			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			SET_motor(-255,-255);
-		}
-
-	}
-	else
-	{
-		SpeedControl2();
-	}
+	SpeedControl2();
 	PIT.CH[2].TFLG.B.TIF = 1;
 }

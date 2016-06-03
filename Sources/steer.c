@@ -9,7 +9,7 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=2,aim2=2;
+byte aim=2,aim2=3;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
 byte success=0;
 byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
@@ -50,22 +50,27 @@ void steer_error_left(void)
 /*************************向右转时舵机error参数设置***********************/
 void steer_error_right(void)
 {
-	if(pix_i<27)	//远处
+//	if(pix_i<27)	//远处
+//	{
+//		target_center=-0.235*pix_i+50.35+aim2;
+//		//target_center=-0.3*pix_i+56.7;
+//		target_offset=pix_j-target_center;
+//	}
+//	else if(pix_i<40)
+//	{
+//		target_center=-0.538*pix_i+58.52+aim2;
+//		//target_center=-0.364*pix_i+59.924;
+//		target_offset=pix_j-target_center;
+//	}
+//	else if(pix_i<50)
+//	{
+//		target_center=-0.35*pix_i+51+aim2;
+//		//target_center=-0.778*pix_i+76.12;
+//		target_offset=pix_j-target_center;
+//	}
+	if(pix_i<50)
 	{
-		target_center=-0.235*pix_i+50.35+aim2;
-		//target_center=-0.3*pix_i+56.7;
-		target_offset=pix_j-target_center;
-	}
-	else if(pix_i<40)
-	{
-		target_center=-0.538*pix_i+58.52+aim2;
-		//target_center=-0.364*pix_i+59.924;
-		target_offset=pix_j-target_center;
-	}
-	else if(pix_i<50)
-	{
-		target_center=-0.35*pix_i+51+aim2;
-		//target_center=-0.778*pix_i+76.12;
+		target_center=-0.009277*pix_i*pix_i+0.1892*pix_i+47.56+aim;
 		target_offset=pix_j-target_center;
 	}
 	else
@@ -78,15 +83,15 @@ void Steer_PDSet(void)
 {
 	if(pix_i<40)
 	{
-		if(ABS(pix_j-target_center)<8)
+		if(ABS(pix_j-target_center)<10)
 		{
-			Steer_kp=2.7+0.5*ABS(pix_j-target_center)+0.05*(pix_i-20);
+			Steer_kp=2.7+0.35*ABS(pix_j-target_center)+0.08*(pix_i-20);
 		}
 		else
-			Steer_kp=6.7+0.05*(pix_i-20);
+			Steer_kp=6.2+0.08*(pix_i-20);
 	}
 	else
-		Steer_kp=1*(pix_i-40)+4;//4.5
+		Steer_kp=1*(pix_i-40)+4.3;//4.5
 //	if(pix_i<30)		//远处
 //		Steer_kp=0.167*pix_i-1.008;
 //	else if(pix_i<43)
@@ -97,10 +102,8 @@ void Steer_PDSet(void)
 /*************************舵机控制向左转U型弯，PD***********************/
 void SteerControl_left(void)
 {
-	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)
-	{
+	if(blf_cnt>=2||barrier_left_flag==1)
 		return;
-	}
 	if(wrong_flag)		
 	{
 		close_supersonic=1;//触发关闭超声波标志
@@ -126,8 +129,6 @@ void SteerControl_left(void)
 				Steer_PWM[3]=CENTER;
 			else
 				Steer_PWM[3]=LEFT;
-//			if(success)
-//				success=0;
 		}
 		SET_steer(Steer_PWM[3]);
 		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
@@ -157,19 +158,22 @@ void SteerControl_left(void)
 			targetspeed=straightspeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
 			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
-			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
+			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;
 		}
-		else if(pix_i<33)
-		{
-			close_supersonic=1;//触发关闭超声波标志
-			targetspeed=turnspeed;
-			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
-			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
-			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
-		}
+//		else if(pix_i<33)
+//		{
+//			close_supersonic=0;
+//			targetspeed=turnspeed;
+//			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+//			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
+//			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;
+//		}
 		else if(pix_i<42)
 		{
-			close_supersonic=1;//触发关闭超声波标志
+			if(pix_i<33)
+				close_supersonic=0;
+			else
+				close_supersonic=1;//触发关闭超声波标志
 			targetspeed=turnspeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
 			if(Steer_PWM[3]>4100) Steer_PWM[3]=4100;
@@ -192,7 +196,7 @@ void SteerControl_left(void)
 /*************************舵机控制向右转U型弯，PD***********************/
 void SteerControl_right(void)
 {
-	if(blf_cnt>=2||barrier_left_flag==1||barrier_right_flag==1||backflag==1)
+	if(blf_cnt>=2||barrier_left_flag==1)
 	{
 		return;
 	}
@@ -254,17 +258,20 @@ void SteerControl_right(void)
 			if(Steer_PWM[3]>3950) Steer_PWM[3]=3950;
 			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
 		}
-		else if(pix_i<33)
-		{
-			close_supersonic=1;//触发关闭超声波标志
-			targetspeed=turnspeed;
-			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
-			if(Steer_PWM[3]>4000) Steer_PWM[3]=4000;
-			else if(Steer_PWM[3]<3690) Steer_PWM[3]=3690;	
-		}
+//		else if(pix_i<33)
+//		{
+//			close_supersonic=1;//触发关闭超声波标志
+//			targetspeed=turnspeed;
+//			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
+//			if(Steer_PWM[3]>4000) Steer_PWM[3]=4000;
+//			else if(Steer_PWM[3]<3690) Steer_PWM[3]=3690;	
+//		}
 		else if(pix_i<42)
 		{
-			close_supersonic=1;//触发关闭超声波标志
+			if(pix_i<33)
+				close_supersonic=0;
+			else
+				close_supersonic=1;//触发关闭超声波标志
 			targetspeed=turnspeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
 			if(Steer_PWM[3]>4000) Steer_PWM[3]=4000;
@@ -288,9 +295,7 @@ void SteerControl_right(void)
 byte BarrierJudge(void)	//超声优先级
 {
 	if(blf_cnt>=2)
-	{
 		targetspeed=cyclespeedright;
-	}
 	if(barrier_left_flag==1)
 	{
 		SET_steer(4150);
