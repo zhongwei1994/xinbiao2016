@@ -9,7 +9,7 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=2,aim2=3;
+byte aim=0,aim2=0;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
 byte success=0;
 byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
@@ -39,7 +39,7 @@ void steer_error_left(void)
 //	}
 	if(pix_i<50)
 	{
-		target_center=0.01369*pix_i*pix_i-0.3581*pix_i+59.69+aim;
+		target_center=0.01369*pix_i*pix_i-0.3581*pix_i+57.69+aim;
 		target_offset=pix_j-target_center;
 	}
 	else
@@ -70,7 +70,7 @@ void steer_error_right(void)
 //	}
 	if(pix_i<50)
 	{
-		target_center=-0.009277*pix_i*pix_i+0.1892*pix_i+47.56+aim;
+		target_center=-0.009277*pix_i*pix_i+0.1892*pix_i+45.56+aim;
 		target_offset=pix_j-target_center;
 	}
 	else
@@ -150,29 +150,22 @@ void SteerControl_left(void)
 //			//存舵机值
 //			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 			success=1;
-			return;
+			//return;
 		}
-		if(pix_i<26)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
 			close_supersonic=0;
-			targetspeed=straightspeed;
+			if(Steer_PWM[3]>4000||Steer_PWM[3]<3714)
+				targetspeed=turnspeed;
+			else
+				targetspeed=straightspeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
-			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
-			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;
 		}
-//		else if(pix_i<33)
-//		{
-//			close_supersonic=0;
-//			targetspeed=turnspeed;
-//			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
-//			if(Steer_PWM[3]>4020) Steer_PWM[3]=4020;
-//			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;
-//		}
 		else if(pix_i<42)
 		{
-			if(pix_i<33)
-				close_supersonic=0;
-			else
+//			if(pix_i<33)
+//				close_supersonic=0;
+//			else
 				close_supersonic=1;//触发关闭超声波标志
 			targetspeed=turnspeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
@@ -248,15 +241,16 @@ void SteerControl_right(void)
 //			//存舵机值
 //			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 			success=1;
-			return;
+			//return;
 		}
 		if(pix_i<26)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
 			close_supersonic=0;
-			targetspeed=straightspeed;
+			if(Steer_PWM[3]>4000||Steer_PWM[3]<3714)
+				targetspeed=turnspeed;
+			else
+				targetspeed=straightspeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
-			if(Steer_PWM[3]>3950) Steer_PWM[3]=3950;
-			else if(Steer_PWM[3]<3714) Steer_PWM[3]=3714;	
 		}
 //		else if(pix_i<33)
 //		{
@@ -268,9 +262,9 @@ void SteerControl_right(void)
 //		}
 		else if(pix_i<42)
 		{
-			if(pix_i<33)
-				close_supersonic=0;
-			else
+//			if(pix_i<33)
+//				close_supersonic=0;
+//			else
 				close_supersonic=1;//触发关闭超声波标志
 			targetspeed=turnspeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
