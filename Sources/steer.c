@@ -9,10 +9,10 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=0,aim2=0;
+byte aim=0,aim2=2;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
-byte success=0,straight_flag=9;
-byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
+byte success=0,straight_flag=10;
+byte cycle_i=52,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -85,10 +85,10 @@ void Steer_PDSet(void)
 	{
 		if(ABS(pix_j-target_center)<10)
 		{
-			Steer_kp=2.7+0.35*ABS(pix_j-target_center)+0.08*(pix_i-20);
+			Steer_kp=2.7+0.3*ABS(pix_j-target_center)+0.08*(pix_i-20);
 		}
 		else
-			Steer_kp=6.2+0.08*(pix_i-20);
+			Steer_kp=5.7+0.08*(pix_i-20);
 	}
 	else
 		Steer_kp=1*(pix_i-40)+4.3;//4.5
@@ -152,11 +152,15 @@ void SteerControl_left(void)
 			SET_steer(Steer_PWM[3]);
 			//存舵机值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-//			success=1;
+			success=1;
+			return;
 		}
 		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
-			close_supersonic=0;
+			if(pix_i<27)
+				close_supersonic=0;
+			else
+				close_supersonic=1;
 			if(Steer_PWM[3]>3948||Steer_PWM[3]<3748)
 				targetspeed=turnspeed;
 			else
@@ -242,11 +246,15 @@ void SteerControl_right(void)
 			SET_steer(Steer_PWM[3]);
 			//存舵机值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-//			success=1;
+			success=1;
+			return;
 		}
-		if(pix_i<26)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
+		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
-			close_supersonic=0;
+			if(pix_i<27)
+				close_supersonic=0;
+			else
+				close_supersonic=1;
 			if(Steer_PWM[3]>3948||Steer_PWM[3]<3748)
 				targetspeed=turnspeed;
 			else
@@ -293,7 +301,7 @@ byte BarrierJudge(void)	//超声优先级
 		targetspeed=cyclespeedright;
 	if(barrier_left_flag==1)
 	{
-		SET_steer(4150);
+		SET_steer(4050);
 		return 1;
 	}
 //	else if(barrier_right_flag==1)

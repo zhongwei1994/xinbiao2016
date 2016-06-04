@@ -7,7 +7,7 @@
 
 #include "includes.h"
 
-unsigned char s_data=0,s_data2=0;
+unsigned char s_data=31,s_data2=3;
 unsigned char S[5]={0,0,0,0,0},S2[2]={0,0};
 unsigned char lamp_turn=7,lamp_turn1=0;   //灯的序号
 unsigned char switch_flag=0;  //转换标志位
