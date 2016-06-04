@@ -8,8 +8,8 @@
 #ifndef STEER_H_
 #define STEER_H_
 
-#define RIGHT 3420//3430//右极限角度为3750   //3470//3560
-#define LEFT 4220//4330//左极限角度为4200 //4320//4200
+#define RIGHT 3310//右极限角度3400
+#define LEFT 4400//左极限角度4310
 
 extern byte wrong_count;
 extern byte aim,aim2;

@@ -14,4 +14,5 @@ extern unsigned char switch_flag;  //转换标志位
 void Strategy_Switch();
 void Strategy_Judge();
 void Strategy_Input();
+void Strategy_Input2();
 #endif /* STRATEGY_H_ */

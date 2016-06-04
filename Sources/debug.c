@@ -317,16 +317,16 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-		aim-=1;
 //		TargetSteer+=5;
-		//straightspeed+=5;
+		straightspeed+=100;
 		//SET_motor(straightspeed,straightspeed);
 //		turnleft+=1;
 		//tsr-=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-	    aim+=1;
+//	    aim+=1;
+	    straightspeed-=100;
 //	    TargetSteer-=5;
 //	    cyclespeed+=5;
 //	    turnleft-=1;

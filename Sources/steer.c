@@ -11,7 +11,7 @@
 byte wrong_count=0;
 byte aim=0,aim2=0;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
-byte success=0;
+byte success=0,straight_flag=9;
 byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
@@ -102,6 +102,9 @@ void Steer_PDSet(void)
 /*************************舵机控制向左转U型弯，PD***********************/
 void SteerControl_left(void)
 {
+//	target_offset=3000+straightspeed;
+//	SET_steer(target_offset);
+//	return;
 	if(blf_cnt>=2||barrier_left_flag==1)
 		return;
 	if(wrong_flag)		
@@ -142,20 +145,19 @@ void SteerControl_left(void)
 		cycle_flag=0;
 		Steer_PDSet();
 		steer_error_left();
-		if(pix_i>cycle_i&&pix_j>cycle_j)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
+		if(pix_i>cycle_i&&pix_j>cycle_j&&lamp_turn!=straight_flag)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
 		{
-//			cycle_flag=1;
-//			Steer_PWM[3]=LEFT;
-//			SET_steer(Steer_PWM[3]);
-//			//存舵机值
-//			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			success=1;
-			//return;
+			cycle_flag=1;
+			Steer_PWM[3]=LEFT;
+			SET_steer(Steer_PWM[3]);
+			//存舵机值
+			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+//			success=1;
 		}
 		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
 			close_supersonic=0;
-			if(Steer_PWM[3]>4000||Steer_PWM[3]<3714)
+			if(Steer_PWM[3]>3948||Steer_PWM[3]<3748)
 				targetspeed=turnspeed;
 			else
 				targetspeed=straightspeed;
@@ -233,20 +235,19 @@ void SteerControl_right(void)
 		cycle_flag=0;
 		Steer_PDSet();
 		steer_error_right();
-		if(pix_i>cycle_i&&pix_j<100-cycle_j)		//靠近灯塔，位置符合灯塔在左下角条件，开始转向
+		if(pix_i>cycle_i&&pix_j<100-cycle_j&&lamp_turn!=straight_flag)		//靠近灯塔，位置符合灯塔在左下角条件，开始转向
 		{
-//			cycle_flag=1;
-//			Steer_PWM[3]=RIGHT;
-//			SET_steer(Steer_PWM[3]);
-//			//存舵机值
-//			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			success=1;
-			//return;
+			cycle_flag=1;
+			Steer_PWM[3]=RIGHT;
+			SET_steer(Steer_PWM[3]);
+			//存舵机值
+			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+//			success=1;
 		}
 		if(pix_i<26)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
 			close_supersonic=0;
-			if(Steer_PWM[3]>4000||Steer_PWM[3]<3714)
+			if(Steer_PWM[3]>3948||Steer_PWM[3]<3748)
 				targetspeed=turnspeed;
 			else
 				targetspeed=straightspeed;

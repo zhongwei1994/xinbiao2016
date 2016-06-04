@@ -11,7 +11,7 @@ byte backflag=0;
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int targetspeed=0,Motor_PWM_MAX=480,Motor_PWM_MIN=-300;
-int cyclespeed=110,turnspeed=130,straightspeed=270,cyclespeedleft=140,cyclespeedright=115;
+int cyclespeed=110,turnspeed=130,straightspeed=190,cyclespeedleft=140,cyclespeedright=115;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
@@ -120,6 +120,8 @@ void SpeedControl(void)//闭环,加差速,后左轮
 
 void SpeedControl2(void)//速度控制增量式
 {
+//	SET_motor(80,80);
+//	return;
 	if(start_flag==0)
 		return;
 	if(cycle_flag)

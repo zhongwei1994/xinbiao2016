@@ -128,6 +128,7 @@ void PitISR(void)//1ms一个控制周期
 		OLED_Num(Speed_ki_Left);	
 		OLED_SetPointer(7,80);
 		OLED_Str("kd: ");
+//		OLED_Num(target_offset);
 		OLED_Num(Speed_kd_Left);	
 //		OLED_Num(distance_T);
 //		OLED_Num(targetspeed);
@@ -141,7 +142,7 @@ void PitISR2(void)
 //	{
 //		pitcount1++;
 //	}
-//	if(pitcount1>=170)
+//	if(pitcount1>=300)
 //	{
 //		targetspeed=0;
 //		pitcount1=0;
