@@ -370,13 +370,13 @@ void KeyJudge(void)
 	}
 	else if(menu==2)
 	{
-		if(S4==0&&S4_last==1){   //按键S4按下
+		if(S4==0&&S4_last==1){
+			keymode=2; //按键S4按下
 			aim=aim+0.5;
-			straightspeed-=100;
 			}
-		if(S5==0&&S5_last==1){   //按键S5按下
+		if(S5==0&&S5_last==1){ 
+			keymode=3; //按键S5按下
 			aim=aim-0.5;
-			Steer_kp-=1;
 			}
 		if(S6==0&&S6_last==1){   //按键S6按下
 			keymode=4; 
