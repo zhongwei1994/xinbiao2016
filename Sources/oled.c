@@ -334,22 +334,24 @@ void OLED_display()
 	OLED_Fill(0x00);
 			//1
 			OLED_SetPointer(1,0);
-			OLED_Str("s_data");
+			OLED_Str("s_d");
 			OLED_Num(s_data);
-			OLED_Str("s_data1");
+			OLED_Str("s_1");
 			OLED_Num(s_data1);
-			OLED_Str("s_data2");
+			OLED_Str("s_2");
 			OLED_Num(s_data2);
 			//2
 			OLED_SetPointer(2,0);
-			OLED_Str("pix_i: ");
-			OLED_SetPointer(2,40);
+			OLED_Str("p_i: ");
+//			OLED_SetPointer(2,40);
 			OLED_Num((pix_i));
 			//OLED_Num(OLED_distance1);
-			OLED_SetPointer(2,55);
-			OLED_Str("pix_j: ");
-			OLED_SetPointer(2,95);
+//			OLED_SetPointer(2,55);
+			OLED_Str("p_j: ");
+//			OLED_SetPointer(2,95);
 			OLED_Num((pix_j));
+			OLED_Str("m: ");
+			OLED_Num((menu));
 			//3
 			OLED_SetPointer(3,0);
 			OLED_Str("TStr: ");
@@ -385,17 +387,17 @@ void OLED_display()
 			//OLED_Num(cyclespeedright);
 			//7
 			OLED_SetPointer(7,0);
-			OLED_Str("k_data");
+			OLED_Str("k_d");
 			OLED_Num(k_data);
 			OLED_SetPointer(7,40);
-			OLED_Str("k_data1");
-//			OLED_Num(k_data1);	
-			OLED_Num(csl);
+			OLED_Str("k_1");
+			OLED_Num(k_data1);	
+//			OLED_Num(csl);
 			OLED_SetPointer(7,80);
-			OLED_Str("k_data2");
+			OLED_Str("k_2");
 	//		OLED_Num(target_offset);
-//			OLED_Num(k_data2);	
-			OLED_Num(csr);
+			OLED_Num(k_data2);	
+//			OLED_Num(csr);
 	//		OLED_Num(distance_T);
 	//		OLED_Num(targetspeed);
 }
