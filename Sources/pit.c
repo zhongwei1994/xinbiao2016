@@ -10,7 +10,7 @@
 unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0,pitcount6=0;
 unsigned int barrier_delay=0;
 unsigned int supson_delay1=0,supson_delay2=0;
-byte OLEDdisplay_flag=1;
+byte OLEDdisplay_flag=0;
 
 void initPIT(void) 
 {                                   //1ms一个控制周期// NOTE:  DIVIDER FROM SYSCLK TO PIT ASSUMES DEFAULT DIVIDE BY 1 
@@ -86,6 +86,6 @@ void PitISR2(void)
 //		pitcount1=0;
 //	}
 	SpeedCount();
-	SpeedControl2();
+	SpeedControl();
 	PIT.CH[2].TFLG.B.TIF = 1;
 }

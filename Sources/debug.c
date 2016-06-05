@@ -380,7 +380,7 @@ void KeyJudge(void)
 			}
 		if(S6==0&&S6_last==1){   //°´¼üS6°´ÏÂ
 			keymode=4; 
-			aim=aim+1;
+			lamp_turn++;
 			}
 	}
 	else if(menu==3)

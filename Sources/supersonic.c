@@ -61,7 +61,7 @@ void intc_get_supersonic_time_2(void)
 	if(distance2<distance_T1&&distance2>0)
 	{
 		blf_cnt++;
-		if(blf_cnt>=2)//2为判断障碍物的次数
+		if(blf_cnt>=1)//2为判断障碍物的次数
 		{
 			if(distance2<distance_T2&&distance2>0)
 			{

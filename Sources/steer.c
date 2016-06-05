@@ -9,7 +9,7 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=0,aim2=4;
+byte aim=0,aim2=0;
 byte close_supersonic=1,cycle_flag=0,start_flag=0,menu=0;
 byte success=0,straight_flag=10;
 byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变//52/65
@@ -39,7 +39,8 @@ void steer_error_left(void)
 //	}
 	if(pix_i<50)
 	{
-		target_center=0.01369*pix_i*pix_i-0.3581*pix_i+57.69+aim;//57.69
+		target_center=0.002001*pix_i*pix_i+0.2995*pix_i+49.01+aim;//51.01
+		//6月5日target_center=0.01369*pix_i*pix_i-0.3581*pix_i+57.69+aim;//aim=0
 		target_offset=pix_j-target_center;
 	}
 	else
@@ -70,7 +71,8 @@ void steer_error_right(void)
 //	}
 	if(pix_i<50)
 	{
-		target_center=-0.009277*pix_i*pix_i+0.1892*pix_i+47.56+aim;//45.56
+		target_center=-0.006982*pix_i*pix_i-0.02093*pix_i+51.87+aim2;//51.87
+		//6月5日target_center=-0.009277*pix_i*pix_i+0.1892*pix_i+47.56+aim2;//45.56//aim2=7
 		target_offset=pix_j-target_center;
 	}
 	else
@@ -105,9 +107,9 @@ void SteerControl_left(void)
 //	target_offset=3000+straightspeed;
 //	SET_steer(target_offset);
 //	return;
-	if(blf_cnt>=1||barrier_left_flag==1)
+	if(blf_cnt>=2||barrier_left_flag==1)
 		return;
-	if(wrong_flag)		
+	if(wrong_flag)
 	{
 		close_supersonic=1;//触发关闭超声波标志
 		wrong_count++;
@@ -195,7 +197,7 @@ void SteerControl_left(void)
 /*************************舵机控制向右转U型弯，PD***********************/
 void SteerControl_right(void)
 {
-	if(blf_cnt>=1||barrier_left_flag==1)
+	if(blf_cnt>=2||barrier_left_flag==1)
 	{
 		return;
 	}
@@ -298,10 +300,10 @@ void SteerControl_right(void)
 byte BarrierJudge(void)	//超声优先级
 {
 	if(blf_cnt>=1)
-		targetspeed=cyclespeedright;
+		targetspeed=80;//cyclespeedright
 	if(barrier_left_flag==1)
 	{
-		SET_steer(3648);
+		SET_steer(3635);//3648
 		return 1;
 	}
 //	else if(barrier_right_flag==1)
