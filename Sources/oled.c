@@ -329,5 +329,74 @@ void OLED_Delay(WORD ms)
   }
   return;
 }
-
+void OLED_display()
+{
+	OLED_Fill(0x00);
+			//1
+			OLED_SetPointer(1,0);
+			OLED_Str("s_data");
+			OLED_Num(s_data);
+			OLED_Str("s_data1");
+			OLED_Num(s_data1);
+			OLED_Str("s_data2");
+			OLED_Num(s_data2);
+			//2
+			OLED_SetPointer(2,0);
+			OLED_Str("pix_i: ");
+			OLED_SetPointer(2,40);
+			OLED_Num((pix_i));
+			//OLED_Num(OLED_distance1);
+			OLED_SetPointer(2,55);
+			OLED_Str("pix_j: ");
+			OLED_SetPointer(2,95);
+			OLED_Num((pix_j));
+			//3
+			OLED_SetPointer(3,0);
+			OLED_Str("TStr: ");
+			OLED_SetPointer(3,35);
+			OLED_Num((TargetSteer));
+			OLED_SetPointer(3,65);
+			OLED_Str("Toff: ");
+			OLED_SetPointer(3,95);
+			OLED_Num((target_offset*100));
+			//OLED_Num(OLED_distance2);
+			//4
+			OLED_SetPointer(4,0);
+			OLED_Str("SSpd: ");
+			OLED_SetPointer(4,35);
+			OLED_Num(straightspeed);
+			OLED_SetPointer(4,60);
+			OLED_Str("TarSpd: ");
+			OLED_Num(targetspeed);
+			//5
+	//		OLED_SetPointer(5,20);
+	//		OLED_Char('d');
+			OLED_SetPointer(5,0);
+			OLED_Str("No: ");
+			OLED_Num(lamp_turn);
+	//		OLED_Num(cyclespeed);
+			//6
+			OLED_SetPointer(6,0);
+			OLED_Str("aim");
+			OLED_Num(aim);
+			OLED_SetPointer(6,40);
+			OLED_Str("aim2");
+			OLED_Num(aim2);
+			//OLED_Num(cyclespeedright);
+			//7
+			OLED_SetPointer(7,0);
+			OLED_Str("k_data");
+			OLED_Num(k_data);
+			OLED_SetPointer(7,40);
+			OLED_Str("k_data1");
+//			OLED_Num(k_data1);	
+			OLED_Num(csl);
+			OLED_SetPointer(7,80);
+			OLED_Str("k_data2");
+	//		OLED_Num(target_offset);
+//			OLED_Num(k_data2);	
+			OLED_Num(csr);
+	//		OLED_Num(distance_T);
+	//		OLED_Num(targetspeed);
+}
 

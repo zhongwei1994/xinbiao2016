@@ -317,38 +317,87 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-//		TargetSteer+=5;
-		straightspeed+=100;
-		//SET_motor(straightspeed,straightspeed);
-//		turnleft+=1;
-		//tsr-=10;
+		if(OLEDdisplay_flag==0)
+			OLEDdisplay_flag=1;
+		else
+		{
+			menu++;
+			if(menu>=4)
+				menu=0;
 		}
-	if(S4==0&&S4_last==1){   //按键S4按下
-	    keymode=2;
-//	    aim+=1;
-	    straightspeed-=100;
-//	    TargetSteer-=5;
-//	    cyclespeed+=5;
-//	    turnleft-=1;
-	    //SET_motor(straightspeed,straightspeed);
-	    //tsr+=10;
-	    }
-	if(S5==0&&S5_last==1){   //按键S5按下
-		keymode=3;
-		Steer_kp-=1;
-//		cycle_j+=1;
-		//SET_motor(straightspeed,straightspeed);
-//		cyclespeedright+=10;
-		//tsl-=10;
 		}
-	if(S6==0&&S6_last==1){   //按键S6按下
-		keymode=4; 
-		Steer_kp+=1;
-//		cycle_j-=1;
-		//SET_motor(straightspeed,straightspeed);
-//		cyclespeedright-=10;
-		//tsl+=10;
-		}
+	if(menu==0)
+	{
+		if(S4==0&&S4_last==1){   //按键S4按下
+			keymode=2;
+			s_data++;
+			if(s_data>=16)
+				s_data=0;
+			}
+		if(S5==0&&S5_last==1){   //按键S5按下
+			keymode=3;
+			s_data1++;
+			if(s_data1>=8)
+				s_data1=0;
+			}
+		if(S6==0&&S6_last==1){   //按键S6按下
+			keymode=4; 
+			s_data2++;
+			if(s_data2>=8)
+				s_data2=0;
+			}
+	}
+	else if(menu==1)
+	{
+		if(S4==0&&S4_last==1){   //按键S4按下
+			keymode=2;
+			k_data++;
+			if(k_data>=16)
+				k_data=0;
+			}
+		if(S5==0&&S5_last==1){   //按键S5按下
+			keymode=3;
+			k_data1++;
+			if(k_data1>=8)
+				k_data1=0;
+			}
+		if(S6==0&&S6_last==1){   //按键S6按下
+			keymode=4; 
+			k_data2++;
+			if(k_data2>=8)
+				k_data2=0;
+			}
+	}
+	else if(menu==2)
+	{
+		if(S4==0&&S4_last==1){   //按键S4按下
+			aim=aim+0.5;
+			straightspeed-=100;
+			}
+		if(S5==0&&S5_last==1){   //按键S5按下
+			aim=aim-0.5;
+			Steer_kp-=1;
+			}
+		if(S6==0&&S6_last==1){   //按键S6按下
+			keymode=4; 
+			aim=aim+1;
+			}
+	}
+	else if(menu==3)
+	{
+		if(S4==0&&S4_last==1){   //按键S4按下
+			keymode=2;
+			aim2=aim2+0.5;
+			}
+		if(S5==0&&S5_last==1){   //按键S5按下
+			keymode=3;
+			aim2=aim2-0.5;
+			}
+		if(S6==0&&S6_last==1){   //按键S6按下
+			keymode=4; 
+			OLEDdisplay_flag=0;
+			}
+	}
 	S3_last=S3;        //保存按键的状态
 	S4_last=S4;
 	S5_last=S5;

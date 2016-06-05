@@ -42,6 +42,7 @@ void OLED_Page(BYTE gray);
 void OLED_Fill(BYTE gray);
 void OLED_SetPointer(BYTE col, BYTE page);
 void OLED_Delay(WORD ms);
+void OLED_display();
 void OLED_Num(int num);
 void OLED_Char(unsigned char c);
 void OLED_Str(char * s);

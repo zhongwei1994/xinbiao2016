@@ -16,6 +16,7 @@ extern byte aim,aim2;
 extern byte success;
 extern byte start_flag;
 extern byte close_supersonic;
+extern byte menu;
 extern byte cycle_i,cycle_j,turnleft;
 extern double target_offset,last_offset,Steer_kp;
 extern unsigned int Steer_PWM[4];

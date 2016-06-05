@@ -9,6 +9,10 @@ int main(void) {
 	delay_ms(1000);
 	Strategy_Input();
 	Strategy_Input2();
+	Strategy_Input3();
+	keep_Input();
+	keep_Input1();
+	keep_Input2();
 	EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断 
 //	targetspeed=270;
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2

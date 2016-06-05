@@ -10,7 +10,7 @@
 /*************************舵机参数***************************/
 byte wrong_count=0;
 byte aim=0,aim2=4;
-byte close_supersonic=1,cycle_flag=0,start_flag=0;
+byte close_supersonic=1,cycle_flag=0,start_flag=0,menu=0;
 byte success=0,straight_flag=10;
 byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变//52/65
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
@@ -105,7 +105,7 @@ void SteerControl_left(void)
 //	target_offset=3000+straightspeed;
 //	SET_steer(target_offset);
 //	return;
-	if(blf_cnt>=2||barrier_left_flag==1)
+	if(blf_cnt>=1||barrier_left_flag==1)
 		return;
 	if(wrong_flag)		
 	{
@@ -195,7 +195,7 @@ void SteerControl_left(void)
 /*************************舵机控制向右转U型弯，PD***********************/
 void SteerControl_right(void)
 {
-	if(blf_cnt>=2||barrier_left_flag==1)
+	if(blf_cnt>=1||barrier_left_flag==1)
 	{
 		return;
 	}
