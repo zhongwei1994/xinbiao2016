@@ -11,7 +11,7 @@ byte backflag=0;
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int targetspeed=0,Motor_PWM_MAX=480,Motor_PWM_MIN=-300;
-int cyclespeed=110,turnspeed=130,straightspeed=190,cyclespeedleft=140,cyclespeedright=115;
+int cyclespeed=120,turnspeed=120,straightspeed=130,cyclespeedleft=120,cyclespeedright=105;
 unsigned int speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
@@ -136,9 +136,9 @@ void SpeedControl2(void)//速度控制增量式
 	}
 	if(targetspeed==straightspeed)
 	{
-		Speed_kp_Left=0.1;
+		Speed_kp_Left=0.05;//6月4日0.1
 		Speed_ki_Left=0.2;
-		Speed_kp_Right=0.1;
+		Speed_kp_Right=0.05;//6月4日0.1
 		Speed_ki_Right=0.2;
 	}
 	else

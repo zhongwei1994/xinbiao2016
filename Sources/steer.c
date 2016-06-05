@@ -9,10 +9,10 @@
 
 /*************************舵机参数***************************/
 byte wrong_count=0;
-byte aim=0,aim2=2;
+byte aim=0,aim2=4;
 byte close_supersonic=1,cycle_flag=0,start_flag=0;
 byte success=0,straight_flag=10;
-byte cycle_i=52,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变
+byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变//52/65
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
@@ -39,7 +39,7 @@ void steer_error_left(void)
 //	}
 	if(pix_i<50)
 	{
-		target_center=0.01369*pix_i*pix_i-0.3581*pix_i+57.69+aim;
+		target_center=0.01369*pix_i*pix_i-0.3581*pix_i+57.69+aim;//57.69
 		target_offset=pix_j-target_center;
 	}
 	else
@@ -70,7 +70,7 @@ void steer_error_right(void)
 //	}
 	if(pix_i<50)
 	{
-		target_center=-0.009277*pix_i*pix_i+0.1892*pix_i+45.56+aim;
+		target_center=-0.009277*pix_i*pix_i+0.1892*pix_i+47.56+aim;//45.56
 		target_offset=pix_j-target_center;
 	}
 	else
@@ -157,7 +157,7 @@ void SteerControl_left(void)
 		}
 		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
-			if(pix_i<27)
+			if(pix_i<24)
 				close_supersonic=0;
 			else
 				close_supersonic=1;
@@ -251,7 +251,7 @@ void SteerControl_right(void)
 		}
 		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
-			if(pix_i<27)
+			if(pix_i<24)
 				close_supersonic=0;
 			else
 				close_supersonic=1;
@@ -297,11 +297,11 @@ void SteerControl_right(void)
 
 byte BarrierJudge(void)	//超声优先级
 {
-	if(blf_cnt>=2)
+	if(blf_cnt>=1)
 		targetspeed=cyclespeedright;
 	if(barrier_left_flag==1)
 	{
-		SET_steer(4050);
+		SET_steer(3648);
 		return 1;
 	}
 //	else if(barrier_right_flag==1)
