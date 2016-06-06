@@ -11,7 +11,7 @@
 byte wrong_count=0;
 byte aim=0,aim2=0;
 byte close_supersonic=1,cycle_flag=0,start_flag=0,menu=0;
-byte success=0,straight_flag=10,turn_flag=0;
+byte success=0,straight_flag=10,turn_flag=0,open_flag=0;
 byte cycle_i=55,cycle_j=65,turnleft=65,edge=61;//turnleft为近处目标方向，不宜轻易改变//52/65
 double target_offset=0,last_offset=0,target_center=0;	//舵机偏差值记录
 double Steer_kp=4,Steer_kd=0.05;//舵机P、D值
@@ -112,31 +112,42 @@ void SteerControl_left(void)
 		return;
 	if(wrong_flag)
 	{
+		open_flag=0;
 //		close_supersonic=1;//触发关闭超声波标志
 		wrong_count++;
 		if(wrong_count<=1)	//1次没看到灯塔，保持舵机值
 		{
-			if(success)
-			{
-				cycle_flag=1;
-				Steer_PWM[3]=LEFT;
-				turn_flag=1;
-				success=0;
-			}
+			if(str[lamp_turn])
+				Steer_PWM[3]=CENTER;
 			else
 			{
-				cycle_flag=0;
-				Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+				if(success)
+				{
+					cycle_flag=1;
+					Steer_PWM[3]=LEFT;
+					turn_flag=1;
+					success=0;
+				}
+				else
+				{
+					cycle_flag=0;
+					Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+				}
 			}
 		}
 		else if(wrong_count>=2)	//2次没看到灯塔，向右打足转圈
 		{
-			cycle_flag=1;
-			turn_flag=1;
-			if(start_flag==0)
+			if(str[lamp_turn])
 				Steer_PWM[3]=CENTER;
 			else
-				Steer_PWM[3]=LEFT;
+			{
+				cycle_flag=1;
+				turn_flag=1;
+				if(start_flag==0)
+					Steer_PWM[3]=CENTER;
+				else
+					Steer_PWM[3]=LEFT;
+			}
 		}
 		SET_steer(Steer_PWM[3]);
 		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
@@ -153,22 +164,37 @@ void SteerControl_left(void)
 		cycle_flag=0;
 		Steer_PDSet();
 		steer_error_left();
-		if(pix_i>cycle_i&&pix_j>cycle_j&&lamp_turn!=straight_flag)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
+		if(pix_i>cycle_i&&pix_j>cycle_j&&str[lamp_turn]!=1)		//靠近灯塔，位置符合灯塔在右下角条件，开始转向
 		{
-			cycle_flag=1;
-			Steer_PWM[3]=LEFT;
+			if(str[lamp_turn])
+			{
+				Steer_PWM[3]=CENTER;
+			}
+			else
+			{
+				cycle_flag=1;
+				Steer_PWM[3]=LEFT;
+			}
+			success=1;
 			SET_steer(Steer_PWM[3]);
 			//存舵机值
 			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			success=1;
 			return;
+		}
+		else
+		{
+			if(success)
+			{
+				switch_flag=1;
+				success=0;
+			}
 		}
 		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
-//			if(pix_i<24)
-//				close_supersonic=0;
-//			else
-//				close_supersonic=1;
+			if(pix_i<28)
+				open_flag=1;
+			else
+				open_flag=0;
 			if(Steer_PWM[3]>3948||Steer_PWM[3]<3748)
 				targetspeed=turnspeed;
 			else
@@ -177,6 +203,7 @@ void SteerControl_left(void)
 		}
 		else if(pix_i<42)
 		{
+			open_flag=0;
 //			if(pix_i<33)
 //				close_supersonic=0;
 //			else
@@ -188,6 +215,7 @@ void SteerControl_left(void)
 		}
 		else
 		{
+			open_flag=0;
 //			close_supersonic=1;//触发关闭超声波标志
 			targetspeed=cyclespeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);
@@ -208,30 +236,41 @@ void SteerControl_right(void)
 		return;
 	if(wrong_flag)		
 	{
+		open_flag=0;
 //		close_supersonic=1;//触发关闭超声波标志
 		wrong_count++;
 		if(wrong_count<=1)	//1次没看到灯塔，保持舵机值
 		{
-			if(success)
-			{
-				cycle_flag=1;
-				Steer_PWM[3]=RIGHT;
-				turn_flag=1;
-				success=0;
-			}
+			if(str[lamp_turn])
+				Steer_PWM[3]=CENTER;
 			else
 			{
-				cycle_flag=0;
-				Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+				if(success)
+				{
+					cycle_flag=1;
+					Steer_PWM[3]=RIGHT;
+					turn_flag=1;
+					success=0;
+				}
+				else
+				{
+					cycle_flag=0;
+					Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+				}
 			}
 		}
 		else if(wrong_count>=2)	//2次没看到灯塔，向右打足转圈
 		{
-			cycle_flag=1;
-			if(start_flag==0)
+			if(str[lamp_turn])
 				Steer_PWM[3]=CENTER;
 			else
-				Steer_PWM[3]=RIGHT;
+			{
+				cycle_flag=1;
+				if(start_flag==0)
+					Steer_PWM[3]=CENTER;
+				else
+					Steer_PWM[3]=RIGHT;
+			}
 //			if(success)
 //				success=0;
 		}
@@ -252,20 +291,39 @@ void SteerControl_right(void)
 		steer_error_right();
 		if(pix_i>cycle_i&&pix_j<100-cycle_j&&lamp_turn!=straight_flag)		//靠近灯塔，位置符合灯塔在左下角条件，开始转向
 		{
-			cycle_flag=1;
-			Steer_PWM[3]=RIGHT;
-			SET_steer(Steer_PWM[3]);
-			//存舵机值
-			Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
-			success=1;
-			return;
+			if(str[lamp_turn])
+			{
+				Steer_PWM[3]=CENTER;
+				return;
+			}
+			else
+			{
+				cycle_flag=1;
+				Steer_PWM[3]=RIGHT;
+				SET_steer(Steer_PWM[3]);
+				//存舵机值
+				Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+				success=1;
+				return;
+			}
 		}
+		else
+		{
+			if(success)
+			{
+				switch_flag=1;
+				success=0;
+			}
+		}
+		menu=9;
 		if(pix_i<33)		//在远处，现在超声全关了，所以close_supersonic=1;，正常close_supersonic=0；远处开超声
 		{
-//			if(pix_i<24)
-//				close_supersonic=0;
-//			else
-//				close_supersonic=1;
+			if(pix_i<28)
+			{
+				open_flag=1;
+			}
+			else
+				open_flag=0;
 			if(Steer_PWM[3]>3948||Steer_PWM[3]<3748)
 				targetspeed=turnspeed;
 			else
@@ -282,6 +340,7 @@ void SteerControl_right(void)
 //		}
 		else if(pix_i<42)
 		{
+			open_flag=0;
 //			if(pix_i<33)
 //				close_supersonic=0;
 //			else
@@ -293,6 +352,7 @@ void SteerControl_right(void)
 		}
 		else
 		{
+			open_flag=0;
 //			close_supersonic=1;//触发关闭超声波标志
 			targetspeed=cyclespeed;
 			Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset);

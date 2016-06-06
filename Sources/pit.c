@@ -29,9 +29,12 @@ void PitISR(void)//1ms一个控制周期
 {
 	pitcount0++;                                  //50一次清零
 	//pitcount2++;                                  //6一次清零
-	
-	ImageCapture(A);
-	CCD_flag=1;
+	if(open_flag)
+	{
+		ImageCapture(A);
+		CCD_flag=1;
+	}
+//	CCD_flag=1;
 	
 //	if(pitcount2>=6)
 //	{
@@ -95,14 +98,14 @@ void PitISR2(void)
 //		targetspeed=0;
 //		pitcount1=0;
 //	}
-	SpeedCount();
-	if(targetspeed==straightspeed)
-	{
-		SpeedControl2();
-	}
-	else
-	{
+//	SpeedCount();
+//	if(targetspeed==straightspeed)
+//	{
+//		SpeedControl2();
+//	}
+//	else
+//	{
 		SpeedControl();
-	}
+//	}
 	PIT.CH[2].TFLG.B.TIF = 1;
 }

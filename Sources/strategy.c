@@ -7,8 +7,8 @@
 
 #include "includes.h"
 
-unsigned char s_data=3,s_data1=3,s_data2=6,k_data=0,k_data1=0,k_data2=0;
-unsigned char S[4]={0,0,0,0},S1[3]={0,0,0},S2[3]={0,0,0},k[4]={0,0,0,0},k1[3]={0,0,0},k2[3]={0,0,0};
+unsigned char s_data=3,s_data1=3,s_data2=6,k_data=2,k_data1=0,k_data2=0;
+unsigned char S[4]={0,0,0,0},S1[3]={0,0,0},S2[3]={0,0,0},k[4]={0,0,0,0},k1[3]={0,0,0},k2[3]={0,0,0},str[10]={0},t[10]={0};
 unsigned char lamp_turn=10,lamp_turn1=0,lamp_turn2=0;   //µÆµÄĞòºÅ
 unsigned char switch_flag=0;  //×ª»»±êÖ¾Î»
 
@@ -26,6 +26,7 @@ void Strategy_Judge(void)  //ÅĞ¶Ï×óÓÒ×ª
 {
 	if(lamp_turn<=3)
 	{
+		t[lamp_turn]=S[lamp_turn];
 		if(S[lamp_turn]==0)     //×ó×ª
 			SteerControl_left();
 		else                    //ÓÒ×ª
@@ -33,6 +34,7 @@ void Strategy_Judge(void)  //ÅĞ¶Ï×óÓÒ×ª
 	}
 	else if(lamp_turn<=6)
 	{
+		t[lamp_turn]=S1[lamp_turn];
 		lamp_turn1=lamp_turn-4;
 		if(S1[lamp_turn1]==0)     //×ó×ª
 			SteerControl_left();
@@ -41,6 +43,7 @@ void Strategy_Judge(void)  //ÅĞ¶Ï×óÓÒ×ª
 	}
 	else
 	{
+		t[lamp_turn]=S2[lamp_turn];
 		lamp_turn2=lamp_turn-7;
 		if(S2[lamp_turn2]==0)     //×ó×ª
 			SteerControl_left();
@@ -211,4 +214,15 @@ void keep_Input2(void)
 	case 7:
 		{k2[2]=1;k2[1]=1;k2[0]=1;break;}
 	}
+}
+void straight(void)  //ÅĞ¶Ï×óÓÒ×ª
+{
+	int i=0;
+	for(;i<=9;i++)
+	if(i<=3)
+		str[i]=k[i];
+	else if(i<=6)
+		str[i]=k1[i-4];
+	else
+		str[i]=k2[i-7];
 }

@@ -13,7 +13,7 @@
 
 extern byte wrong_count;
 extern byte aim,aim2;
-extern byte success;
+extern byte success,open_flag;
 extern byte start_flag;
 extern byte close_supersonic;
 extern byte menu;
