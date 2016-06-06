@@ -363,7 +363,7 @@ void KeyJudge(void)
 		else
 		{
 			menu++;
-			if(menu>=4)
+			if(menu>=5)
 				menu=0;
 		}
 		}
@@ -437,6 +437,23 @@ void KeyJudge(void)
 		if(S6==0&&S6_last==1){   //按键S6按下
 			keymode=4; 
 			OLEDdisplay_flag=0;
+			}
+	}
+	else if(menu==4)
+	{
+		if(S4==0&&S4_last==1){   //按键S4按下
+			keymode=2;
+			straightspeed+=10;
+			}
+		if(S5==0&&S5_last==1){   //按键S5按下
+			keymode=3;
+			cyclespeed+=10;
+			cyclespeedleft+=10;
+			cyclespeedright+=10;
+			}
+		if(S6==0&&S6_last==1){   //按键S6按下
+			keymode=4; 
+			turnspeed+=5;
 			}
 	}
 	S3_last=S3;        //保存按键的状态

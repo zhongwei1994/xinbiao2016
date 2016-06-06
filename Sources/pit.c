@@ -89,6 +89,8 @@ void PitISR(void)//1ms一个控制周期
 
 void PitISR2(void)
 {
+	SpeedCount();
+	
 //	if(csl!=0)
 //	{
 //		pitcount1++;
@@ -98,14 +100,13 @@ void PitISR2(void)
 //		targetspeed=0;
 //		pitcount1=0;
 //	}
-//	SpeedCount();
-//	if(targetspeed==straightspeed)
-//	{
-//		SpeedControl2();
-//	}
-//	else
-//	{
+	if(targetspeed==straightspeed)
+	{
+		SpeedControl2();
+	}
+	else
+	{
 		SpeedControl();
-//	}
+	}
 	PIT.CH[2].TFLG.B.TIF = 1;
 }
