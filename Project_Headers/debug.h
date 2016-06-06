@@ -30,6 +30,7 @@ extern unsigned char S6_last;
 extern unsigned char keymode;
 extern unsigned long TimeMesure(void);
 void BlueTx(void); 
+void BlueTx_CCD(void);
 void LINFlex_TX(unsigned char data);
 void LINFlex_TX_Interrupt(void);
 void LINFlex_RX_Interrupt(void);

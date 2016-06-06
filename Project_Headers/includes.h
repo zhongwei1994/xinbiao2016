@@ -47,6 +47,7 @@ typedef unsigned long int DWORD;
 #include "steer.h"
 #include "analysis.h"
 #include "supersonic.h"
+#include "capture.h"
 #include "pit.h"
 #include "SD.h"
 #include "strategy.h"

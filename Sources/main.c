@@ -37,6 +37,10 @@ int main(void) {
 //			EMIOS_0.CH[26].CSR.B.FLAG = 1;//清除场中断标志位_video2
 //			EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断_viedo2
 		}
+		if(CCD_flag==1)
+		{
+			BlueTx_CCD();
+		}
 		KeyJudge();
 		//BlueTx();
 	}

@@ -17,6 +17,7 @@ void initEMIOS_0Image_2(void);
 void enableIrq(void);
 void initLINFlex_0_UART(void);
 void init_supersonic(void);
+void initAD(void);
 void initTestIO(void);
 void init_TFcard(void);
 void initEMIOS_0ModulusCounter(void);

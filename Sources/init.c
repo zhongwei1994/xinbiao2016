@@ -18,6 +18,7 @@ void initALL(void)
 	initEMIOS_0Image_2();
 	initLINFlex_0_UART();
 	init_supersonic();
+	initAD();                     //ADC
 //	initKeys_Switchs_Infrared();
 	
 	initTestIO();
@@ -239,8 +240,8 @@ void initLINFlex_0_UART(void)
 	DIV_M=LFDIV整数部分
 	DIV_F=LFDIV小数部分*16  */
       //38400:64M-104+3
-	LINFLEX_0.LINIBRR.B.DIV_M = 43;  	//波特率设置38400:80M-130+3 57600:80M-86+13 115200:80M-43+6 
-	LINFLEX_0.LINFBRR.B.DIV_F = 6;	//38400:64M-104+3
+	LINFLEX_0.LINIBRR.B.DIV_M = 43;//43  	//波特率设置38400:80M-130+3 57600:80M-86+13 115200:80M-43+6 
+	LINFLEX_0.LINFBRR.B.DIV_F = 6;//6	//38400:64M-104+3
     LINFLEX_0.UARTCR.B.UART=1;
 	LINFLEX_0.UARTCR.R=0x00000033;//8-bit data UART mode
 	LINFLEX_0.LINCR1.B.INIT=0; //退出初始化模式
@@ -280,6 +281,18 @@ void init_supersonic(void)
 	
 }
 
+void initAD(void)
+{
+  ADC.MCR.R = 0x20000000;       /*未读转换数据不能被覆盖；右对齐；连续转换序列模式；引起当前链转换结束并终止操作；对通道注入的外触发器使不能；模拟时钟频率为40MHz；CTU触发转换使不能；自动时钟关闭使不能；正常模式*/
+  ADC.NCMR[1].R = 0x00000004;   /*使能CH34通道（标准通道）的位正常采样*/
+  ADC.CTR[1].R = 0x00008606;    /*转换时间寄存器 与标准通道相关联*/
+  ADC.MCR.B.NSTART=1;         /* Trigger normal conversions for ADC0 */
+  
+  SIU.PCR[26].R = 0x2100;//CCDR AO  B10
+  SIU.PCR[36].R = 0x0200;//CCDR CLK C4
+  SIU.PCR[34].R = 0x0200;//CCDR SI  C2
+}
+
 
 
 /*********************测试IO初始化***********************/
@@ -288,10 +301,10 @@ void initTestIO(void)
 	//调试模块（蓝牙、OLED、TF卡、蜂鸣器、超声、拨码开关、按键、LED）
 	
 	//SD卡
-	SIU.PCR[37].R = 0x0604;        //设置PC[5]为SOUT接口
-	SIU.PCR[36].R = 0x0103;        //设置PC[4]为SIN接口
-	SIU.PCR[34].R = 0x0604;        //设置PC[2]为SCK接口
-	SIU.PCR[35].R = 0x0223;        //设置PC[3]为开漏输出，作为CS，使能内部上拉电阻
+//	SIU.PCR[37].R = 0x0604;        //设置PC[5]为SOUT接口
+//	SIU.PCR[36].R = 0x0103;        //设置PC[4]为SIN接口
+//	SIU.PCR[34].R = 0x0604;        //设置PC[2]为SCK接口
+//	SIU.PCR[35].R = 0x0223;        //设置PC[3]为开漏输出，作为CS，使能内部上拉电阻
 	
 	//OLED
 	SIU.PCR[72].R = 0x0200;//OLED     E8

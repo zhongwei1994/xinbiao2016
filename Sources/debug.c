@@ -10,6 +10,7 @@
 unsigned char *send;
 unsigned char putstring[]="Image";
 unsigned int Ts=0;
+unsigned int Tc=0;
 unsigned int Ti=ROWS-1;
 unsigned int Tj=0;
 int CurrentSteer=0;
@@ -112,6 +113,46 @@ void LINFlex_TX(unsigned char data)
 	LINFLEX_0.BDRL.B.DATA0=data;       //发送语句
 	while(!LINFLEX_0.UARTSR.B.DTF){}
 	LINFLEX_0.UARTSR.B.DTF=1;
+}
+
+
+void BlueTx_CCD(void)                             //蓝牙发数据
+{
+	unsigned char aa='L';
+	send = putstring;
+	LINFlex_TX(*send++);
+	for(Ts=0;Ts<5;)
+	{
+		switch(Ts){
+		case 0: if(*send!=0x00){
+					LINFlex_TX(*send++);
+					break;}
+				else{
+					Ts=1;
+					break;}
+		case 1:
+			LINFlex_TX(aa);
+			Ts=2;
+			break;
+		case 2: 
+			LINFlex_TX(SendInt2(A[Tc]));        //发送左CCD图像
+			Ts=3;
+			break;
+		case 3: 
+			LINFlex_TX(SendInt3(A[Tc]));
+			Ts=4;
+			break;
+		case 4: 
+			LINFlex_TX(SendInt4(A[Tc]));
+			if(Tc<127){
+				Tc++;
+				Ts=2;}
+			else{
+				Tc=0;
+				Ts=5;}
+			break;
+		}
+	}
 }
 
 void BlueTx(void)                             //蓝牙发数据
