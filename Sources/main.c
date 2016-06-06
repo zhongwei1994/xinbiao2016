@@ -18,6 +18,12 @@ int main(void) {
 	//EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断 _viedo2
 	for(;;) 	
 	{		
+		if(CCD_flag==1)
+		{
+			barrier_avoid();
+//			BlueTx_CCD();
+			CCD_flag=0;
+		}
 		if(fieldover)//本场采样结束标志
 		{
 			fieldover=0;         //标志清零
@@ -36,10 +42,6 @@ int main(void) {
 			EMIOS_0.CH[6].CCR.B.FEN=1;  //开场中断
 //			EMIOS_0.CH[26].CSR.B.FLAG = 1;//清除场中断标志位_video2
 //			EMIOS_0.CH[26].CCR.B.FEN=1;  //开场中断_viedo2
-		}
-		if(CCD_flag==1)
-		{
-			BlueTx_CCD();
 		}
 		KeyJudge();
 		//BlueTx();

@@ -8,6 +8,9 @@
 #include "includes.h"
 
 int A[128]={0};
+int C_error=80;
+int barrier_error=0,barrier_steer=0,barrier_kp=4;
+int  ccd_barrier_flag=0;
 
 void ImageCapture(int R[]) 
 {
@@ -53,4 +56,43 @@ void ImageCapture(int R[])
   CCDR_CLK = 0;        // CLK = 0
   udelay(2);
   udelay(2); 
+}
+void ccd_capture(void)
+{
+	int up_error=0,down_error=0;
+	int i=0,x=0;
+	for(i=30;i<=110;i++)
+	{
+		up_error=A[i]-A[i-15];
+		if(up_error>=C_error)
+		{
+			down_error=A[i]-A[i+15];
+			if(down_error>=C_error)
+			{
+				x=i+4;
+				if(x>=70)
+					barrier_error=105-x;
+				else
+					barrier_error=35-x;
+				ccd_barrier_flag=1;
+				return;
+			}
+			else
+				ccd_barrier_flag=0;
+		}
+		else
+			ccd_barrier_flag=0;
+	}
+}
+void barrier_avoid(void)
+{
+	ccd_capture();
+	if(ccd_barrier_flag)
+	{
+		targetspeed=130;
+		barrier_steer=CENTER+barrier_kp*barrier_error;
+		SET_steer(barrier_steer);
+		delay_ms(2);
+		ccd_barrier_flag=0;
+	}
 }

@@ -17,7 +17,7 @@ void initALL(void)
 	initEMIOS_0Image();
 	initEMIOS_0Image_2();
 	initLINFlex_0_UART();
-	init_supersonic();
+//	init_supersonic();
 	initAD();                     //ADC
 //	initKeys_Switchs_Infrared();
 	

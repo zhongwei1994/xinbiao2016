@@ -28,28 +28,28 @@ void initPIT(void)
 void PitISR(void)//1ms一个控制周期
 {
 	pitcount0++;                                  //50一次清零
-	//pitcount1++;                                  //6一次清零
+	//pitcount2++;                                  //6一次清零
 	
 	ImageCapture(A);
 	CCD_flag=1;
 	
-	if(pitcount1>=6)
-	{
-		pitcount1=0;
-		if(BarrierJudge()==1)                  //障碍物判断，左转
-		{
-			barrier_delay++;
+//	if(pitcount2>=6)
+//	{
+//		pitcount2=0;
+//		if(BarrierJudge()==1)                  //障碍物判断，左转
+//		{
+//			barrier_delay++;
 	//		if(barrier_delay>=2)				
 	//		{
 	//			SET_steer(RIGHT);
 	//		}
-			if(barrier_delay>=2)			
-			{
-				barrier_delay=0;
-				barrier_left_flag=0;
+//			if(barrier_delay>=2)			
+//			{
+//				barrier_delay=0;
+//				barrier_left_flag=0;
 	//			barrier_right_flag=0;
-			}
-		}
+//			}
+//		}
 	//	else if(BarrierJudge()==2)               //障碍物判断，右转
 	//	{
 	//		BEE=1;
@@ -66,15 +66,15 @@ void PitISR(void)//1ms一个控制周期
 	//			barrier_right_flag=0;
 	//		}
 	//	}
-		else
-		{
-			if(close_supersonic==0)
-			{
-				//trigger_supersonic_1();
-				trigger_supersonic_2();
-			}
-		}
-	}
+//		else
+//		{
+//			if(close_supersonic==0)
+//			{
+//				//trigger_supersonic_1();
+//				trigger_supersonic_2();
+//			}
+//		}
+//	}
 	if(pitcount0>50)
 	{
 		pitcount0=0;
@@ -96,6 +96,13 @@ void PitISR2(void)
 //		pitcount1=0;
 //	}
 	SpeedCount();
-	SpeedControl();
+	if(targetspeed==straightspeed)
+	{
+		SpeedControl2();
+	}
+	else
+	{
+		SpeedControl();
+	}
 	PIT.CH[2].TFLG.B.TIF = 1;
 }

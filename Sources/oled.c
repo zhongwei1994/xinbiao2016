@@ -394,10 +394,10 @@ void OLED_display()
 //			OLED_Num(k_data1);	
 			OLED_Num(csl);
 			OLED_SetPointer(7,80);
-			OLED_Str("k_2");
+			OLED_Str("k_2:");
 	//		OLED_Num(target_offset);
 //			OLED_Num(k_data2);	
-			OLED_Num(csr);
+			OLED_Num(ccd_barrier_flag);
 	//		OLED_Num(distance_T);
 	//		OLED_Num(targetspeed);
 }
