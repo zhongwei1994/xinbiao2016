@@ -21,7 +21,7 @@ int main(void) {
 		if(CCD_flag==1)
 		{
 			barrier_avoid();
-//			BlueTx_CCD();
+			BlueTx_CCD();
 			CCD_flag=0;
 		}
 		if(fieldover)//本场采样结束标志

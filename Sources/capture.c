@@ -9,7 +9,7 @@
 
 int A[128]={0};
 int C_error=80;
-int barrier_error=0,barrier_steer=0,barrier_kp=4;
+int barrier_error=0,barrier_steer=0,barrier_kp=5;
 int  ccd_barrier_flag=0;
 
 void ImageCapture(int R[]) 
@@ -69,7 +69,7 @@ void ccd_capture(void)
 			down_error=A[i]-A[i+15];
 			if(down_error>=C_error)
 			{
-				x=i+4;
+				x=i+5;
 				if(x>=70)
 					barrier_error=105-x;
 				else
@@ -92,7 +92,7 @@ void barrier_avoid(void)
 		targetspeed=130;
 		barrier_steer=CENTER+barrier_kp*barrier_error;
 		SET_steer(barrier_steer);
-		delay_ms(2);
+		delay_ms(1);
 		ccd_barrier_flag=0;
 	}
 }
