@@ -141,7 +141,7 @@ void SteerControl_left(void)
 	else
 	{
 		start_flag=1;
-		if(wrong_count>=2)
+		if(wrong_count>=1)
 			switch_flag=1;
 		wrong_count=0;
 		cycle_flag=0;
@@ -235,7 +235,7 @@ void SteerControl_right(void)
 	else
 	{
 		start_flag=1;
-		if(wrong_count>=2)
+		if(wrong_count>=1)
 			switch_flag=1;
 		wrong_count=0;
 		cycle_flag=0;
